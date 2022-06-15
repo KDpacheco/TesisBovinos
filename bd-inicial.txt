@@ -1,0 +1,629 @@
+CREATE SEQUENCE public.abortos_abortos_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+-- DROP SEQUENCE public.actividades_actividades_id_seq;
+
+CREATE SEQUENCE public.actividades_actividades_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+-- DROP SEQUENCE public.categoria_categoria_id_seq;
+
+CREATE SEQUENCE public.categoria_categoria_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+-- DROP SEQUENCE public.embarazos_embarazos_id_seq;
+
+CREATE SEQUENCE public.embarazos_embarazos_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+-- DROP SEQUENCE public.estados_estados_id_seq;
+
+CREATE SEQUENCE public.estados_estados_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+-- DROP SEQUENCE public.migrations_id_seq;
+
+CREATE SEQUENCE public.migrations_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+-- DROP SEQUENCE public.monta_monta_seq;
+
+CREATE SEQUENCE public.monta_monta_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+-- DROP SEQUENCE public.partos_partos_id_seq;
+
+CREATE SEQUENCE public.partos_partos_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+-- DROP SEQUENCE public.produccion_produccion_id_seq;
+
+CREATE SEQUENCE public.produccion_produccion_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+-- DROP SEQUENCE public.raza_raza_id_seq;
+
+CREATE SEQUENCE public.raza_raza_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+-- DROP SEQUENCE public.registro_actividades_registro_actividades_id_seq;
+
+CREATE SEQUENCE public.registro_actividades_registro_actividades_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+-- DROP SEQUENCE public.registro_enfermedades_registro_enfermedades_id_seq;
+
+CREATE SEQUENCE public.registro_enfermedades_registro_enfermedades_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+-- DROP SEQUENCE public.registro_muertes_registro_muertes_id_seq;
+
+CREATE SEQUENCE public.registro_muertes_registro_muertes_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+-- DROP SEQUENCE public.registro_ordeño_registro_ordeño_id_seq;
+
+CREATE SEQUENCE public.registro_ordeño_registro_ordeño_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+-- DROP SEQUENCE public.registro_peso_registro_peso_id_seq;
+
+CREATE SEQUENCE public.registro_peso_registro_peso_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+-- DROP SEQUENCE public.registro_vacunas_registro_vacunas_id_seq;
+
+CREATE SEQUENCE public.registro_vacunas_registro_vacunas_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+-- DROP SEQUENCE public.vacunas_vacuna_id_seq;
+
+CREATE SEQUENCE public.vacunas_vacuna_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+-- DROP SEQUENCE public.ventas_ventas_id_seq;
+
+CREATE SEQUENCE public.ventas_ventas_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;-- public.actividades definition
+
+-- Drop table
+
+-- DROP TABLE public.actividades;
+
+CREATE TABLE public.actividades (
+	actividades_id serial4 NOT NULL,
+	actividades_nombre varchar(255) NOT NULL,
+	actividades_nivel int4 NULL,
+	CONSTRAINT actividades_pkey PRIMARY KEY (actividades_id)
+);
+
+
+-- public.categoria definition
+
+-- Drop table
+
+-- DROP TABLE public.categoria;
+
+CREATE TABLE public.categoria (
+	categoria_nombre varchar(255) NOT NULL,
+	categoria_id serial4 NOT NULL,
+	categoria_nivel int4 NOT NULL,
+	CONSTRAINT categoria_pkey PRIMARY KEY (categoria_id)
+);
+
+
+-- public.estados definition
+
+-- Drop table
+
+-- DROP TABLE public.estados;
+
+CREATE TABLE public.estados (
+	estados_id serial4 NOT NULL,
+	estados_nombre varchar(255) NOT NULL,
+	CONSTRAINT estados_pkey PRIMARY KEY (estados_id)
+);
+
+
+-- public.migrations definition
+
+-- Drop table
+
+-- DROP TABLE public.migrations;
+
+CREATE TABLE public.migrations (
+	id serial4 NOT NULL,
+	migration varchar(255) NOT NULL,
+	batch int4 NOT NULL,
+	CONSTRAINT migrations_pkey PRIMARY KEY (id)
+);
+
+
+-- public.monta definition
+
+-- Drop table
+
+-- DROP TABLE public.monta;
+
+CREATE TABLE public.monta (
+	monta_madre varchar NOT NULL,
+	monta_padre varchar NULL,
+	monta_fecha date NOT NULL,
+	monta_exitosa varchar NULL,
+	deleted_at timestamp(0) NULL,
+	created_at timestamp(0) NULL,
+	updated_at timestamp(0) NULL,
+	monta_id int4 NOT NULL DEFAULT nextval('monta_monta_seq'::regclass),
+	CONSTRAINT monta_pk PRIMARY KEY (monta_id)
+);
+
+
+-- public.produccion definition
+
+-- Drop table
+
+-- DROP TABLE public.produccion;
+
+CREATE TABLE public.produccion (
+	produccion_id serial4 NOT NULL,
+	produccion_nombre varchar NOT NULL,
+	CONSTRAINT produccion_pk PRIMARY KEY (produccion_id)
+);
+
+
+-- public.raza definition
+
+-- Drop table
+
+-- DROP TABLE public.raza;
+
+CREATE TABLE public.raza (
+	raza_nombre varchar(255) NOT NULL,
+	raza_id serial4 NOT NULL,
+	CONSTRAINT raza_pkey PRIMARY KEY (raza_id)
+);
+
+
+-- public.vacunas definition
+
+-- Drop table
+
+-- DROP TABLE public.vacunas;
+
+CREATE TABLE public.vacunas (
+	vacuna_id serial4 NOT NULL,
+	vacuna_nombre varchar(255) NOT NULL,
+	vacuna_nivel int4 NULL,
+	CONSTRAINT vacunas_pkey PRIMARY KEY (vacuna_id)
+);
+
+
+-- public.animal definition
+
+-- Drop table
+
+-- DROP TABLE public.animal;
+
+CREATE TABLE public.animal (
+	animal_id varchar(255) NOT NULL,
+	animal_madre varchar(255) NULL,
+	animal_padre varchar(255) NULL,
+	animal_color varchar(255) NOT NULL,
+	animal_peso numeric(10) NOT NULL,
+	animal_raza int4 NOT NULL,
+	animal_sexo varchar(255) NOT NULL,
+	animal_categoria int4 NOT NULL,
+	animal_nacimiento date NOT NULL,
+	animal_imagen varchar(255) NULL,
+	animal_estado int4 NOT NULL,
+	deleted_at timestamp(0) NULL,
+	created_at timestamp(0) NULL,
+	updated_at timestamp(0) NULL,
+	codigo_bien int4 NULL,
+	animal_produccion int4 NULL,
+	animal_abierto bool NOT NULL,
+	fecha_secado timestamp NULL,
+	CONSTRAINT animal_pkey PRIMARY KEY (animal_id),
+	CONSTRAINT animal_fk FOREIGN KEY (animal_categoria) REFERENCES public.categoria(categoria_id),
+	CONSTRAINT animal_fk_estado FOREIGN KEY (animal_estado) REFERENCES public.estados(estados_id),
+	CONSTRAINT animal_fk_produccion FOREIGN KEY (animal_produccion) REFERENCES public.produccion(produccion_id),
+	CONSTRAINT animal_fk_raza FOREIGN KEY (animal_raza) REFERENCES public.raza(raza_id)
+);
+
+
+-- public.embarazos definition
+
+-- Drop table
+
+-- DROP TABLE public.embarazos;
+
+CREATE TABLE public.embarazos (
+	embarazos_id serial4 NOT NULL,
+	animal_madre varchar(255) NOT NULL,
+	embarazos_fecha date NOT NULL,
+	animal_padre varchar(255) NOT NULL,
+	embarazo_activo bool NOT NULL,
+	deleted_at timestamp(0) NULL,
+	created_at timestamp(0) NULL,
+	updated_at timestamp(0) NULL,
+	fecha_aproximada timestamp(0) NULL,
+	monta_id int4 NOT NULL,
+	CONSTRAINT embarazos_pkey PRIMARY KEY (embarazos_id),
+	CONSTRAINT embarazos_fk FOREIGN KEY (animal_madre) REFERENCES public.animal(animal_id) ON UPDATE CASCADE,
+	CONSTRAINT embarazos_fk_1 FOREIGN KEY (animal_padre) REFERENCES public.animal(animal_id) ON UPDATE CASCADE,
+	CONSTRAINT embarazos_fk_2 FOREIGN KEY (monta_id) REFERENCES public.monta(monta_id) ON UPDATE CASCADE
+);
+
+
+-- public.partos definition
+
+-- Drop table
+
+-- DROP TABLE public.partos;
+
+CREATE TABLE public.partos (
+	partos_id serial4 NOT NULL,
+	partos_madre varchar(255) NOT NULL,
+	hijo_id varchar(255) NOT NULL,
+	partos_fecha date NOT NULL,
+	partos_complicaciones varchar(255) NOT NULL,
+	partos_descripción varchar(255) NULL,
+	deleted_at timestamp(0) NULL,
+	created_at timestamp(0) NULL,
+	updated_at timestamp(0) NULL,
+	embarazo_id int4 NOT NULL,
+	CONSTRAINT partos_pkey PRIMARY KEY (partos_id),
+	CONSTRAINT partos_fk FOREIGN KEY (hijo_id) REFERENCES public.animal(animal_id) ON UPDATE CASCADE,
+	CONSTRAINT partos_fk_1 FOREIGN KEY (partos_madre) REFERENCES public.animal(animal_id) ON UPDATE CASCADE
+);
+
+
+-- public.registro_actividades definition
+
+-- Drop table
+
+-- DROP TABLE public.registro_actividades;
+
+CREATE TABLE public.registro_actividades (
+	animal_id varchar(255) NOT NULL,
+	actividades_id int4 NOT NULL,
+	registro_actividades_fecha date NOT NULL,
+	registro_actividades_id serial4 NOT NULL,
+	deleted_at timestamp(0) NULL,
+	created_at timestamp(0) NULL,
+	updated_at timestamp(0) NULL,
+	registro_actividades_proxima timestamp(0) NULL,
+	CONSTRAINT registro_actividades_pkey PRIMARY KEY (registro_actividades_id),
+	CONSTRAINT registro_eventos_fk FOREIGN KEY (animal_id) REFERENCES public.animal(animal_id),
+	CONSTRAINT registro_eventos_fk_1 FOREIGN KEY (actividades_id) REFERENCES public.actividades(actividades_id)
+);
+
+
+-- public.registro_enfermedades definition
+
+-- Drop table
+
+-- DROP TABLE public.registro_enfermedades;
+
+CREATE TABLE public.registro_enfermedades (
+	registro_enfermedades_id serial4 NOT NULL,
+	animal_id varchar(255) NOT NULL,
+	enfermedad_nombre varchar(255) NOT NULL,
+	enfermedad_estado varchar(255) NOT NULL,
+	enfermedad_fecha date NOT NULL,
+	deleted_at timestamp(0) NULL,
+	created_at timestamp(0) NULL,
+	updated_at timestamp(0) NULL,
+	enfermedad_fecha_tratamiento date NULL,
+	CONSTRAINT registro_enfermedades_pkey PRIMARY KEY (registro_enfermedades_id),
+	CONSTRAINT registro_enfermedades_fk FOREIGN KEY (animal_id) REFERENCES public.animal(animal_id)
+);
+
+
+-- public.registro_muertes definition
+
+-- Drop table
+
+-- DROP TABLE public.registro_muertes;
+
+CREATE TABLE public.registro_muertes (
+	registro_muertes_id serial4 NOT NULL,
+	animal_id varchar(255) NOT NULL,
+	registro_muertes_fecha date NOT NULL,
+	deleted_at timestamp(0) NULL,
+	created_at timestamp(0) NULL,
+	updated_at timestamp(0) NULL,
+	registro_muertes_causa varchar(255) NULL,
+	CONSTRAINT registro_muertes_pkey PRIMARY KEY (registro_muertes_id),
+	CONSTRAINT registro_muertes_fk FOREIGN KEY (animal_id) REFERENCES public.animal(animal_id)
+);
+
+
+-- public.registro_ordeño definition
+
+-- Drop table
+
+-- DROP TABLE public.registro_ordeño;
+
+CREATE TABLE public.registro_ordeño (
+	registro_ordeño_id serial4 NOT NULL,
+	animal_id varchar(255) NOT NULL,
+	registro_ordeño_litros numeric(10) NOT NULL,
+	registro_ordeño_cantidad int4 NOT NULL,
+	registro_ordeño_fecha date NOT NULL,
+	deleted_at timestamp(0) NULL,
+	created_at timestamp(0) NULL,
+	updated_at timestamp(0) NULL,
+	partos_id int4 NOT NULL,
+	CONSTRAINT registro_ordeño_pkey PRIMARY KEY ("registro_ordeño_id"),
+	CONSTRAINT registro_ordeño_fk FOREIGN KEY (animal_id) REFERENCES public.animal(animal_id)
+);
+
+
+-- public.registro_peso definition
+
+-- Drop table
+
+-- DROP TABLE public.registro_peso;
+
+CREATE TABLE public.registro_peso (
+	registro_peso_id serial4 NOT NULL,
+	animal_id varchar(255) NOT NULL,
+	registro_peso_fecha varchar(255) NOT NULL,
+	registro_peso_valor numeric(10) NOT NULL,
+	deleted_at timestamp(0) NULL,
+	created_at timestamp(0) NULL,
+	updated_at timestamp(0) NULL,
+	CONSTRAINT registro_peso_pkey PRIMARY KEY (registro_peso_id),
+	CONSTRAINT registro_peso_fk_animal FOREIGN KEY (animal_id) REFERENCES public.animal(animal_id)
+);
+
+
+-- public.registro_vacunas definition
+
+-- Drop table
+
+-- DROP TABLE public.registro_vacunas;
+
+CREATE TABLE public.registro_vacunas (
+	registro_vacunas_id serial4 NOT NULL,
+	animal_id varchar(255) NOT NULL,
+	vacuna_id int4 NOT NULL,
+	registro_vacunas_fecha date NOT NULL,
+	deleted_at timestamp(0) NULL,
+	created_at timestamp(0) NULL,
+	updated_at timestamp(0) NULL,
+	registro_vacunas_proxima timestamp(0) NULL,
+	CONSTRAINT registro_vacunas_pkey PRIMARY KEY (registro_vacunas_id),
+	CONSTRAINT registro_vacunas_fk FOREIGN KEY (animal_id) REFERENCES public.animal(animal_id) ON UPDATE CASCADE,
+	CONSTRAINT registro_vacunas_fk_1 FOREIGN KEY (vacuna_id) REFERENCES public.vacunas(vacuna_id)
+);
+
+
+-- public.ventas definition
+
+-- Drop table
+
+-- DROP TABLE public.ventas;
+
+CREATE TABLE public.ventas (
+	ventas_id serial4 NOT NULL,
+	animal_id varchar(255) NOT NULL,
+	ventas_valor numeric(10) NOT NULL,
+	ventas_fecha date NOT NULL,
+	deleted_at timestamp(0) NULL,
+	created_at timestamp(0) NULL,
+	updated_at timestamp(0) NULL,
+	ventas_cliente varchar(255) NOT NULL,
+	cedula_cliente varchar(10) NOT NULL,
+	CONSTRAINT ventas_pkey PRIMARY KEY (ventas_id),
+	CONSTRAINT ventas_fk FOREIGN KEY (animal_id) REFERENCES public.animal(animal_id)
+);
+
+
+-- public.abortos definition
+
+-- Drop table
+
+-- DROP TABLE public.abortos;
+
+CREATE TABLE public.abortos (
+	abortos_id serial4 NOT NULL,
+	animal_id varchar(255) NOT NULL,
+	abortos_tipo varchar(255) NOT NULL,
+	abortos_fecha date NOT NULL,
+	deleted_at timestamp(0) NULL,
+	created_at timestamp(0) NULL,
+	updated_at timestamp(0) NULL,
+	embarazo_id int4 NOT NULL,
+	CONSTRAINT abortos_pkey PRIMARY KEY (abortos_id),
+	CONSTRAINT abortos_fk FOREIGN KEY (animal_id) REFERENCES public.animal(animal_id) ON UPDATE CASCADE
+);
+
+INSERT INTO public.actividades
+(actividades_id, actividades_nombre, actividades_nivel)
+VALUES(1, 'Desparacitación y vitaminas AD3E Dosis Única', 1);
+INSERT INTO public.actividades
+(actividades_id, actividades_nombre, actividades_nivel)
+VALUES(2, 'Descornes', 1);
+INSERT INTO public.actividades
+(actividades_id, actividades_nombre, actividades_nivel)
+VALUES(3, 'Castración', 1);
+INSERT INTO public.actividades
+(actividades_id, actividades_nombre, actividades_nivel)
+VALUES(4, 'Limpiezade Ombligo', 1);
+INSERT INTO public.actividades
+(actividades_id, actividades_nombre, actividades_nivel)
+VALUES(5, 'Tatuaje', 1);
+INSERT INTO public.actividades
+(actividades_id, actividades_nombre, actividades_nivel)
+VALUES(6, 'Desparacitación y vitaminas AD3E', 2);
+INSERT INTO public.actividades
+(actividades_id, actividades_nombre, actividades_nivel)
+VALUES(7, 'Revisión de estados fisiológicos', 2);
+INSERT INTO public.actividades
+(actividades_id, actividades_nombre, actividades_nivel)
+VALUES(8, 'Baños de control de moscas y garrapatas', 2);
+
+
+INSERT INTO public.categoria
+(categoria_nombre, categoria_id, categoria_nivel)
+VALUES('Ternero', 1, 1);
+INSERT INTO public.categoria
+(categoria_nombre, categoria_id, categoria_nivel)
+VALUES('Torete', 2, 2);
+INSERT INTO public.categoria
+(categoria_nombre, categoria_id, categoria_nivel)
+VALUES('Vacona', 3, 2);
+INSERT INTO public.categoria
+(categoria_nombre, categoria_id, categoria_nivel)
+VALUES('Toro', 4, 3);
+INSERT INTO public.categoria
+(categoria_nombre, categoria_id, categoria_nivel)
+VALUES('Vaca', 5, 3);
+
+INSERT INTO public.estados
+(estados_id, estados_nombre)
+VALUES(1, 'Normal');
+INSERT INTO public.estados
+(estados_id, estados_nombre)
+VALUES(2, 'Fallecido');
+INSERT INTO public.estados
+(estados_id, estados_nombre)
+VALUES(3, 'Vendido');
+INSERT INTO public.estados
+(estados_id, estados_nombre)
+VALUES(4, 'Gestando');
+INSERT INTO public.estados
+(estados_id, estados_nombre)
+VALUES(5, 'Inseminada');
+
+INSERT INTO public.produccion
+(produccion_id, produccion_nombre)
+VALUES(1, 'ninguno');
+INSERT INTO public.produccion
+(produccion_id, produccion_nombre)
+VALUES(2, 'lactando');
+INSERT INTO public.produccion
+(produccion_id, produccion_nombre)
+VALUES(3, 'período seco');
+
+INSERT INTO public.raza
+(raza_nombre, raza_id)
+VALUES('Pardo Suizo', 2);
+INSERT INTO public.raza
+(raza_nombre, raza_id)
+VALUES('Holstein', 3);
+INSERT INTO public.raza
+(raza_nombre, raza_id)
+VALUES('Jersey', 4);
+INSERT INTO public.raza
+(raza_nombre, raza_id)
+VALUES('Hereford', 5);
+INSERT INTO public.raza
+(raza_nombre, raza_id)
+VALUES('Angus Rojo', 6);
+INSERT INTO public.raza
+(raza_nombre, raza_id)
+VALUES('Mestizo', 1);
+INSERT INTO public.raza
+(raza_nombre, raza_id)
+VALUES('Gyr', 8);
+INSERT INTO public.raza
+(raza_nombre, raza_id)
+VALUES('Brahaman', 7);
+
+INSERT INTO public.vacunas
+(vacuna_id, vacuna_nombre, vacuna_nivel)
+VALUES(1, 'Triple dosis única', 1);
+INSERT INTO public.vacunas
+(vacuna_id, vacuna_nombre, vacuna_nivel)
+VALUES(2, 'Neumoentritis', 1);
+INSERT INTO public.vacunas
+(vacuna_id, vacuna_nombre, vacuna_nivel)
+VALUES(3, 'Brucelosis', 1);
+INSERT INTO public.vacunas
+(vacuna_id, vacuna_nombre, vacuna_nivel)
+VALUES(4, 'Aftosa', NULL);
+INSERT INTO public.vacunas
+(vacuna_id, vacuna_nombre, vacuna_nivel)
+VALUES(5, 'Triple', 2);
+INSERT INTO public.vacunas
+(vacuna_id, vacuna_nombre, vacuna_nivel)
+VALUES(6, 'Sindrome Respiratorio', 3);
+INSERT INTO public.vacunas
+(vacuna_id, vacuna_nombre, vacuna_nivel)
+VALUES(7, 'Triple', 3);

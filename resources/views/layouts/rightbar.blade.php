@@ -45,18 +45,6 @@
                                  </a>
                              </div>
                         </li>
-                        <li class="list-inline-item">
-                            <div class="searchbar">
-                                <form>
-                                    <div class="input-group">
-                                        <div class="input-group-append">
-                                            <button class="btn" type="submit" id="button-addonSearch"><img src="{{ asset('assets/images/svg-icon/search.svg') }}" class="img-fluid" alt="search"></button>
-                                        </div>
-                                        <input type="search" class="form-control" placeholder="Buscar" aria-label="Search" aria-describedby="button-addonSearch">                                              
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
                     </ul>
                 </div>
                 <div class="infobar">

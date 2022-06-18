@@ -25,6 +25,7 @@ class RazaFormRequest extends FormRequest
     {
         return [
             'nueva_raza'=>'unique:raza,raza_nombre',
+            
         ];
     }
 }

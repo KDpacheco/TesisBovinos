@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "00d1dc3041973ec392a7c3a1766c0954",
+    "content-hash": "d4d0d1e51147588722a505ef28f2f049",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1010,6 +1010,116 @@
                 }
             ],
             "time": "2022-03-20T21:51:18+00:00"
+        },
+        {
+            "name": "haruncpi/laravel-id-generator",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/haruncpi/laravel-id-generator.git",
+                "reference": "b227dc2391ea45e9d070f19d35dc0a5f7a8f4185"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/haruncpi/laravel-id-generator/zipball/b227dc2391ea45e9d070f19d35dc0a5f7a8f4185",
+                "reference": "b227dc2391ea45e9d070f19d35dc0a5f7a8f4185",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Haruncpi\\LaravelIdGenerator\\IdGeneratorServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Haruncpi\\LaravelIdGenerator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "cc-by-4.0"
+            ],
+            "authors": [
+                {
+                    "name": "Md.Harun-Ur-Rashid",
+                    "email": "harun.cox@gmail.com"
+                }
+            ],
+            "description": "Easy way to generate custom ID in laravel framework",
+            "support": {
+                "issues": "https://github.com/haruncpi/laravel-id-generator/issues",
+                "source": "https://github.com/haruncpi/laravel-id-generator/tree/v1.1.0"
+            },
+            "time": "2021-10-01T06:16:03+00:00"
+        },
+        {
+            "name": "hmazter/laravel-schedule-list",
+            "version": "v2.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hmazter/laravel-schedule-list.git",
+                "reference": "c434b25cddf14531ecad8d7c73c04d6cd1ee67e5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hmazter/laravel-schedule-list/zipball/c434b25cddf14531ecad8d7c73c04d6cd1ee67e5",
+                "reference": "c434b25cddf14531ecad8d7c73c04d6cd1ee67e5",
+                "shasum": ""
+            },
+            "require": {
+                "dragonmantank/cron-expression": "^2.0|^3.0",
+                "illuminate/console": "5.6.*|5.7.*|5.8.*|^6.0|^7.0|^8.0",
+                "illuminate/support": "5.6.*|5.7.*|5.8.*|^6.0|^7.0|^8.0",
+                "php": "^7.2|^8.0"
+            },
+            "conflict": {
+                "illuminate/console": "^8.19",
+                "illuminate/support": "^8.19"
+            },
+            "require-dev": {
+                "orchestra/testbench": "6.*",
+                "phpunit/phpunit": "^9.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Hmazter\\LaravelScheduleList\\ScheduleListServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Hmazter\\LaravelScheduleList\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kristoffer Högberg",
+                    "email": "krihog@gmail.com"
+                }
+            ],
+            "description": "Laravel package to add command to list all scheduled artisan commands",
+            "keywords": [
+                "artisan",
+                "console",
+                "laravel5"
+            ],
+            "support": {
+                "issues": "https://github.com/hmazter/laravel-schedule-list/issues",
+                "source": "https://github.com/hmazter/laravel-schedule-list/tree/v2.3.0"
+            },
+            "time": "2022-02-11T13:49:27+00:00"
         },
         {
             "name": "laravel/framework",

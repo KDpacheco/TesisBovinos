@@ -50,7 +50,7 @@ class EndDiasAbiertos extends Command
         foreach($animal as $ani)
         {
             $fecha=Carbon::parse($ani->partos_fecha);
-            $diff=$fecha->diffInDays($fecha2);
+            $diff=$fecha->diffInDays($fecha2,false);
             if($diff>100)
             { 
                 $ani->animal_abierto=false;

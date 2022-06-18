@@ -6,14 +6,17 @@ $(document).ready(function () {
     //mostrar campos ocultos
     if ($("#Raza").val() === "other") {
         $("#raza").show();
+        $("#razacr").show();
     }
     $("#Raza").on('change', function () {
 
         if ($(this).val() === "other") {
             $("#raza").show();
+            $("#razacr").show();
         }
         else {
             $("#raza").hide();
+            $("#razacr").hide();
         }
     });
 
@@ -64,7 +67,7 @@ $(document).ready(function () {
         }
     }
 
-    
+
 
 
     $("#select-actividad").on('change', function () {
@@ -168,14 +171,19 @@ function onSelectAnimal22() {
 function onSelectAnimal4() {
     var animal_id = $('#select-animal4').val();
     var input = document.getElementById("ordeño");
+
     var input2 = document.getElementById("Ordeño_parto")
     if (!animal_id)
         input.min = this.value;
     $.get('/api/' + animal_id + '/ordeño', function (data) {
         input.min = data.partos_fecha;
-        input2.value=data.partos_id;
-        console.log("parto fecha"+data.partos_fecha);
-        console.log("parto id"+data.partos_id);
+        var max = new Date(data.partos_fecha);
+        max.setDate(max.getDate() + 300);
+
+        input.max = max.toISOString().substring(0, 10);;
+        input2.value = data.partos_id;
+        console.log("parto max" + max.toISOString().substring(0, 10));
+        console.log("parto id" + data.partos_id);
 
     });
 }
@@ -198,5 +206,4 @@ function onSelectAnimal3() {
 
     });
 }
-
 (jQuery);

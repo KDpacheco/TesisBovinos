@@ -49,7 +49,7 @@ class UpdateTorete extends Command
         {
         $fecha=Carbon::parse($ani->animal_nacimiento);
        
-        $diff=$fecha->diffInDays($fecha2);
+        $diff=$fecha->diffInDays($fecha2,false);
         if($diff>210)
             { 
             $ani->animal_categoria=2;

@@ -47,7 +47,7 @@ class EndPeriodoSeco extends Command
         {
         $fecha=Carbon::parse($ani->fecha_secado);
        
-        $diff=$fecha->diffInDays($fecha2);
+        $diff=$fecha->diffInDays($fecha2,false);
         if($diff>60)
             { 
             $ani->animal_produccion=1;

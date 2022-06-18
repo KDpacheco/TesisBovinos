@@ -27,9 +27,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('update:torete')->daily();
         $schedule->command('update:toro')->daily();
         $schedule->command('update:vacona')->daily();
-        $schedule->command('start:periodoseco')->daily();
+        $schedule->command('start:periodoseco')->everyMinute();
         $schedule->command('end:periodoseco')->daily();
-        $schedule->command('end:diasabiertos')->daily();
+        $schedule->command('end:diasabiertos')->everyMinute();
     }
 
     /**

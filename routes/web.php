@@ -25,14 +25,11 @@ Route::get('{id}/abortos', 'AbortosController@create')->name('abortos.create');
 Route::get('{id}/monta', 'MontaController@MontaFracaso')->name('monta.fracaso');
 
 
-/*rutas data datatables*/
-Route::get('datatables/monta/data','MontaController@datos')->name('datatable.monta'); 
-Route::get('datatables/muertes/data','MuerteController@datos')->name('datatable.muertes');  
-Route::get('datatables/animal/data','AnimalController@datos')->name('datatable.animal');  
-Route::get('datatables/embarazo/data','EmbarazoController@datos')->name('datatable.embarazo');  
+
+Route::get('datatables/muertes/data','MuerteController@datos')->name('datatable.muertes');    
 Route::get('datatables/partos/data','PartosController@datos')->name('datatable.partos');
 Route::get('datatables/abortos/data','AbortosController@datos')->name('datatable.abortos');
-
+Route::get('datatables/animal/data','AnimalController@datos')->name('datatable.animal');
 
 /*rutas PDF*/
 

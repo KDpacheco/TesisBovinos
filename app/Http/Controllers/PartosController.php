@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Animal;
+use App\Raza;
 use App\Embarazo;
 use App\Http\Requests\AnimalFormRequest;
 use App\Http\Requests\PartosFormRequest;
 use App\Http\Requests\RazaFormRequest;
 use App\Partos;
 use DB;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\Request;
 
 class PartosController extends Controller
 {
@@ -22,17 +25,17 @@ class PartosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-
-        return view('partos.index');
-
-    }
-
-    public function datos()
-    {
-        $partos=Partos::get();
-        return datatables()->of($partos)
+        if(request()->ajax())
+        {
+            if(!empty($request->from_date)){
+                $partos=Partos::whereBetween('partos_fecha', array($request->from_date, $request->to_date))->get();
+            }
+            else{
+                $partos=Partos::get();
+            }
+            return datatables()->of($partos)
         ->addColumn('pdf', function ($pdf) {
             return '<a href="' . route('partos.individual', $pdf->partos_id) . '">
             <button class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top"
@@ -41,8 +44,13 @@ class PartosController extends Controller
         }
         )
         ->rawColumns(['pdf'])
-        ->toJson();
+        ->make(true);
+        }
+        return view('partos.index');
+
     }
+
+    
     public function create($id)
     {
         $razas = DB::table('raza')->get();
@@ -60,7 +68,7 @@ class PartosController extends Controller
     public function store(AnimalFormRequest $request, RazaFormRequest $request2, PartosFormRequest $request3)
     {
         $animales = new Animal;
-        $animales->animal_id = $request->get('código');
+       
         $animales->animal_madre = $request->get('animal_madre');
         $animales->animal_padre = $request->get('animal_padre');
         $animales->animal_color = $request->get('color');
@@ -68,11 +76,17 @@ class PartosController extends Controller
         if ($request->get('raza') == "other") {
             $razas = new Raza;
             $razas->raza_nombre = $request2->get('nueva_raza');
+            $razas->acr=strtoupper($request2->get('acr'));
             $razas->save();
             $raza2 = DB::table('raza')->get()->last();
             $animales->animal_raza = $raza2->raza_id;
+            $id = IdGenerator::generate(['table' => 'animal','field'=>'animal_id', 'length' => 7, 'prefix' =>$raza2->acr, 'reset_on_prefix_change'=>true]);
+            $animales->animal_id = $id;
         } else {
-            $animales->animal_raza = $request->get('raza');
+            $raza3=Raza::findorFail($request->get('raza'));
+            $id = IdGenerator::generate(['table' => 'animal','field'=>'animal_id', 'length' => 7, 'prefix' =>$raza3->acr,'reset_on_prefix_change'=>true]);
+            $animales->animal_raza=$request->get('raza');
+            $animales->animal_id = $id;
         }
         $animales->animal_sexo = $request->get('sexo');
         $animales->animal_categoria = 1;
@@ -85,7 +99,7 @@ class PartosController extends Controller
 
         $partos = new Partos;
         $partos->partos_madre = $request3->get('animal_madre');
-        $partos->hijo_id = $request3->get('código');
+        $partos->hijo_id = $id;
         $partos->partos_fecha = $request3->get('nacimiento');
         $partos->partos_complicaciones = $request3->get('complicaciones');
         $partos->partos_descripción = $request3->get('descripción');

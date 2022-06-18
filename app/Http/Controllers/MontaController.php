@@ -12,15 +12,15 @@ class MontaController extends Controller
 {
     public function index(Request $request)
     {
-
-        return view('monta.index');
-
-    }
-
-    public function datos()
-    {
-        $monta = Monta::get();
-        return datatables()
+        
+        if (request()->ajax()) {
+            if (!empty($request->from_date)) {
+                $monta = Monta::whereBetween('monta_fecha', array($request->from_date, $request->to_date))->get();
+            }
+            else{
+                $monta = Monta::get();  
+            }
+            return datatables()
             ->of($monta)
             ->addColumn('exito', function ($exito) {
                 if ($exito->monta_exitosa == null) {
@@ -33,16 +33,16 @@ class MontaController extends Controller
                 {
                     if ($fin->monta_exitosa == null) {
                         return '<a href="' . route('embarazo.create', $fin->monta_id) . '" class="confirmation2">
-                    <button class="btn btn-primary">Exito</button> </a>
+                    <button class="button btn btn-primary">Exito</button> </a>
                     <a href="' . route('monta.fracaso', $fin->monta_id) . '" class="confirmation2">
-                    <button class="btn btn-primary">Fracaso</button> </a>
+                    <button class="button btn btn-primary">Fracaso</button> </a>
                     ';
                     } else {
                         return '<a>
-                    <button class="btn btn-primary" disabled>Exito</button>
+                    <button class="button btn btn-primary" disabled>Exito</button>
                 </a>
                 <a>
-                    <button class="btn btn-primary" disabled>Fracaso</button>
+                    <button class="button btn btn-primary" disabled>Fracaso</button>
                 </a>';}
                 }
             })
@@ -50,16 +50,26 @@ class MontaController extends Controller
                 return '<a href="' . route('monta.individual', $pdf->monta_id) . '">
                 <button class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top"
                     title="Informe Individual del animal"><i class="mdi mdi-file-pdf"></i>
-                </button></a>';
+                </button></a>
+                <button class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top"
+                        title="editar"><i class="ti-pencil"></i>
+                    </button></a>
+                ';
             }
             )
             ->rawColumns(['exito','fin','pdf'])
-            ->toJson();
+            ->make(true);
+        }
+
+        return view('monta.index');
+
     }
+
     public function create()
     {
         $animales = Animal::where('animal_categoria', '>', 1)
             ->where('animal_estado', '=', 1)
+            ->where('animal_abierto','=',false)
             ->get();
 
         return view("monta.create", ["animales" => $animales]);

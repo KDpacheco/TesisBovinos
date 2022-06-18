@@ -19,7 +19,9 @@
         <link rel="stylesheet" href="{{ asset('assets/css/flag-icon.min.css')}}">
         <link rel="stylesheet" href="{{ asset('assets/css/style.css')}}">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/DataTables/datatables.min.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker.min.css')}}">
         @yield('style')
+        
         <!-- End CSS -->
     </head>
     <body class="vertical-layout">
@@ -69,9 +71,13 @@
         <script src="{{ asset('assets/js/vertical-menu.js') }}"></script> 
         <script src="{{ asset('assets/plugins/switchery/switchery.min.js') }}"></script> 
         <script type="text/javascript" src="{{ asset('assets/DataTables/datatables.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/DataTables/buttons.colVis.min.js') }}"></script>
+        <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
+        <script src="{{ asset('assets/js/bootstrap-datepicker.es.min.js') }}"></script>
         @yield('script')
+        
         <!-- Core JS -->
         <script src="{{ asset('assets/js/core.js') }}"></script>
         <!-- End JS -->
-    </body>
+    </body> 
 </html>    

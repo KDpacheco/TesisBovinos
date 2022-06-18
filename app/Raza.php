@@ -11,6 +11,7 @@ class Raza extends Model
     protected $primaryKey = "raza_id";
     public $timestamps=false;
     protected $fillable=[
-        'raza_nombre'
+        'raza_nombre',
+        'acr'
     ];
 }

@@ -24,14 +24,20 @@ class EmbarazoController extends Controller
     public function index(Request $request)
     {
 
-        return view('embarazo.index');
-
-    }
-
-    public function datos()
-    {
-        $embarazos = Embarazo::get();
-        return datatables()->of($embarazos)
+        if (request()->ajax()) {
+            if (!empty($request->from_date)) {
+                $embarazos = Embarazo::whereBetween('embarazos_fecha', array($request->from_date, $request->to_date))->get();
+            }
+            else{
+                if(!empty($request->from_date2)){
+                    
+                    $embarazos = Embarazo::whereBetween('fecha_aproximada', array($request->from_date2, $request->to_date2))->get();
+                }else{
+                    $embarazos = Embarazo::get();
+                }
+              
+            }
+            return datatables()->of($embarazos)
         ->addcolumn('proxima',function($proxima){
             return $proxima->fecha_aproximada->toDateString();
         })
@@ -53,9 +59,9 @@ class EmbarazoController extends Controller
                 <button class="btn btn-primary">Registrar Aborto</button>
             </a>';
                 } else {
-                    return '<a> <button class="btn btn-primary" disabled >Registrar Parto</button>
+                    return '<a> <button class="button btn btn-primary" disabled >Registrar Parto</button>
                     </a>  
-                    <a><button class="btn btn-primary" disabled >Registrar Aborto</button></a>';
+                    <a><button class=" button btn btn-primary" disabled >Registrar Aborto</button></a>';
                 }
             })
             ->addColumn('pdf', function ($pdf) {
@@ -66,8 +72,12 @@ class EmbarazoController extends Controller
             }
             )
             ->rawColumns(['activo','fin','proxima','pdf'])
-            ->toJson();
+            ->make(true);
+            }
+        return view('embarazo.index');
+
     }
+
     public function create($id)
     {
         $monta = Monta::findOrFail($id);

@@ -27,7 +27,7 @@ class AnimalFormRequest extends FormRequest
         if($this->raza=='other')
         {
             return [
-                'código'=>'required|unique:animal,animal_id',
+                'código'=>'required|unique:animal,codigo_bien',
                 'color'=> 'required|max:256',
                 'peso'=>'required|min:0',
                 'raza'=>'required',
@@ -40,7 +40,7 @@ class AnimalFormRequest extends FormRequest
         }
         else{
             return [
-                'código'=>'required|unique:animal,animal_id',
+                'código'=>'required|unique:animal,codigo_bien',
                 'color'=> 'required|max:256',
                 'peso'=>'required|min:0',
                 'raza'=>'required',

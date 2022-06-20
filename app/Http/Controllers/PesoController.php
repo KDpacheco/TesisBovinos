@@ -20,21 +20,27 @@ class PesoController extends Controller
      */
     public function index(Request $request)
     {
-        if($request){
-        $query =trim($request->get('searchText'));
-        if($query)
+        if(request()->ajax()){
+        
+        if(!empty($request->from_date))
         {
-            $peso=Peso::where('animal_id','LIKE',$query)
-            ->orderBy('registro_peso_id','desc')
-            ->paginate(5);
+            $peso=Peso::whereBetween('registro_peso_fecha', array($request->from_date, $request->to_date))->get();
         }
         else{
-            $peso=Peso::where('registro_peso_id','LIKE','%'.$query.'%')
-            ->orderBy('registro_peso_id','desc')
-            ->paginate(5);
+            $peso=Peso::get();
         }
-            return view('peso.index',["peso"=>$peso,"searchText"=>$query]);
+        return datatables()->of($peso)
+        ->addColumn('pdf', function ($pdf) {
+            return '<a href="' . route('peso.individual', $pdf->registro_peso_id) . '">
+            <button class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top"
+                title="Informe del parto"><i class="mdi mdi-file-pdf"></i>
+            </button></a>';
         }
+        )
+        ->rawColumns(['pdf'])
+        ->make(true);
+        }
+        return view('peso.index');
     }
 
     /**
@@ -44,7 +50,7 @@ class PesoController extends Controller
      */
     public function create()
     {
-        $animales=Animal::get();
+        $animales=Animal::where('animal_estado','<',2)->orWhere('animal_estado','>',3)->get();
         return view('peso.create',["animales"=>$animales]);
     }
 

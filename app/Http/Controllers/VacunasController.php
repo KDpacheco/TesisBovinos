@@ -22,35 +22,43 @@ class VacunasController extends Controller
      */
     public function index(Request $request)
     {
-        if($request){
-            $query =trim($request->get('searchText'));
-            if($query)
+        if(request()->ajax()){
+       
+            if(!empty($request->from_date))
             {
-                $data=Vacunas::join('vacunas','registro_vacunas.vacuna_id','=','vacunas.vacuna_id')
-                ->where('animal_id','LIKE',$query)
-                ->orderBy('registro_vacunas_id','desc')
-                ->paginate(5);
+                $data=Vacunas::join('vacunas','registro_vacunas.vacuna_id','=','vacunas.vacuna_id')->whereBetween('registro_vacunas_fecha', array($request->from_date, $request->to_date))->get();
             }
             else
             {
-                $data=Vacunas::join('vacunas','registro_vacunas.vacuna_id','=','vacunas.vacuna_id')
-                ->where('registro_vacunas_id','LIKE','%'.$query.'%')
-                ->orderBy('registro_vacunas_id','desc')
-                ->paginate(5);
-            }
-            
-            return view('vacunas.index',["data"=>$data,"searchText"=>$query]);
+                $data=Vacunas::join('vacunas','registro_vacunas.vacuna_id','=','vacunas.vacuna_id')->get();
+           
         }
+        return datatables()->of($data)
+        ->addColumn('proxima',function($proxima){
+            if($proxima->registro_vacunas_proxima==null)
+            {
+                return "Dosis Única";
+            }
+            else{
+               return $proxima->registro_vacunas_proxima->toDateString();
+            }
+        })
+        ->addColumn('pdf', function ($pdf) {
+            return '<a href="' . route('vacunas.individual', $pdf->registro_vacunas_id) . '">
+            <button class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top"
+                title="Informe del parto"><i class="mdi mdi-file-pdf"></i>
+            </button></a>';
+        }
+        )
+        ->rawColumns(['pdf','proxima'])
+        ->make(true);   
     }
+    return view('vacunas.index');
+}
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        $animales=Animal::get();
+        $animales=Animal::where('animal_estado','<',2)->orWhere('animal_estado','>',3)->get();
         return view('vacunas.create',["animales"=>$animales]);
     }
 

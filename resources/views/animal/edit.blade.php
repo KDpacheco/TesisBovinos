@@ -42,13 +42,14 @@ SRB - Animales
             </ul>
         </div>
         @endif
-        {!! Form::open(array('url'=>'animal','method'=>'POST','autocomplete'=>'off')) !!}
+        {!! Form::model($animal,['method'=>'PATCH','route'=>['animal.update',$animal->animal_id]]) !!}
+        
         {{ Form::token() }}
         <div class="row">
             <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
                 <div class="form-group">
                     <label>Código de Bien</label>
-                    <input type="text" name="código" value="{{ old('código') }}" class="form-control"
+                    <input type="text" name="código" value="{{ old('código',$animal->codigo_bien) }}" class="form-control"
                         placeholder="Código Animal" data-toggle="tooltip" data-placement="top"
                         title="Escribe el código o numeración del animal">
 
@@ -58,7 +59,7 @@ SRB - Animales
             <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
                 <div class="form-group">
                     <label>Código o numeración de la Madre</label>
-                    <input type="text" name="animal_madre" value="{{ old('animal_madre') }}" class="form-control"
+                    <input type="text" name="animal_madre" value="{{ old('animal_madre',$animal->animal_madre) }}" class="form-control"
                         placeholder="Código Animal" data-toggle="tooltip" data-placement="top"
                         title="Escribe el código o numeración del animal">
 
@@ -68,7 +69,7 @@ SRB - Animales
             <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
                 <div class="form-group">
                     <label>Código o numeración del Padre</label>
-                    <input type="text" name="animal_padre" value="{{ old('animal_padre') }}" class="form-control"
+                    <input type="text" name="animal_padre" value="{{ old('animal_padre',$animal->animal_padre) }}" class="form-control"
                         placeholder="Código Animal" data-toggle="tooltip" data-placement="top"
                         title="Escribe el código o numeración del animal">
 
@@ -78,7 +79,7 @@ SRB - Animales
             <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
                 <div class="form-group">
                     <label>Color del animal</label>
-                    <input type="text" name="color" value="{{ old('color') }}" class="form-control"
+                    <input type="text" name="color" value="{{ old('color',$animal->animal_color) }}" class="form-control"
                         placeholder="Color Animal" data-toggle="tooltip" data-placement="top"
                         title="Escribe el color del animal">
 
@@ -91,15 +92,15 @@ SRB - Animales
                     <select class="form-control" id="Sex" name="sexo" data-toggle="tooltip" data-placement="top"
                         title="Seleccione Sexo del animal">
                         <option value="" disabled="" selected="">Seleccione sexo: </option>
-                        <option value="Macho" @if (old('sexo')=="Macho" ) {{ 'selected '}} @endif>Macho</option>
-                        <option value="Hembra" @if (old('sexo')=="Hembra" ) {{ 'selected '}} @endif >Hembra</option>
+                        <option value="Macho" @if (old('sexo',$animal->animal_sexo)=="Macho" ) {{ 'selected '}} @endif>Macho</option>
+                        <option value="Hembra" @if (old('sexo',$animal->animal_sexo)=="Hembra" ) {{ 'selected '}} @endif >Hembra</option>
                     </select>
                 </div>
             </div>
             <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
                 <div class="form-group">
                     <label>Peso del animal</label>
-                    <input type="number" name="peso" step=".01" value="{{ old('peso') }}" class="form-control"
+                    <input type="number" name="peso" step=".01" value="{{ old('peso',$animal->animal_peso) }}" class="form-control"
                         placeholder="Peso Animal" data-toggle="tooltip" data-placement="top"
                         title="Escribe el peso del animal">
 
@@ -121,7 +122,7 @@ SRB - Animales
             <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
                 <div class="form-group">
                     <label>Fecha de nacimiento</label>
-                    <input type="date" name="nacimiento" id="Nacimiento" value="{{ old('nacimiento') }}"
+                    <input type="date" name="nacimiento" id="Nacimiento" value="{{ old('nacimiento',$animal->animal_nacimiento->toDateString()) }}"
                         class="form-control" data-toggle="tooltip" data-placement="top"
                         title="Seleccione fecha de nacimiento">
 
@@ -135,7 +136,7 @@ SRB - Animales
                         title="Seleccione Raza del animal">
                         <option value="" disabled="" selected="">Seleccione raza: </option>
                         @foreach ($razas as $r)
-                        @if(old('raza')==$r->raza_id)
+                        @if(old('raza',$animal->animal_raza)==$r->raza_id)
                         <option value="{{ $r->raza_id }}" selected> {{ $r->raza_nombre }}</option>
                         @else
                         <option value="{{ $r->raza_id }}"> {{ $r->raza_nombre }} </option>

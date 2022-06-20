@@ -25,25 +25,39 @@ class ActividadesController extends Controller
      */
     public function index(Request $request)
     {
-        if($request){
-            $query =trim($request->get('searchText'));
-            if($query)
+        if(request()->ajax()){
+            
+            if(!empty($request->from_date))
             {
-            $data=Actividades::join('actividades','registro_actividades.actividades_id','=','actividades.actividades_id')
-            ->where('animal_id','LIKE',$query)
-            ->orderBy('registro_actividades_id','desc')
-            ->paginate(5);
+                $data=Actividades::join('actividades','registro_actividades.actividades_id','=','actividades.actividades_id')->whereBetween('registro_actividades_fecha', array($request->from_date, $request->to_date))->get();
             }
             else{
-                $data=Actividades::join('actividades','registro_actividades.actividades_id','=','actividades.actividades_id')
-                ->where('registro_actividades_id','LIKE','%'.$query.'%')
-                ->orderBy('registro_actividades_id','desc')
-                ->paginate(5);
+                $data=Actividades::join('actividades','registro_actividades.actividades_id','=','actividades.actividades_id')->get();
             }
-            
-            return view('actividades.index',["data"=>$data,"searchText"=>$query]);
+            return datatables()->of($data)
+        ->addColumn('proxima',function($proxima){
+            if($proxima->registro_actividades_proxima==null)
+            {
+                return "Actividad Única";
+            }
+            else{
+               return $proxima->registro_actividades_proxima->toDateString();
+            }
+        })
+        ->addColumn('pdf', function ($pdf) {
+            return '<a href="' . route('actividades.individual', $pdf->registro_actividades_id) . '">
+            <button class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top"
+                title="Informe de la activdad"><i class="mdi mdi-file-pdf"></i>
+            </button></a>';
         }
+        )
+        ->rawColumns(['pdf','proxima'])
+        ->make(true);   
+ 
+        }
+        return view('actividades.index');
     }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -52,7 +66,7 @@ class ActividadesController extends Controller
      */
     public function create()
     {
-        $animales=Animal::get();
+        $animales=Animal::where('animal_estado','<',2)->orWhere('animal_estado','>',3)->get();
         return view('actividades.create',["animales"=>$animales]);
     }
 

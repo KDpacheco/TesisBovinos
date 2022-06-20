@@ -54,6 +54,7 @@ class AnimalController extends Controller
                     <button class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top"
                         title="Informe Individual del animal"><i class="mdi mdi-file-pdf"></i>
                     </button></a>
+                    <a href="'.route('animal.edit',$user->animal_id).'">
                     <button class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top"
                         title="editar"><i class="ti-pencil"></i>
                     </button></a>
@@ -113,6 +114,7 @@ class AnimalController extends Controller
         $animales->animal_padre = $request->get('animal_padre');
         $animales->animal_color = $request->get('color');
         $animales->animal_peso = $request->get('peso');
+        $animales->codigo_bien=$request->get('código');
         if ($request->get('raza') == "other") {
             $razas = new Raza;
             $razas->raza_nombre = $rrquest->get('nueva_raza');
@@ -142,29 +144,7 @@ class AnimalController extends Controller
         return redirect('animal');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $animal = Animal::join('categoria', 'animal.animal_categoria', '=', 'categoria.categoria_id')
-            ->join('raza', 'animal.animal_raza', '=', 'raza.raza_id')
-            ->join('estados', 'animal.animal_estado', '=', 'estados.estados_id')
-            ->select('animal.*', 'categoria.categoria_nombre', 'raza.raza_nombre', 'estados.estados_nombre')
-            ->where('animal.animal_id', '=', $id)
-            ->first();
-        return view("animal.show", ["animal" => $animal]);
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $razas = DB::table('raza')->get();
@@ -182,17 +162,17 @@ class AnimalController extends Controller
     {
 
         $animales = Animal::findOrFail($id);
-        if ($id == $request->get('código')) {
-            $animales->animal_id = $request->get('código');
+        if ($animales->codigo_bien == $request->get('código')) {
+            $animales->codigo_bien= $request->get('código');
         } else {
-            $prueba = Animal::where('animal_id', '=', $request->get('código'))->exists();
+            $prueba = Animal::where('codigo_bien', '=', $request->get('código'))->exists();
             if ($prueba) {
                 $errors = new MessageBag();
-                $errors->add('animal_id', 'codigo ya esta en uso');
+                $errors->add('codigo_bien', 'codigo ya esta en uso');
                 $razas = DB::table('raza')->get();
                 return back()->withErrors($errors);
             } else {
-                $animales->animal_id = $request->get('código');
+                $animales->codigo_bien = $request->get('código');
             }
         }
         $animales->animal_madre = $request->get('animal_madre');
@@ -202,11 +182,24 @@ class AnimalController extends Controller
         if ($request->get('raza') == "other") {
             $razas = new Raza;
             $razas->raza_nombre = $rrquest->get('nueva_raza');
+            $razas->acr = strtoupper($rrquest->get('acr'));
             $razas->save();
             $raza2 = DB::table('raza')->get()->last();
             $animales->animal_raza = $raza2->raza_id;
+            $id2 = IdGenerator::generate(['table' => 'animal', 'field' => 'animal_id', 'length' => 7, 'prefix' => $raza2->acr, 'reset_on_prefix_change' => true]);
+            $animales->animal_id = $id2;
         } else {
+            $raza3 = Raza::findorFail($request->get('raza'));
+            if($animales->animal_raza==$request->get('raza'))
+            {
+                $animales->animal_raza = $request->get('raza');
+            }
+            else{
+            $id2 = IdGenerator::generate(['table' => 'animal', 'field' => 'animal_id', 'length' => 7, 'prefix' => $raza3->acr, 'reset_on_prefix_change' => true]);
             $animales->animal_raza = $request->get('raza');
+            $animales->animal_id = $id2;
+        }
+           
         }
         $animales->animal_sexo = $request->get('sexo');
         $animales->animal_categoria = $this->calcategoria($request->get('sexo'), $request->get('nacimiento'), $request->get('nivel'));

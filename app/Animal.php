@@ -24,6 +24,7 @@ class Animal extends Model
         'animal_nacimiento',
         'animal_estado',
         'animal_produccion',
-        'fecha_secado'
+        'fecha_secado',
+        'codigo_bien'
     ];
 }

@@ -15,8 +15,46 @@ class MuerteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        if(request()->ajax())
+        {
+            if(!empty($request->from_date))
+            {
+                $muerte = Muertes::join('animal', 'animal.animal_id', '=', 'registro_muertes.animal_id')
+                ->select('registro_muertes.*', 'animal.animal_sexo')->whereBetween('registro_muertes_fecha', array($request->from_date, $request->to_date))
+                ->get();
+    
+            }
+            else
+            {
+                $muerte = Muertes::join('animal', 'animal.animal_id', '=', 'registro_muertes.animal_id')
+            ->select('registro_muertes.*', 'animal.animal_sexo')
+            ->get();
+            }
+            return datatables()
+            ->of($muerte)
+            ->addColumn('btn', function ($user) {
+                if ($user->animal_sexo == "Macho") {
+                    return '<a href="' . route('animal.individualm', $user->animal_id) . '">
+                    <button class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top"
+                        title="Informe Individual del animal"><i class="mdi mdi-file-pdf"></i>
+                    </button></a>';
+                } else {
+                    return '<a href="' . route('animal.individualh', $user->animal_id) . '">
+                    <button class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top"
+                        title="Informe Individual del animal"><i class="mdi mdi-file-pdf"></i>
+                    </button></a>';}
+            })
+            ->addColumn('pdf', function($pdf){
+                return '<a href="' . route('muerte.individual', $pdf->registro_muertes_id) . '">
+                <button class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top"
+                    title="Informe del parto"><i class="mdi mdi-file-pdf"></i>
+                </button></a>';
+            })
+            ->rawColumns(['btn','pdf'])
+            ->make(true);
+        }
 
         return view('muertes.index');
     }

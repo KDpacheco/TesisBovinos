@@ -15,5 +15,6 @@ class Enfermedades extends Model
         'enfermedad_estado',
         'enfermedad_fecha',
         'enfermedad_fecha_tratamiento',
+        'enfermedad_tratamiento'
     ];
 }

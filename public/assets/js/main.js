@@ -1,5 +1,4 @@
-
-$(document).ready(function () {
+$(document).ready(function() {
 
 
 
@@ -8,13 +7,12 @@ $(document).ready(function () {
         $("#raza").show();
         $("#razacr").show();
     }
-    $("#Raza").on('change', function () {
+    $("#Raza").on('change', function() {
 
         if ($(this).val() === "other") {
             $("#raza").show();
             $("#razacr").show();
-        }
-        else {
+        } else {
             $("#raza").hide();
             $("#razacr").hide();
         }
@@ -22,14 +20,16 @@ $(document).ready(function () {
 
     if ($("#Estado").val() === "Tratado") {
         $("#Fecha2").show();
+        $("#tratamiento").show();
     }
-    $("#Estado").on('change', function () {
+    $("#Estado").on('change', function() {
 
         if ($(this).val() === "Tratado") {
             $("#Fecha2").show();
-        }
-        else {
+            $("#tratamiento").show();
+        } else {
             $("#Fecha2").hide();
+            $("$tratamiento").hide();
         }
     });
 
@@ -37,11 +37,10 @@ $(document).ready(function () {
         $("#problema").show();
     }
 
-    $("#Problema").on('change', function () {
+    $("#Problema").on('change', function() {
         if ($(this).val() === "SI") {
             $("#problema").show();
-        }
-        else {
+        } else {
             $("#problema").hide();
         }
     });
@@ -70,10 +69,10 @@ $(document).ready(function () {
 
 
 
-    $("#select-actividad").on('change', function () {
+    $("#select-actividad").on('change', function() {
         sessionStorage.setItem("oldactividad", $('#select-actividad').val());
     });
-    $("#select-vacuna").on('change', function () {
+    $("#select-vacuna").on('change', function() {
         sessionStorage.setItem("oldvacuna", $('#select-vacuna').val());
     });
 
@@ -82,10 +81,10 @@ $(document).ready(function () {
     $('#select-animal3').on('change', onSelectAnimal3);
     $('#select-animal4').on('change', onSelectAnimal4);
 
-    $('.confirmation').on('click', function () {
+    $('.confirmation').on('click', function() {
         return confirm('¿Seguro desea finalizar la gestación? esta opción es irreversible');
     });
-    $('.confirmation2').on('click', function () {
+    $('.confirmation2').on('click', function() {
         return confirm('¿Seguro desea finalizar la monta? esta opción es irreversible');
     });
 
@@ -102,13 +101,12 @@ function onSelectAnimal() {
 
     }
 
-    $.get('/api/' + animal_id + '/vacunas', function (data) {
+    $.get('/api/' + animal_id + '/vacunas', function(data) {
         var html_select = '<option value="" disabled="" selected="">Seleccione Vacuna: </option>';
         for (var i = 0; i < data.length; ++i)
             if (vacuna == data[i].vacuna_id) {
                 html_select += '<option selected value="' + data[i].vacuna_id + '"> ' + data[i].vacuna_nombre + '</option>';
-            }
-            else {
+            } else {
                 html_select += '<option value="' + data[i].vacuna_id + '"> ' + data[i].vacuna_nombre + '</option>';
             }
         $('#select-vacuna').html(html_select);
@@ -123,7 +121,7 @@ function onSelectAnimal11() {
         $('#select-vacuna').html('<option value="" disabled="" selected="">Seleccione Vacuna: </option>');
 
     }
-    $.get('/api/' + animal_id + '/vacunas', function (data) {
+    $.get('/api/' + animal_id + '/vacunas', function(data) {
         var html_select = '<option value="" disabled="" selected="">Seleccione Vacuna: </option>';
         for (var i = 0; i < data.length; ++i)
             html_select += '<option value="' + data[i].vacuna_id + '"> ' + data[i].vacuna_nombre + '</option>';
@@ -139,13 +137,12 @@ function onSelectAnimal2() {
     if (!animal_id)
         $('#select-actividad').html('<option value="" disabled="" selected="">Seleccione Actividad: </option>');
 
-    $.get('/api/' + animal_id + '/actividades', function (data) {
+    $.get('/api/' + animal_id + '/actividades', function(data) {
         var html_select = '<option value="" disabled="" selected="">Seleccione Actividad: </option>';
         for (var i = 0; i < data.length; ++i)
             if (actividad == data[i].actividades_id) {
                 html_select += '<option selected  value="' + data[i].actividades_id + ' "> ' + data[i].actividades_nombre + '</option>';
-            }
-            else {
+            } else {
                 html_select += '<option value="' + data[i].actividades_id + '"> ' + data[i].actividades_nombre + '</option>';
             }
         $('#select-actividad').html(html_select);
@@ -159,7 +156,7 @@ function onSelectAnimal22() {
     if (!animal_id)
         $('#select-actividad').html('<option value="" disabled="" selected="">Seleccione Actividad: </option>');
 
-    $.get('/api/' + animal_id + '/actividades', function (data) {
+    $.get('/api/' + animal_id + '/actividades', function(data) {
         var html_select = '<option value="" disabled="" selected="">Seleccione Actividad: </option>';
         for (var i = 0; i < data.length; ++i)
             html_select += '<option value="' + data[i].actividades_id + '"> ' + data[i].actividades_nombre + '</option>';
@@ -175,7 +172,7 @@ function onSelectAnimal4() {
     var input2 = document.getElementById("Ordeño_parto")
     if (!animal_id)
         input.min = this.value;
-    $.get('/api/' + animal_id + '/ordeño', function (data) {
+    $.get('/api/' + animal_id + '/ordeño', function(data) {
         input.min = data.partos_fecha;
         var max = new Date(data.partos_fecha);
         max.setDate(max.getDate() + 300);
@@ -196,7 +193,7 @@ function onSelectAnimal3() {
     $('#dieta').val("");
 
 
-    $.get('/api/' + animal_id + '/nutricion', function (data) {
+    $.get('/api/' + animal_id + '/nutricion', function(data) {
         $('#peso').val(data);
         var materia_seca = (data * 3.5) / 100;
 

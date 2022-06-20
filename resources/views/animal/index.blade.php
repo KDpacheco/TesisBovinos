@@ -5,7 +5,7 @@ SRB - Animales
 @section('style')
 <!-- Range Slider css -->
 <link href="{{ asset('assets/plugins/ion-rangeSlider/ion.rangeSlider.css') }}" rel="stylesheet" type="text/css">
-        
+
 
 @endsection
 @section('rightbar-content')
@@ -19,15 +19,16 @@ SRB - Animales
 <div class="col-lg-12">
     <div class="card m-b-30">
         <div class="card-header">
-            <h3 class="card-title">Animales</h3>      
+            <h3 class="card-title">Animales</h3>
         </div>
         <div class="card-body">
             <div class="row f input-daterange">
                 <div class="col-md-2">
-                   <label>Filtrar por año de nacimiento</label>
+                    <label>Filtrar por año de nacimiento</label>
                 </div>
                 <div class="col-md-2">
-                    <input type="text" name="from_date" id="from_date" class="form-control" placeholder="Desde" readonly />
+                    <input type="text" name="from_date" id="from_date" class="form-control" placeholder="Desde"
+                        readonly />
                 </div>
                 <div class="col-md-2">
                     <input type="text" name="to_date" id="to_date" class="form-control" placeholder="Hasta" readonly />
@@ -41,7 +42,7 @@ SRB - Animales
             <br>
             <div class="table-responsive">
                 <table class="table table-striped table-bordered" id="edit-btn">
-                   
+
                     <thead>
                         <tr>
                             <th data-priority="1">Código</th>
@@ -56,7 +57,7 @@ SRB - Animales
                             <th data-priority="1" class="noVis">Opciones</th>
                         </tr>
                     </thead>
-                    <tfoot >
+                    <tfoot>
                         <th>Código</th>
                         <th>Sexo</th>
                         <th>Fecha de nacimiento</th>
@@ -85,7 +86,7 @@ SRB - Animales
 <script src="{{ asset('assets/plugins/ion-rangeSlider/ion.rangeSlider.min.js') }}"></script>
 <!-- eCommerce Shop Page js -->
 <script>
- $(document).ready(function () {
+    $(document).ready(function () {
     $('#edit-btn tfoot th').each(function () {
         var title = $(this).text();
         $(this).html('<input type="text" placeholder="buscar" />');
@@ -100,8 +101,50 @@ SRB - Animales
 
     load_data();
 
-    function load_data(from_date = '', to_date = '') {
+    function newexportaction(e, dt, button, config) {
+    var self = this;
+    var oldStart = dt.settings()[0]._iDisplayStart;
+    dt.one('preXhr', function (e, s, data) {
+        // Just this once, load all data from the server...
+        data.start = 0;
+        data.length = 2147483647;
+        dt.one('preDraw', function (e, settings) {
+            // Call the original action function
+            if (button[0].className.indexOf('buttons-copy') >= 0) {
+                $.fn.dataTable.ext.buttons.copyHtml5.action.call(self, e, dt, button, config);
+            } else if (button[0].className.indexOf('buttons-excel') >= 0) {
+                $.fn.dataTable.ext.buttons.excelHtml5.available(dt, config) ?
+                    $.fn.dataTable.ext.buttons.excelHtml5.action.call(self, e, dt, button, config) :
+                    $.fn.dataTable.ext.buttons.excelFlash.action.call(self, e, dt, button, config);
+            } else if (button[0].className.indexOf('buttons-csv') >= 0) {
+                $.fn.dataTable.ext.buttons.csvHtml5.available(dt, config) ?
+                    $.fn.dataTable.ext.buttons.csvHtml5.action.call(self, e, dt, button, config) :
+                    $.fn.dataTable.ext.buttons.csvFlash.action.call(self, e, dt, button, config);
+            } else if (button[0].className.indexOf('buttons-pdf') >= 0) {
+                $.fn.dataTable.ext.buttons.pdfHtml5.available(dt, config) ?
+                    $.fn.dataTable.ext.buttons.pdfHtml5.action.call(self, e, dt, button, config) :
+                    $.fn.dataTable.ext.buttons.pdfFlash.action.call(self, e, dt, button, config);
+            } else if (button[0].className.indexOf('buttons-print') >= 0) {
+                $.fn.dataTable.ext.buttons.print.action(e, dt, button, config);
+            }
+            dt.one('preXhr', function (e, s, data) {
+                // DataTables thinks the first item displayed is index 0, but we're not drawing that.
+                // Set the property to what it was before exporting.
+                settings._iDisplayStart = oldStart;
+                data.start = oldStart;
+            });
+            // Reload the grid with the original page. Otherwise, API functions like table.cell(this) don't work properly.
+            setTimeout(dt.ajax.reload, 0);
+            // Prevent rendering of the full data to the DOM
+            return false;
+        });
+    });
+    // Requery the server with the new one-time export settings
+    dt.ajax.reload();
+};
 
+    function load_data(from_date = '', to_date = '') {
+        
         var table= $('#edit-btn').DataTable({
             initComplete: function () {
             // Apply the search
@@ -118,7 +161,7 @@ SRB - Animales
                 });
             },
             language: { url: '{{asset('assets/es-Es.json')  }}'},
-            serverSide: true,
+            serverside: true,
             pageLength: 5,
             responsive: true,
             autoWidth: false,
@@ -145,6 +188,7 @@ SRB - Animales
                     extend: 'excelHtml5',
                     text: ' excel  <i class="mdi mdi-file-excel"></i> ',
                     className: 'btn btn-success',
+                    action: newexportaction,
                     exportOptions: {
                         columns: function(idx, data, node) {
                             if ($(node).hasClass('noVis')) {

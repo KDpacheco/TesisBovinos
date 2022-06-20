@@ -95,6 +95,13 @@ SRB - Enfermedades
                         title="Seleccione Fecha de tratamiento">
                 </div>
             </div>
+            <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                <div id="tratamiento" class="form-group" style="display:none;">
+                    <label>Ingrese el tratamiento</label>
+                    <input type="text" name="tratamiento" value="{{ old('tratamiento') }}" class="form-control" data-toggle="tooltip" data-placement="top"
+                        title="Ingrese tratamiento">
+                </div>
+            </div>
 
         </div>
         <div>

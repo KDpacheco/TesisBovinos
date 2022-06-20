@@ -109,6 +109,7 @@ class PartosController extends Controller
         $madre = Animal::findOrFail($request->get('animal_madre'));
         $madre->animal_estado = 1;
         $madre->animal_produccion = 2;
+        $madre->animal_categoria = 5;
         $madre->animal_abierto = true;
         $madre->update();
         $embarazo = Embarazo::findOrFail($request->embarazo_id);

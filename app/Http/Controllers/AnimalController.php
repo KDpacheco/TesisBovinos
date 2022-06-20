@@ -115,6 +115,7 @@ class AnimalController extends Controller
         $animales->animal_color = $request->get('color');
         $animales->animal_peso = $request->get('peso');
         $animales->codigo_bien=$request->get('código');
+        $animales->animal_arete=$request->get('arete');
         if ($request->get('raza') == "other") {
             $razas = new Raza;
             $razas->raza_nombre = $rrquest->get('nueva_raza');
@@ -179,6 +180,7 @@ class AnimalController extends Controller
         $animales->animal_padre = $request->get('animal_padre');
         $animales->animal_color = $request->get('color');
         $animales->animal_peso = $request->get('peso');
+        $animales->animal_arete=$request->get('arete');
         if ($request->get('raza') == "other") {
             $razas = new Raza;
             $razas->raza_nombre = $rrquest->get('nueva_raza');

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AnimalFormRequest2 extends FormRequest
+class ClienteFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +24,9 @@ class AnimalFormRequest2 extends FormRequest
     public function rules()
     {
         return [
-            'código'=>'required',
-            'arete'=>'required|unique:animal,animal_arete',
-            'color'=> 'required|max:256',
-            'peso'=>'required|min:0',
-            'raza'=>'required',
-            'sexo'=>'required',
-            'nacimiento'=>'required|date',
+            'cliente'=>'required',
+            'cedula'=>'required_if:cliente,nuevo',
+            'nombre'=>'required_if:cliente,nuevo',
         ];
     }
 }

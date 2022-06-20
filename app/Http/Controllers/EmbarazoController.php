@@ -101,7 +101,6 @@ class EmbarazoController extends Controller
         $embarazos = new Embarazo;
         $monta = Monta::findOrFail($request->get('monta_id'));
         $madre = Animal::findOrFail($request->get('código_madre'));
-        $padre = Animal::findOrFail($request->get('código_padre'));
         $embarazos->animal_madre = $request->get('código_madre');
         $embarazos->animal_padre = $request->get('código_padre');
         $embarazos->embarazos_fecha = $request->get('fecha');

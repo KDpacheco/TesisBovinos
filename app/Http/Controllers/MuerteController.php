@@ -90,7 +90,7 @@ class MuerteController extends Controller
      */
     public function create()
     {
-        $animales = Animal::where('animal_estado', '<>', 2)->get();
+        $animales = Animal::where('animal_estado', '<', 2)->orWhere('animal_estado','>',3)->get();
         return view('muertes.create', ["animales" => $animales]);
     }
 

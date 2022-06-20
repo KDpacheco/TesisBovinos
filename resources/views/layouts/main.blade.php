@@ -20,6 +20,7 @@
         <link rel="stylesheet" href="{{ asset('assets/css/style.css')}}">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/DataTables/datatables.min.css') }}"/>
         <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker.min.css')}}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
         @yield('style')
         
         <!-- End CSS -->
@@ -74,6 +75,7 @@
         <script type="text/javascript" src="{{ asset('assets/DataTables/buttons.colVis.min.js') }}"></script>
         <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
         <script src="{{ asset('assets/js/bootstrap-datepicker.es.min.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
         @yield('script')
         
         <!-- Core JS -->

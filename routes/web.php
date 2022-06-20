@@ -50,6 +50,7 @@ Route::resource('enfermedades', 'EnfermedadesController');
 Route::resource('vacunas', 'VacunasController');
 Route::resource('actividades', 'ActividadesController');
 Route::resource('muertes', 'MuerteController');
+Route::resource('ventas', 'VentasController');
 
 /*rutas Wilson */
 
@@ -65,9 +66,6 @@ Route::get('/dashboard-hospital', function () {
 });
 
 
-Route::get('/ventas', function () {
-    return view('ventas');
-});
 Route::get('/compradores', function () {
     return view('compradores');
 });

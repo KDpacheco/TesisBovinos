@@ -7,6 +7,16 @@ $(document).ready(function() {
         $("#raza").show();
         $("#razacr").show();
     }
+
+    if ($("#cliente").val() === "nuevo") {
+        $("#cedula").show();
+        $("#nombre").show();
+        $("#telefono").show();
+    }
+
+
+
+
     $("#Raza").on('change', function() {
 
         if ($(this).val() === "other") {
@@ -15,6 +25,18 @@ $(document).ready(function() {
         } else {
             $("#raza").hide();
             $("#razacr").hide();
+        }
+    });
+    $("#cliente").on('change', function() {
+
+        if ($(this).val() === "nuevo") {
+            $("#cedula").show();
+            $("#nombre").show();
+            $("#telefono").show();
+        } else {
+            $("#cedula").hide();
+            $("#nombre").hide();
+            $("#telefono").hide();
         }
     });
 

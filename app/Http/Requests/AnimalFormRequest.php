@@ -28,6 +28,7 @@ class AnimalFormRequest extends FormRequest
         {
             return [
                 'código'=>'required|unique:animal,codigo_bien',
+                'arete'=>'required|unique:animal,animal_arete',
                 'color'=> 'required|max:256',
                 'peso'=>'required|min:0',
                 'raza'=>'required',
@@ -41,6 +42,7 @@ class AnimalFormRequest extends FormRequest
         else{
             return [
                 'código'=>'required|unique:animal,codigo_bien',
+                'arete'=>'required|unique:animal,animal_arete',
                 'color'=> 'required|max:256',
                 'peso'=>'required|min:0',
                 'raza'=>'required',

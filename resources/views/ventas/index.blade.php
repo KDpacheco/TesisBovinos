@@ -160,7 +160,7 @@ SRB - Ventas
         {data: 'animal_id'},
         {data: 'ventas_valor'},
         {data: 'ventas_fecha'},
-        {data: 'cedula_cliente'},
+        {data: 'nombre'},
         {data: 'btn'},
         {data: 'pdf'}
         

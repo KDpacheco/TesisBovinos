@@ -25,6 +25,7 @@ class AnimalFormRequest2 extends FormRequest
     {
         return [
             'código'=>'required',
+            'arete'=>'required|unique:animal,animal_arete',
             'color'=> 'required|max:256',
             'peso'=>'required|min:0',
             'raza'=>'required',

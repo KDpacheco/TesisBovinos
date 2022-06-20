@@ -36,7 +36,7 @@ SRB - Nutrición
             <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
                 <div class="form-group">
                     <label>Código del animal</label>
-                    <select  id="select-animal3" name="animal" class="form-control" data-toggle="tooltip" data-placement="top"
+                    <select  id="select-animal3" name="animal" class="form-control selectpicker" data-live-search="true" data-toggle="tooltip" data-placement="top"
                         title="Seleccione Código del animal">
                         <option value="" disabled="" selected="">Seleccione Código: </option>
                         @foreach ($animales as $r)

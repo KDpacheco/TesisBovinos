@@ -6,6 +6,7 @@ use App\Abortos;
 use App\Animal;
 use App\Embarazo;
 use App\Http\Requests\AbortosFormRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
 class AbortosController extends Controller
@@ -19,23 +20,27 @@ class AbortosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('abortos.index');
-    }
-
-    public function datos(){
-        $abortos=Abortos::get();
-        return datatables()->of($abortos)
-        ->addColumn('pdf', function ($pdf) {
-            return '<a href="' . route('abortos.individual', $pdf->abortos_id) . '">
+        if (request()->ajax()) {
+            if (!empty($request->from_date)) {
+                $abortos = Abortos::whereBetween('abortos_fecha', array($request->from_date, $request->to_date))->get();
+            } else {
+                $abortos = Abortos::get();
+            }
+            return datatables()->of($abortos)
+                ->addColumn('pdf', function ($pdf) {
+                    return '<a href="' . route('abortos.individual', $pdf->abortos_id) . '">
             <button class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top"
                 title="Informe del aborto"><i class="mdi mdi-file-pdf"></i>
             </button></a>';
+                }
+                )
+                ->rawColumns(['pdf'])->make(true);
         }
-        )
-        ->rawColumns(['pdf'])->toJson();
+        return view('abortos.index');
     }
+
     public function create($id)
     {
         return view("abortos.create", ["embarazos" => Embarazo::findOrFail($id)]);

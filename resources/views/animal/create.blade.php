@@ -47,12 +47,20 @@ SRB - Animales
         <div class="row">
             <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
                 <div class="form-group">
-                    <label>Código o numeración del animal</label>
+                    <label>Código de Bien</label>
                     <input type="text" name="código" value="{{ old('código') }}" class="form-control"
                         placeholder="Código Animal" data-toggle="tooltip" data-placement="top"
                         title="Escribe el código o numeración del animal">
 
 
+                </div>
+            </div>
+            <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                <div class="form-group">
+                    <label>Numero de Arete</label>
+                    <input type="number" name="arete" value="{{ old('arete') }}" class="form-control"
+                        placeholder="Arete Animal" data-toggle="tooltip" data-placement="top"
+                        title="Escribe el arete del animal">
                 </div>
             </div>
             <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
@@ -151,8 +159,14 @@ SRB - Animales
                     <input type="text" name="nueva_raza" class="form-control" value="{{ old('nueva_raza') }}"
                         placeholder="Nueva Raza" data-toggle="tooltip" data-placement="top"
                         title="Escribe el nombre de la raza">
-
-
+                </div>
+            </div>
+            <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                <div id="razacr" class="form-group " style="display:none; ">
+                    <label>Acrónimo de Raza</label>
+                    <input type="text" name="acr" class="form-control" value="{{ old('acr') }}"
+                        placeholder="Acronimo de identificacion 3 digitos" data-toggle="tooltip" data-placement="top"
+                        title="Escribe el acronimo">
                 </div>
             </div>
         </div>

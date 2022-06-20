@@ -105,7 +105,7 @@ SRB - Partos
             <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
                 <div class="form-group">
                     <label>Fecha de nacimiento</label>
-                    <input type="date" name="nacimiento" min="{{ $embarazos->fecha_aproximada->toDateString()}}" max="{{ $embarazos->fecha_aproximada->addDays(5)->toDateString()}}" value="{{ old('nacimiento') }}" id="Nacimiento" class="form-control"
+                    <input type="date" name="nacimiento" min="{{ $embarazos->fecha_aproximada->subDays(5)->toDateString()}}" max="{{ $embarazos->fecha_aproximada->addDays(5)->toDateString()}}" value="{{ old('nacimiento') }}" id="Nacimiento" class="form-control"
                         data-toggle="tooltip" data-placement="top" title="Seleccione fecha de nacimiento">
     
                     
@@ -137,6 +137,14 @@ SRB - Partos
                         data-toggle="tooltip" data-placement="top" title="Escribe el nombre de la raza">
     
                     
+                </div>
+            </div>
+            <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                <div id="razacr" class="form-group " style="display:none; ">
+                    <label>Acrónimo de Raza</label>
+                    <input type="text" name="acr" class="form-control" value="{{ old('acr') }}"
+                        placeholder="Acronimo de identificacion 3 digitos" data-toggle="tooltip" data-placement="top"
+                        title="Escribe el acronimo">
                 </div>
             </div>
             <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">

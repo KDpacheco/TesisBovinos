@@ -24,16 +24,6 @@ Route::get('{id}/partos', 'PartosController@create')->name('partos.create');
 Route::get('{id}/abortos', 'AbortosController@create')->name('abortos.create');
 Route::get('{id}/monta', 'MontaController@MontaFracaso')->name('monta.fracaso');
 
-
-/*rutas data datatables*/
-Route::get('datatables/monta/data','MontaController@datos')->name('datatable.monta'); 
-Route::get('datatables/muertes/data','MuerteController@datos')->name('datatable.muertes');  
-Route::get('datatables/animal/data','AnimalController@datos')->name('datatable.animal');  
-Route::get('datatables/embarazo/data','EmbarazoController@datos')->name('datatable.embarazo');  
-Route::get('datatables/partos/data','PartosController@datos')->name('datatable.partos');
-Route::get('datatables/abortos/data','AbortosController@datos')->name('datatable.abortos');
-
-
 /*rutas PDF*/
 
 Route::get('animal/individualm/{id}', 'ReportesController@animalreportem')->name('animal.individualm');
@@ -43,6 +33,11 @@ Route::get('monta/individual/{id}', 'ReportesController@montaindividual')->name(
 Route::get('embarazo/individual/{id}', 'ReportesController@gestacionindividual')->name('embarazo.individual');
 Route::get('partos/individual/{id}', 'ReportesController@partoindividual')->name('partos.individual');
 Route::get('abortos/individual/{id}', 'ReportesController@abortoindividual')->name('abortos.individual');
+Route::get('ordeño/individual/{id}', 'ReportesController@ordeñoindividual')->name('ordeño.individual');
+Route::get('peso/individual/{id}', 'ReportesController@pesoindividual')->name('peso.individual');
+Route::get('enfermedades/individual/{id}', 'ReportesController@enfermedadesindividual')->name('enfermedades.individual');
+Route::get('vacunas/individual/{id}', 'ReportesController@vacunasindividual')->name('vacunas.individual');
+Route::get('actividades/individual/{id}', 'ReportesController@actividadesindividual')->name('actividades.individual');
 
 /*rutas Controllers*/
 
@@ -55,6 +50,7 @@ Route::resource('enfermedades', 'EnfermedadesController');
 Route::resource('vacunas', 'VacunasController');
 Route::resource('actividades', 'ActividadesController');
 Route::resource('muertes', 'MuerteController');
+Route::resource('ventas', 'VentasController');
 
 /*rutas Wilson */
 
@@ -70,9 +66,6 @@ Route::get('/dashboard-hospital', function () {
 });
 
 
-Route::get('/ventas', function () {
-    return view('ventas');
-});
 Route::get('/compradores', function () {
     return view('compradores');
 });

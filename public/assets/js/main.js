@@ -1,32 +1,57 @@
-
-$(document).ready(function () {
+$(document).ready(function() {
 
 
 
     //mostrar campos ocultos
     if ($("#Raza").val() === "other") {
         $("#raza").show();
+        $("#razacr").show();
     }
-    $("#Raza").on('change', function () {
+
+    if ($("#cliente").val() === "nuevo") {
+        $("#cedula").show();
+        $("#nombre").show();
+        $("#telefono").show();
+    }
+
+
+
+
+    $("#Raza").on('change', function() {
 
         if ($(this).val() === "other") {
             $("#raza").show();
-        }
-        else {
+            $("#razacr").show();
+        } else {
             $("#raza").hide();
+            $("#razacr").hide();
+        }
+    });
+    $("#cliente").on('change', function() {
+
+        if ($(this).val() === "nuevo") {
+            $("#cedula").show();
+            $("#nombre").show();
+            $("#telefono").show();
+        } else {
+            $("#cedula").hide();
+            $("#nombre").hide();
+            $("#telefono").hide();
         }
     });
 
     if ($("#Estado").val() === "Tratado") {
         $("#Fecha2").show();
+        $("#tratamiento").show();
     }
-    $("#Estado").on('change', function () {
+    $("#Estado").on('change', function() {
 
         if ($(this).val() === "Tratado") {
             $("#Fecha2").show();
-        }
-        else {
+            $("#tratamiento").show();
+        } else {
             $("#Fecha2").hide();
+            $("$tratamiento").hide();
         }
     });
 
@@ -34,11 +59,10 @@ $(document).ready(function () {
         $("#problema").show();
     }
 
-    $("#Problema").on('change', function () {
+    $("#Problema").on('change', function() {
         if ($(this).val() === "SI") {
             $("#problema").show();
-        }
-        else {
+        } else {
             $("#problema").hide();
         }
     });
@@ -64,13 +88,13 @@ $(document).ready(function () {
         }
     }
 
-    
 
 
-    $("#select-actividad").on('change', function () {
+
+    $("#select-actividad").on('change', function() {
         sessionStorage.setItem("oldactividad", $('#select-actividad').val());
     });
-    $("#select-vacuna").on('change', function () {
+    $("#select-vacuna").on('change', function() {
         sessionStorage.setItem("oldvacuna", $('#select-vacuna').val());
     });
 
@@ -79,10 +103,10 @@ $(document).ready(function () {
     $('#select-animal3').on('change', onSelectAnimal3);
     $('#select-animal4').on('change', onSelectAnimal4);
 
-    $('.confirmation').on('click', function () {
+    $('.confirmation').on('click', function() {
         return confirm('¿Seguro desea finalizar la gestación? esta opción es irreversible');
     });
-    $('.confirmation2').on('click', function () {
+    $('.confirmation2').on('click', function() {
         return confirm('¿Seguro desea finalizar la monta? esta opción es irreversible');
     });
 
@@ -99,13 +123,12 @@ function onSelectAnimal() {
 
     }
 
-    $.get('/api/' + animal_id + '/vacunas', function (data) {
+    $.get('/api/' + animal_id + '/vacunas', function(data) {
         var html_select = '<option value="" disabled="" selected="">Seleccione Vacuna: </option>';
         for (var i = 0; i < data.length; ++i)
             if (vacuna == data[i].vacuna_id) {
                 html_select += '<option selected value="' + data[i].vacuna_id + '"> ' + data[i].vacuna_nombre + '</option>';
-            }
-            else {
+            } else {
                 html_select += '<option value="' + data[i].vacuna_id + '"> ' + data[i].vacuna_nombre + '</option>';
             }
         $('#select-vacuna').html(html_select);
@@ -120,7 +143,7 @@ function onSelectAnimal11() {
         $('#select-vacuna').html('<option value="" disabled="" selected="">Seleccione Vacuna: </option>');
 
     }
-    $.get('/api/' + animal_id + '/vacunas', function (data) {
+    $.get('/api/' + animal_id + '/vacunas', function(data) {
         var html_select = '<option value="" disabled="" selected="">Seleccione Vacuna: </option>';
         for (var i = 0; i < data.length; ++i)
             html_select += '<option value="' + data[i].vacuna_id + '"> ' + data[i].vacuna_nombre + '</option>';
@@ -136,13 +159,12 @@ function onSelectAnimal2() {
     if (!animal_id)
         $('#select-actividad').html('<option value="" disabled="" selected="">Seleccione Actividad: </option>');
 
-    $.get('/api/' + animal_id + '/actividades', function (data) {
+    $.get('/api/' + animal_id + '/actividades', function(data) {
         var html_select = '<option value="" disabled="" selected="">Seleccione Actividad: </option>';
         for (var i = 0; i < data.length; ++i)
             if (actividad == data[i].actividades_id) {
                 html_select += '<option selected  value="' + data[i].actividades_id + ' "> ' + data[i].actividades_nombre + '</option>';
-            }
-            else {
+            } else {
                 html_select += '<option value="' + data[i].actividades_id + '"> ' + data[i].actividades_nombre + '</option>';
             }
         $('#select-actividad').html(html_select);
@@ -156,7 +178,7 @@ function onSelectAnimal22() {
     if (!animal_id)
         $('#select-actividad').html('<option value="" disabled="" selected="">Seleccione Actividad: </option>');
 
-    $.get('/api/' + animal_id + '/actividades', function (data) {
+    $.get('/api/' + animal_id + '/actividades', function(data) {
         var html_select = '<option value="" disabled="" selected="">Seleccione Actividad: </option>';
         for (var i = 0; i < data.length; ++i)
             html_select += '<option value="' + data[i].actividades_id + '"> ' + data[i].actividades_nombre + '</option>';
@@ -168,14 +190,19 @@ function onSelectAnimal22() {
 function onSelectAnimal4() {
     var animal_id = $('#select-animal4').val();
     var input = document.getElementById("ordeño");
+
     var input2 = document.getElementById("Ordeño_parto")
     if (!animal_id)
         input.min = this.value;
-    $.get('/api/' + animal_id + '/ordeño', function (data) {
+    $.get('/api/' + animal_id + '/ordeño', function(data) {
         input.min = data.partos_fecha;
-        input2.value=data.partos_id;
-        console.log("parto fecha"+data.partos_fecha);
-        console.log("parto id"+data.partos_id);
+        var max = new Date(data.partos_fecha);
+        max.setDate(max.getDate() + 300);
+
+        input.max = max.toISOString().substring(0, 10);;
+        input2.value = data.partos_id;
+        console.log("parto max" + max.toISOString().substring(0, 10));
+        console.log("parto id" + data.partos_id);
 
     });
 }
@@ -188,7 +215,7 @@ function onSelectAnimal3() {
     $('#dieta').val("");
 
 
-    $.get('/api/' + animal_id + '/nutricion', function (data) {
+    $.get('/api/' + animal_id + '/nutricion', function(data) {
         $('#peso').val(data);
         var materia_seca = (data * 3.5) / 100;
 
@@ -198,5 +225,4 @@ function onSelectAnimal3() {
 
     });
 }
-
 (jQuery);

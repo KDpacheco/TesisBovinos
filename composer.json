@@ -13,6 +13,8 @@
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
+        "haruncpi/laravel-id-generator": "^1.1",
+        "hmazter/laravel-schedule-list": "^2.3",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
         "laravelcollective/html": "~6.0",

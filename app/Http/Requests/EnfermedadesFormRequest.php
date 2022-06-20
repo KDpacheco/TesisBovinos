@@ -29,6 +29,7 @@ class EnfermedadesFormRequest extends FormRequest
             'enfermedad'=>'required',
             'fecha'=>'required',
             'fecha_tratamiento'=>'required_if:estado,Tratado',
+            'tratamiento'=>'required_if:estado,Tratado',
         ];
     }
 }

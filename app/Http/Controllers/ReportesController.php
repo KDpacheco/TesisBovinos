@@ -11,6 +11,7 @@ use App\Monta;
 use App\Muertes;
 use App\Ordeño;
 use App\Partos;
+use App\Peso;
 use App\Vacunas;
 use Carbon\Carbon;
 use DB;
@@ -106,8 +107,8 @@ class ReportesController extends Controller
     public function muerteindividual($id)
     {
         $muerte = Muertes::join('animal', 'animal.animal_id', '=', 'registro_muertes.animal_id')
-            ->select('registro_muertes.*', 'animal.animal_nacimiento')
-            ->where('registro_muertes.animal_id', '=', $id)
+            ->select('registro_muertes.*', 'animal_nacimiento')
+            ->where('registro_muertes.registro_muertes_id', '=', $id)
             ->orderBy('registro_muertes_id', 'desc')
             ->first();
         $edad1 = Carbon::parse($muerte->animal_nacimiento);
@@ -142,10 +143,47 @@ class ReportesController extends Controller
     }
     public function abortoindividual($id)
     {
-        $partos = Abortos::where('abortos_id', '=', $id)->first();
+        $abortos = Abortos::where('abortos_id', '=', $id)->first();
         $fecha = Carbon::now()->toDateString();
-        $pdf = PDF::loadView('abortos.individual', ["monta" => $partos]);
+        $pdf = PDF::loadView('abortos.individual', ["monta" => $abortos]);
         return $pdf->stream('reporte-aborto-codigo-' . $id . '--' . $fecha . '.pdf');
+    }
+    public function ordeñoindividual($id)
+    {
+        $ordeño = Ordeño::where('registro_ordeño_id', '=', $id)->first();
+        $fecha = Carbon::now()->toDateString();
+        $pdf = PDF::loadView('ordeño.individual', ["monta" => $ordeño]);
+        return $pdf->stream('reporte-ordeño-codigo-' . $id . '--' . $fecha . '.pdf');
+    }
+    public function pesoindividual($id)
+    {
+        $peso = Peso::where('registro_peso_id', '=', $id)->first();
+        $fecha = Carbon::now()->toDateString();
+        $pdf = PDF::loadView('peso.individual', ["monta" => $peso]);
+        return $pdf->stream('reporte-peso-codigo-' . $id . '--' . $fecha . '.pdf');
+    }
+
+    public function enfermedadesindividual($id)
+    {
+        $enfermedades = Enfermedades::where('registro_enfermedades_id', '=', $id)->first();
+        $fecha = Carbon::now()->toDateString();
+        $pdf = PDF::loadView('enfermedades.individual', ["monta" => $enfermedades]);
+        return $pdf->stream('reporte-enfermedad-codigo-' . $id . '--' . $fecha . '.pdf');
+    }
+
+    public function vacunasindividual($id)
+    {
+        $vacunas = Vacunas::join('vacunas', 'vacunas.vacuna_id', '=', 'registro_vacunas.vacuna_id')->where('registro_vacunas_id', '=', $id)->first();
+        $fecha = Carbon::now()->toDateString();
+        $pdf = PDF::loadView('vacunas.individual', ["monta" => $vacunas]);
+        return $pdf->stream('reporte-vacuna-codigo-' . $id . '--' . $fecha . '.pdf');
+    }
+    public function actividadesindividual($id)
+    {
+        $actividades = Actividades::join('actividades', 'actividades.actividades_id', '=', 'registro_actividades.actividades_id')->where('registro_actividades_id', '=', $id)->first();
+        $fecha = Carbon::now()->toDateString();
+        $pdf = PDF::loadView('actividades.individual', ["monta" => $actividades]);
+        return $pdf->stream('reporte-actividades-codigo-' . $id . '--' . $fecha . '.pdf');
     }
 
 }

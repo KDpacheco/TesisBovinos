@@ -15,25 +15,31 @@ class EnfermedadesController extends Controller
 {
     public function index(Request $request)
     {
-        if($request){
-        $query =trim($request->get('searchText'));
-        if($query)
+        if(request()->ajax()){
+        
+        if(!empty($request->from_date))
         {
-            $enfermedades=Enfermedades::where('animal_id','LIKE',$query)
-            ->orderBy('registro_enfermedades_id','desc')
-            ->paginate(5);
+            $enfermedades=Enfermedades::whereBetween('enfermedad_fecha', array($request->from_date, $request->to_date))->get();
         }
         else{
-            $enfermedades=Enfermedades::where('registro_enfermedades_id','LIKE','%'.$query.'%')
-            ->orderBy('registro_enfermedades_id','desc')
-            ->paginate(5);
+            $enfermedades=Enfermedades::get();
         }
-            return view('enfermedades.index',["enfermedades"=>$enfermedades,"searchText"=>$query]);
+        return datatables()->of($enfermedades)
+        ->addColumn('pdf', function ($pdf) {
+            return '<a href="' . route('enfermedades.individual', $pdf->registro_enfermedades_id) . '">
+            <button class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top"
+                title="Informe del parto"><i class="mdi mdi-file-pdf"></i>
+            </button></a>';
         }
+        )
+        ->rawColumns(['pdf'])
+        ->make(true);
+        }
+        return view('enfermedades.index');
     }
     public function create()
     {
-        $animales=Animal::where('animal_estado','>',4)
+        $animales=Animal::where('animal_estado','>',3)
         ->orWhere('animal_estado','<',2)->get();
         return view('enfermedades.create',["animales"=>$animales]);
     }
@@ -51,7 +57,12 @@ class EnfermedadesController extends Controller
         $enfermedades->enfermedad_fecha=$request->get('fecha');
         $enfermedades->enfermedad_nombre=$request->get('enfermedad');
         $enfermedades->enfermedad_estado=$request->get('estado');
-        $enfermedades->enfermedad_fecha_tratamiento=$request->get('fecha_tratamiento');
+        if($request->get('estado')=="Tratado")
+        {
+            $enfermedades->enfermedad_fecha_tratamiento=$request->get('fecha_tratamiento');
+            $enfermedades->enfermedad_tratamiento=$request->get('tratamiento');
+        }
+       
         $enfermedades->save();
         return redirect('enfermedades'); 
     }

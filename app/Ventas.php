@@ -14,7 +14,8 @@ class Ventas extends Model
         'animal_id',
         'ventas_fecha',
         'ventas_valor',
-        'cedula_cliente'
+        'cedula_cliente',
+        'estado_anterior'
     ];
 }
 

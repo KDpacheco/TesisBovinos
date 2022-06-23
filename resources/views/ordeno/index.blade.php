@@ -154,7 +154,7 @@ $(document).ready(function () {
             pageLength: 5,
             autoWidth:false,
             dom: "<'row'<'col-sm-6'l><'col-sm-6 right-col'B>><'row'<'col-sm-12'tr>><'row'<'col-sm-6'><'col-sm-6'p>><'row'<'col-sm-12 text-right'i>>",
-            ajax: {url:'{{ route('ordeño.index') }}',data:{from_date:from_date, to_date:to_date} },
+            ajax: {url:'{{ route('ordeno.index') }}',data:{from_date:from_date, to_date:to_date} },
             columns: [
                 {data: 'registro_ordeño_id'},
                 {data: 'animal_id'},
@@ -186,7 +186,7 @@ $(document).ready(function () {
                     text: ' nuevo registro  <i class="fa fa-plus"></i> ',
                     className: 'btn btn-info',
                     action: function (e,dt, node, config) {
-                        window.location= 'ordeño/create';
+                        window.location= 'ordeno/create';
                     } 
                 }
                 

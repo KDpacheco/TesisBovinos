@@ -33,7 +33,11 @@ class AbortosController extends Controller
                     return '<a href="' . route('abortos.individual', $pdf->abortos_id) . '">
             <button class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top"
                 title="Informe del aborto"><i class="mdi mdi-file-pdf"></i>
-            </button></a>';
+            </button></a>
+            <a href="' . route('abortos.edit', $pdf->abortos_id) . '">
+                <button class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top"
+                        title="editar"><i class="ti-pencil"></i>
+                    </button></a>';
                 }
                 )
                 ->rawColumns(['pdf'])->make(true);
@@ -47,7 +51,9 @@ class AbortosController extends Controller
     }
     public function edit($id)
     {
-        return view("abortos.edit", ["embarazos" => Embarazo::findOrFail($id)]);
+        $abortos=Abortos::join('embarazos','embarazos.embarazos_id','=','abortos.embarazo_id')->where('abortos_id','=',$id)->first();
+    
+        return view("abortos.edit", ["aborto" => $abortos]);
     }
     public function store(AbortosFormRequest $request3)
     {
@@ -64,6 +70,15 @@ class AbortosController extends Controller
         $embarazo = Embarazo::findOrFail($request3->embarazo_id);
         $embarazo->embarazo_activo = false;
         $embarazo->update();
+        return redirect('abortos');
+    }
+    public function update(AbortosFormRequest $request3,$id)
+    {
+        $abortos =Abortos::findOrFail($id);
+ 
+        $abortos->abortos_tipo = $request3->get('tipo');
+        $abortos->abortos_fecha = $request3->get('fecha');
+        $abortos->update();
         return redirect('abortos');
     }
 

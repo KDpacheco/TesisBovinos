@@ -73,7 +73,6 @@ SRB - Montas
                     <select name="código_padre" class="form-control selectpicker" data-live-search="true" data-toggle="tooltip" data-placement="top"
                         title="Seleccione Código del padre">
                         <option value="" disabled="" selected="">Seleccione Código: </option>
-                        <option value="inseminación">inseminación</option>
                         @foreach ($animales as $r)
                         @if (old('código_padre')==$r->animal_id )
                         <option selected value="{{ $r->animal_id }}">{{ $r->animal_id}}</option>

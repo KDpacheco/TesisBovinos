@@ -1,5 +1,4 @@
 
-
 -- DROP SEQUENCE public.abortos_abortos_id_seq;
 
 CREATE SEQUENCE public.abortos_abortos_id_seq
@@ -354,7 +353,8 @@ CREATE TABLE public.cliente (
 	teléfono varchar NULL,
 	deleted_at timestamp(0) NULL,
 	created_at timestamp(0) NULL,
-	updated_at timestamp(0) NULL
+	updated_at timestamp(0) NULL,
+	CONSTRAINT cliente_pk PRIMARY KEY (cedula)
 );
 
 
@@ -476,7 +476,8 @@ CREATE TABLE public.monta (
 	updated_at timestamp(0) NULL,
 	monta_id int4 NOT NULL DEFAULT nextval('monta_monta_seq'::regclass),
 	CONSTRAINT monta_pk PRIMARY KEY (monta_id),
-	CONSTRAINT monta_fk FOREIGN KEY (monta_madre) REFERENCES public.animal(animal_id) ON UPDATE CASCADE
+	CONSTRAINT monta_fk FOREIGN KEY (monta_madre) REFERENCES public.animal(animal_id) ON UPDATE CASCADE,
+	CONSTRAINT monta_fk_2 FOREIGN KEY (monta_padre) REFERENCES public.animal(animal_id) ON UPDATE CASCADE
 );
 
 
@@ -560,6 +561,7 @@ CREATE TABLE public.registro_muertes (
 	created_at timestamp(0) NULL,
 	updated_at timestamp(0) NULL,
 	registro_muertes_causa varchar(255) NULL,
+	estado_anterior int4 NULL,
 	CONSTRAINT registro_muertes_pkey PRIMARY KEY (registro_muertes_id),
 	CONSTRAINT registro_muertes_fk FOREIGN KEY (animal_id) REFERENCES public.animal(animal_id) ON UPDATE CASCADE
 );
@@ -600,6 +602,7 @@ CREATE TABLE public.registro_peso (
 	deleted_at timestamp(0) NULL,
 	created_at timestamp(0) NULL,
 	updated_at timestamp(0) NULL,
+	peso_anterior numeric NULL,
 	CONSTRAINT registro_peso_pkey PRIMARY KEY (registro_peso_id),
 	CONSTRAINT registro_peso_fk_animal FOREIGN KEY (animal_id) REFERENCES public.animal(animal_id) ON UPDATE CASCADE
 );
@@ -641,8 +644,10 @@ CREATE TABLE public.ventas (
 	created_at timestamp(0) NULL,
 	updated_at timestamp(0) NULL,
 	cedula_cliente varchar(10) NOT NULL,
+	estado_anterior int4 NULL,
 	CONSTRAINT ventas_pkey PRIMARY KEY (ventas_id),
-	CONSTRAINT ventas_fk FOREIGN KEY (animal_id) REFERENCES public.animal(animal_id) ON UPDATE CASCADE
+	CONSTRAINT ventas_fk FOREIGN KEY (animal_id) REFERENCES public.animal(animal_id) ON UPDATE CASCADE,
+	CONSTRAINT ventas_fk_2 FOREIGN KEY (cedula_cliente) REFERENCES public.cliente(cedula) ON UPDATE CASCADE
 );
 
 
@@ -685,78 +690,85 @@ CREATE TABLE public.embarazos (
 	monta_id int4 NOT NULL,
 	CONSTRAINT embarazos_pkey PRIMARY KEY (embarazos_id),
 	CONSTRAINT embarazos_fk FOREIGN KEY (animal_madre) REFERENCES public.animal(animal_id) ON UPDATE CASCADE,
-	CONSTRAINT embarazos_fk_2 FOREIGN KEY (monta_id) REFERENCES public.monta(monta_id) ON UPDATE CASCADE
+	CONSTRAINT embarazos_fk_2 FOREIGN KEY (monta_id) REFERENCES public.monta(monta_id) ON UPDATE CASCADE,
+	CONSTRAINT embarazos_fk_3 FOREIGN KEY (animal_padre) REFERENCES public.animal(animal_id) ON UPDATE CASCADE
 );
-
 
 INSERT INTO public.actividades
 (actividades_nombre, actividades_nivel)
 VALUES('Desparacitación y vitaminas AD3E Dosis Única', 1);
 INSERT INTO public.actividades
-( actividades_nombre, actividades_nivel)
-VALUES( 'Descornes', 1);
+(actividades_nombre, actividades_nivel)
+VALUES('Descornes', 1);
 INSERT INTO public.actividades
-( actividades_nombre, actividades_nivel)
-VALUES( 'Castración', 1);
+(actividades_nombre, actividades_nivel)
+VALUES('Castración', 1);
 INSERT INTO public.actividades
-( actividades_nombre, actividades_nivel)
+(actividades_nombre, actividades_nivel)
 VALUES('Limpiezade Ombligo', 1);
 INSERT INTO public.actividades
-( actividades_nombre, actividades_nivel)
+(actividades_nombre, actividades_nivel)
 VALUES('Tatuaje', 1);
 INSERT INTO public.actividades
-( actividades_nombre, actividades_nivel)
+(actividades_nombre, actividades_nivel)
 VALUES('Desparacitación y vitaminas AD3E', 2);
 INSERT INTO public.actividades
-( actividades_nombre, actividades_nivel)
+(actividades_nombre, actividades_nivel)
 VALUES('Revisión de estados fisiológicos', 2);
 INSERT INTO public.actividades
-( actividades_nombre, actividades_nivel)
+(actividades_nombre, actividades_nivel)
 VALUES('Baños de control de moscas y garrapatas', 2);
 
-
 INSERT INTO public.categoria
-(categoria_nombre,  categoria_nivel)
+(categoria_nombre, categoria_nivel)
 VALUES('Ternero', 1);
 INSERT INTO public.categoria
-(categoria_nombre,  categoria_nivel)
+(categoria_nombre, categoria_nivel)
 VALUES('Torete', 2);
 INSERT INTO public.categoria
-(categoria_nombre,  categoria_nivel)
+(categoria_nombre, categoria_nivel)
 VALUES('Vacona', 2);
 INSERT INTO public.categoria
-(categoria_nombre,  categoria_nivel)
+(categoria_nombre, categoria_nivel)
 VALUES('Toro', 3);
 INSERT INTO public.categoria
-(categoria_nombre,  categoria_nivel)
+(categoria_nombre, categoria_nivel)
 VALUES('Vaca', 3);
 
+INSERT INTO public.cliente
+(cedula, nombre, teléfono, deleted_at, created_at, updated_at)
+VALUES('1111111113', 'desconocido1', NULL, NULL, '2022-06-20 16:26:41.000', '2022-06-22 09:12:56.000');
+
+
 INSERT INTO public.estados
-( estados_nombre)
+(estados_nombre)
 VALUES('Normal');
 INSERT INTO public.estados
-( estados_nombre)
-VALUES( 'Fallecido');
+(estados_nombre)
+VALUES('Fallecido');
 INSERT INTO public.estados
-( estados_nombre)
-VALUES( 'Vendido');
+(estados_nombre)
+VALUES('Vendido');
 INSERT INTO public.estados
-( estados_nombre)
-VALUES( 'Gestando');
+(estados_nombre)
+VALUES('Gestando');
 INSERT INTO public.estados
-( estados_nombre)
-VALUES( 'Inseminada');
+(estados_nombre)
+VALUES('Inseminada');
 
 INSERT INTO public.produccion
-( produccion_nombre)
+(produccion_nombre)
 VALUES('ninguno');
 INSERT INTO public.produccion
-( produccion_nombre)
+(produccion_nombre)
 VALUES('lactando');
 INSERT INTO public.produccion
-( produccion_nombre)
-VALUES( 'período seco');
+(produccion_nombre)
+VALUES('período seco');
 
+INSERT INTO public.raza
+(raza_id,raza_nombre, acr)
+VALUES(0,'default', 'ZZZ');
 INSERT INTO public.raza
 (raza_nombre, acr)
 VALUES('Mestizo', 'MES');
@@ -792,268 +804,492 @@ INSERT INTO public.raza
 VALUES('Mestizo(GRY HOLAND)', 'MGH');
 
 INSERT INTO public.vacunas
-( vacuna_nombre, vacuna_nivel)
+(vacuna_nombre, vacuna_nivel)
 VALUES('Triple dosis única', 1);
 INSERT INTO public.vacunas
-( vacuna_nombre, vacuna_nivel)
+(vacuna_nombre, vacuna_nivel)
 VALUES('Neumoentritis', 1);
 INSERT INTO public.vacunas
-( vacuna_nombre, vacuna_nivel)
+(vacuna_nombre, vacuna_nivel)
 VALUES('Brucelosis', 1);
 INSERT INTO public.vacunas
-( vacuna_nombre, vacuna_nivel)
+(vacuna_nombre, vacuna_nivel)
 VALUES('Aftosa', NULL);
 INSERT INTO public.vacunas
-( vacuna_nombre, vacuna_nivel)
+(vacuna_nombre, vacuna_nivel)
 VALUES('Triple', 2);
 INSERT INTO public.vacunas
-( vacuna_nombre, vacuna_nivel)
+(vacuna_nombre, vacuna_nivel)
 VALUES('Sindrome Respiratorio', 3);
 INSERT INTO public.vacunas
-( vacuna_nombre, vacuna_nivel)
+(vacuna_nombre, vacuna_nivel)
 VALUES('Triple', 3);
 
-INSERT INTO public.cliente
-(cedula, nombre, teléfono, deleted_at, created_at, updated_at)
-VALUES('1111111111', 'desconocido', NULL, NULL, '2022-06-20 16:26:41.000', '2022-06-20 16:26:41.000');
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MBG0004', NULL, NULL, 'COLORADA', 297, 9, 'Hembra', 5, '2019-01-09', NULL, 1, NULL, '2022-06-20 11:38:18.000', '2022-06-22 22:02:38.000', '26845822', 1, false, NULL, 85);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0023', 'MES0012', 'MBG0009', 'COLORADA CLARA', 0, 1, 'Hembra', 3, '2021-11-06', NULL, 1, NULL, '2022-06-20 12:34:39.000', '2022-06-22 22:02:38.000', '34899875', 1, false, NULL, 94);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0003', NULL, NULL, 'AHUMADA', 320, 1, 'Hembra', 5, '2016-04-14', NULL, 1, NULL, '2022-06-20 11:10:44.000', '2022-06-20 11:10:44.000', '8237046', 1, false, NULL, 75);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0004', NULL, NULL, 'COLORADA PINTA', 405, 1, 'Hembra', 5, '2016-04-28', NULL, 1, NULL, '2022-06-20 11:11:53.000', '2022-06-20 11:11:53.000', '8237045', 1, false, NULL, 76);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0005', NULL, NULL, 'COLORADA', 406, 1, 'Hembra', 5, '2016-05-11', NULL, 1, NULL, '2022-06-20 11:13:06.000', '2022-06-20 11:13:06.000', '8237044', 1, false, NULL, 77);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0006', NULL, NULL, 'NEGRA', 418, 1, 'Hembra', 5, '2011-01-01', NULL, 1, NULL, '2022-06-20 11:14:14.000', '2022-06-20 11:14:14.000', '3991655', 1, false, NULL, 52);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0007', NULL, NULL, 'COLORADA', 394, 1, 'Hembra', 5, '2010-06-15', NULL, 1, NULL, '2022-06-20 11:15:46.000', '2022-06-20 11:15:46.000', '3991661', 1, false, NULL, 58);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0008', NULL, NULL, 'ROJA', 460, 1, 'Hembra', 5, '2010-11-09', NULL, 1, NULL, '2022-06-20 11:17:06.000', '2022-06-20 11:17:06.000', '3991662', 1, false, NULL, 60);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0009', NULL, NULL, 'NEGRA', 538, 1, 'Hembra', 5, '2013-06-03', NULL, 1, NULL, '2022-06-20 11:18:46.000', '2022-06-20 11:18:46.000', '3991675', 1, false, NULL, 63);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MBG0001', NULL, NULL, 'NEGRA', 334, 9, 'Hembra', 5, '2018-09-26', NULL, 1, NULL, '2022-06-20 10:56:54.000', '2022-06-22 22:02:38.000', '26775479', 1, false, NULL, 82);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0024', 'MES0006', 'MBG0009', 'CAFÉ', 0, 1, 'Hembra', 1, '2021-12-08', NULL, 1, NULL, '2022-06-20 12:41:00.000', '2022-06-22 22:02:38.000', '34899874', 1, false, NULL, 95);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0014', 'MES0006', 'IA-MAFIOSO Gyr h', 'CAFÉ OSCURA', 130, 1, 'Hembra', 3, '2020-04-25', NULL, 1, NULL, '2022-06-20 11:46:14.000', '2022-06-20 11:46:14.000', '31167253', 1, false, NULL, 88);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0025', 'MES0009', 'MBG0009', 'CAFÉ-CENIZA', 0, 1, 'Hembra', 1, '2021-12-31', NULL, 1, NULL, '2022-06-20 12:44:59.000', '2022-06-22 22:02:38.000', '34899873', 1, false, NULL, 96);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0031', 'GYR0001', 'MBG0009', 'BLANCO PINTO', 0, 1, 'Macho', 2, '2021-03-28', NULL, 1, NULL, '2022-06-20 13:13:23.000', '2022-06-22 22:02:38.000', '34899885', 1, false, NULL, 177);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0032', 'MES0001', 'MBG0009', 'NEGRO', 0, 1, 'Macho', 2, '2021-03-29', NULL, 1, NULL, '2022-06-20 13:15:12.000', '2022-06-22 22:02:38.000', '34899884', 1, false, NULL, 178);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0033', 'MES0007', 'MBG0009', 'NEGRO', 0, 1, 'Macho', 2, '2021-05-13', NULL, 1, NULL, '2022-06-20 13:17:09.000', '2022-06-22 22:02:38.000', '34899883', 1, false, NULL, 179);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0015', NULL, NULL, 'NEGRO', 280, 1, 'Macho', 4, '2019-07-05', NULL, 1, NULL, '2022-06-20 12:06:34.000', '2022-06-20 12:06:34.000', '30682275', 1, false, NULL, 166);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0016', NULL, NULL, 'BLANCO', 241, 1, 'Macho', 2, '2019-07-11', NULL, 1, NULL, '2022-06-20 12:08:31.000', '2022-06-20 12:08:31.000', '30682274', 1, false, NULL, 167);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0017', NULL, NULL, 'BLANCO', 190, 1, 'Macho', 2, '2019-08-24', NULL, 1, NULL, '2022-06-20 12:09:32.000', '2022-06-20 12:09:32.000', '30682273', 1, false, NULL, 168);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0018', NULL, NULL, 'CAFÉ', 170, 1, 'Macho', 2, '2019-09-09', NULL, 1, NULL, '2022-06-20 12:10:53.000', '2022-06-20 12:10:53.000', '30682271', 1, false, NULL, 170);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0019', 'MES0003', 'BRA0001', 'CAFÉ', 85, 1, 'Hembra', 3, '2020-06-30', NULL, 1, NULL, '2022-06-20 12:16:31.000', '2022-06-20 12:16:31.000', '31167248', 1, false, NULL, 90);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0026', 'MES0011', 'IA-MAFIOSO GYRH', 'CAFÉ AMARILLO', 168, 1, 'Macho', 2, '2020-04-23', NULL, 1, NULL, '2022-06-20 12:53:25.000', '2022-06-20 12:53:25.000', '31167255', 1, false, NULL, 171);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0027', 'MES0010', 'IA-MAFIOSO GYRH', 'CAFÉ', 137, 1, 'Macho', 2, '2020-04-24', NULL, 1, NULL, '2022-06-20 12:57:31.000', '2022-06-20 12:57:31.000', '31167254', 1, false, NULL, 172);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0028', 'HOL0001', 'IA-MAFIOSO GYRH', 'CAFÉ', 115, 1, 'Macho', 2, '2020-04-30', NULL, 1, NULL, '2022-06-20 13:02:35.000', '2022-06-20 13:02:35.000', '31167251', 1, false, NULL, 174);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0029', 'MES0012', 'BRA0001', 'BLANCO CON CAFÉ', 145, 1, 'Macho', 2, '2020-06-24', NULL, 1, NULL, '2022-06-20 13:09:13.000', '2022-06-20 13:09:13.000', '31167249', 1, false, NULL, 175);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0038', 'MES0003', 'MBG0009', 'COLORADO CON LUCERO', 35, 1, 'Macho', 1, '2022-02-20', NULL, 1, NULL, '2022-06-20 13:25:53.000', '2022-06-22 22:02:38.000', '0000000001', 1, false, NULL, 184);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0041', NULL, NULL, 'NEGRO', 0, 1, 'Hembra', 5, '2020-06-05', NULL, 2, NULL, '2022-06-20 14:00:44.000', '2022-06-20 14:02:06.000', '31167250', 1, false, NULL, 89);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0039', 'MES0011', 'MBG0009', 'NEGRO', 36, 1, 'Macho', 1, '2022-03-25', NULL, 1, NULL, '2022-06-20 13:27:47.000', '2022-06-22 22:02:38.000', '0000000002', 1, false, NULL, 185);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0030', 'GYR0002', 'BRA0001', 'CAFÉ', 85, 1, 'Macho', 2, '2020-07-08', NULL, 2, NULL, '2022-06-20 13:11:35.000', '2022-06-20 14:04:39.000', '34899886', 1, false, NULL, 176);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0042', NULL, NULL, 'NEGRO', 0, 1, 'Macho', 4, '2019-08-21', NULL, 2, NULL, '2022-06-20 14:05:28.000', '2022-06-20 14:06:12.000', '30682272', 1, false, NULL, 169);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0002', NULL, NULL, 'ROJA', 370, 1, 'Hembra', 5, '2016-05-19', NULL, 1, NULL, '2022-06-20 11:09:16.000', '2022-06-22 19:43:36.000', '8237043', 1, false, NULL, 78);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0001', NULL, NULL, 'NEGRA PINTA', 377, 1, 'Hembra', 5, '2016-08-08', NULL, 1, NULL, '2022-06-20 10:55:27.000', '2022-06-20 14:21:20.000', '9969939', 1, false, NULL, 79);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0040', 'MES0010', 'MBG0009', 'CAFÉ OSCURO', 25, 1, 'Macho', 1, '2022-03-28', NULL, 1, NULL, '2022-06-20 13:29:02.000', '2022-06-22 22:02:38.000', '0000000003', 1, false, NULL, 186);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MBH0001', NULL, NULL, 'NEGRA CON BLANCO', 295, 10, 'Hembra', 3, '2019-01-11', NULL, 1, NULL, '2022-06-20 11:42:02.000', '2022-06-20 11:42:02.000', '26845824', 1, false, NULL, 87);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MGH0001', 'MES0013', 'IA-MAFIOSO GYRH', 'BLANCO', 120, 11, 'Macho', 2, '2020-04-28', NULL, 1, NULL, '2022-06-20 13:01:04.000', '2022-06-20 13:01:04.000', '31167252', 1, false, NULL, 173);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('GYR0002', NULL, NULL, 'CAFÉ', 269, 8, 'Hembra', 5, '2017-05-28', NULL, 1, NULL, '2022-06-20 11:07:38.000', '2022-06-20 15:44:11.000', '19022241', 1, false, NULL, 80);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0036', 'MES0002', 'MBG0009', 'COLORADO', 0, 1, 'Macho', 4, '2021-09-15', NULL, 1, NULL, '2022-06-20 13:22:32.000', '2022-06-22 22:02:38.000', '34899880', 1, false, NULL, 182);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0021', 'MES0005', 'MBG0009', 'CAFÉ', 145, 1, 'Hembra', 3, '2021-04-24', NULL, 1, NULL, '2022-06-20 12:23:08.000', '2022-06-22 22:02:38.000', '34899877', 1, false, NULL, 92);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0020', 'MES0008', 'MBG0009', 'PINTA', 0, 1, 'Hembra', 3, '2021-03-29', NULL, 1, NULL, '2022-06-20 12:21:05.000', '2022-06-22 22:02:38.000', '34899878', 1, false, NULL, 91);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0034', 'MBG0001', 'MBG0009', 'NEGRO', 0, 1, 'Macho', 2, '2021-07-19', NULL, 1, NULL, '2022-06-20 13:19:00.000', '2022-06-22 22:02:38.000', '34899882', 1, false, NULL, 180);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('BRA0001', NULL, NULL, 'desconocido', 0, 7, 'Macho', 4, '2017-01-06', NULL, 3, NULL, '2022-06-20 12:14:13.000', '2022-06-20 16:33:40.000', '26845940', 1, false, NULL, 162);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0010', NULL, NULL, 'CAFÉ', 370, 1, 'Hembra', 5, '2013-06-13', '', 1, NULL, '2022-06-20 11:23:43.000', '2022-06-21 08:28:13.000', '3991678', 1, false, NULL, 70);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0012', NULL, NULL, 'ROJA', 390, 1, 'Hembra', 5, '2013-01-05', NULL, 1, NULL, '2022-06-20 11:31:23.000', '2022-06-21 10:44:10.000', '3991687', 1, false, NULL, 73);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('HOL0001', NULL, NULL, 'NEGRA', 440, 3, 'Hembra', 5, '2013-06-24', NULL, 1, NULL, '2022-06-20 11:20:16.000', '2022-06-22 19:35:58.000', '3991697', 1, false, NULL, 69);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0035', 'MES0013', 'inseminación', 'CAFÉ NEGRUZCO', 0, 1, 'Macho', 4, '2021-09-13', NULL, 1, NULL, '2022-06-20 13:20:43.000', '2022-06-20 14:16:31.000', '34899881', 1, false, NULL, 181);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0013', NULL, NULL, 'CAFÉ OSCURA', 395, 1, 'Hembra', 5, '2014-02-17', NULL, 1, NULL, '2022-06-20 11:33:08.000', '2022-06-21 19:22:33.000', '3991688', 1, false, NULL, 74);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0037', 'MBG0004', 'MBG0009', 'COLORADO', 0, 1, 'Macho', 1, '2021-12-11', NULL, 1, NULL, '2022-06-20 13:23:49.000', '2022-06-22 22:02:38.000', '34899879', 1, false, NULL, 183);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MBG0003', NULL, NULL, 'NEGRA', 241, 9, 'Hembra', 5, '2019-01-07', NULL, 1, NULL, '2022-06-20 11:37:14.000', '2022-06-22 22:02:38.000', '26845821', 1, false, NULL, 84);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MBG0009', NULL, NULL, 'NEGRO', 490, 9, 'Macho', 4, '2018-05-01', NULL, 1, NULL, '2022-06-20 12:05:00.000', '2022-06-22 22:02:38.000', '26845941', 1, false, NULL, 163);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MBG0005', NULL, NULL, 'AMARILLA', 264, 9, 'Hembra', 5, '2019-01-11', NULL, 1, NULL, '2022-06-20 11:39:42.000', '2022-06-22 22:02:38.000', '26845823', 1, false, NULL, 86);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MBG0006', NULL, NULL, 'TRIGRILLO', 320, 9, 'Macho', 4, '2018-09-21', NULL, 1, NULL, '2022-06-20 11:56:51.000', '2022-06-22 22:02:38.000', '26775478', 1, false, NULL, 161);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MBG0007', NULL, NULL, 'NEGRO', 257, 9, 'Macho', 4, '2019-03-03', NULL, 1, NULL, '2022-06-20 11:57:53.000', '2022-06-22 22:02:38.000', '28806458', 1, false, NULL, 164);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MBG0008', NULL, NULL, 'CAFÉ OSCURO', 242, 9, 'Macho', 4, '2019-03-12', NULL, 1, NULL, '2022-06-20 12:03:48.000', '2022-06-22 22:02:38.000', '28806459', 1, false, NULL, 165);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0022', 'HOL0001', 'MBG0009', 'NEGRA', 0, 1, 'Hembra', 3, '2021-05-03', NULL, 1, NULL, '2022-06-20 12:32:00.000', '2022-06-22 22:02:38.000', '34899876', 1, false, NULL, 93);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MBG0010', NULL, NULL, 'NEGRO', 0, 9, 'Hembra', 4, '2011-04-14', NULL, 2, NULL, '2022-06-20 13:30:58.000', '2022-06-22 22:02:38.000', '3991660', 1, false, NULL, 56);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MBG0012', NULL, NULL, 'negro', 0, 9, 'Macho', 4, '2017-04-15', NULL, 3, NULL, '2022-06-20 16:20:40.000', '2022-06-22 22:02:38.000', '19023417', 1, false, NULL, 159);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MBG0013', NULL, NULL, 'negro', 0, 9, 'Macho', 4, '2017-05-05', NULL, 3, NULL, '2022-06-20 16:21:17.000', '2022-06-22 22:02:38.000', '19023418', 1, false, NULL, 160);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0011', NULL, NULL, 'NEGRA', 470, 1, 'Hembra', 5, '2013-07-01', NULL, 1, NULL, '2022-06-20 11:29:52.000', '2022-06-21 09:13:31.000', '3991680', 1, false, NULL, 71);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0043', NULL, NULL, 'negro', 0, 1, 'Hembra', 5, '2011-01-01', NULL, 3, NULL, '2022-06-20 16:22:12.000', '2022-06-20 16:29:13.000', '3991645', 1, false, NULL, 3);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0044', NULL, NULL, 'negro', 0, 1, 'Hembra', 5, '2011-01-01', NULL, 3, NULL, '2022-06-20 16:22:50.000', '2022-06-20 16:29:56.000', '3991657', 1, false, NULL, 53);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0045', NULL, NULL, 'negro', 0, 1, 'Hembra', 5, '2011-01-01', NULL, 3, NULL, '2022-06-20 16:23:52.000', '2022-06-20 16:30:53.000', '3991658', 1, false, NULL, 54);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0046', NULL, NULL, 'negro', 0, 1, 'Macho', 4, '2016-05-26', NULL, 3, NULL, '2022-06-20 16:24:28.000', '2022-06-20 16:32:02.000', '8237042', 1, false, NULL, 157);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MES0047', NULL, NULL, 'negro', 0, 1, 'Macho', 4, '2011-11-23', NULL, 3, NULL, '2022-06-20 16:25:01.000', '2022-06-20 16:33:08.000', '3991667', 1, false, NULL, 64);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MBG0002', NULL, NULL, 'CAFÉ', 241, 9, 'Hembra', 5, '2019-01-01', NULL, 1, NULL, '2022-06-20 11:35:51.000', '2022-06-22 22:02:38.000', '26845820', 1, false, NULL, 83);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('MBG0011', NULL, NULL, 'negro', 0, 9, 'Macho', 4, '2016-05-04', NULL, 3, NULL, '2022-06-20 16:19:49.000', '2022-06-22 22:02:38.000', '8788039', 1, false, NULL, 158);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('GYR0001', NULL, NULL, 'CENIZA PINTA', 370, 8, 'Hembra', 5, '2017-06-14', NULL, 1, NULL, '2022-06-20 11:06:03.000', '2022-06-21 08:25:53.000', '19022242', 1, false, NULL, 81);
+INSERT INTO public.animal
+(animal_id, animal_madre, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_nacimiento, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado, animal_arete)
+VALUES('inseminación', '', '', 'CAFÉ', 0, 0, 'Macho', 4, '2020-06-30', NULL, 1, NULL, '2022-06-20 12:16:31.000', '2022-06-20 12:16:31.000', '0', 1, false, NULL, 0);
 
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0043', 3, NULL, '2011-01-01', NULL, 'negro', 0, 1, 'Hembra', 5, NULL, 3, NULL, '2022-06-20 16:22:12.000', '2022-06-20 16:29:13.000', '3991645', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0006', 52, NULL, '2011-01-01', NULL, 'NEGRA', 418, 1, 'Hembra', 5, NULL, 1, NULL, '2022-06-20 11:14:14.000', '2022-06-20 11:14:14.000', '3991655', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0044', 53, NULL, '2011-01-01', NULL, 'negro', 0, 1, 'Hembra', 5, NULL, 3, NULL, '2022-06-20 16:22:50.000', '2022-06-20 16:29:56.000', '3991657', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0045', 54, NULL, '2011-01-01', NULL, 'negro', 0, 1, 'Hembra', 5, NULL, 3, NULL, '2022-06-20 16:23:52.000', '2022-06-20 16:30:53.000', '3991658', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MBG0010', 56, NULL, '2011-04-14', NULL, 'NEGRO', 0, 9, 'Hembra', 4, NULL, 2, NULL, '2022-06-20 13:30:58.000', '2022-06-20 13:32:27.000', '3991660', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0007', 58, NULL, '2010-06-15', NULL, 'COLORADA', 394, 1, 'Hembra', 5, NULL, 1, NULL, '2022-06-20 11:15:46.000', '2022-06-20 11:15:46.000', '3991661', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0008', 60, NULL, '2010-11-09', NULL, 'ROJA', 460, 1, 'Hembra', 5, NULL, 1, NULL, '2022-06-20 11:17:06.000', '2022-06-20 11:17:06.000', '3991662', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0009', 63, NULL, '2013-06-03', NULL, 'NEGRA', 538, 1, 'Hembra', 5, NULL, 1, NULL, '2022-06-20 11:18:46.000', '2022-06-20 11:18:46.000', '3991675', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0047', 64, NULL, '2011-11-23', NULL, 'negro', 0, 1, 'Macho', 4, NULL, 3, NULL, '2022-06-20 16:25:01.000', '2022-06-20 16:33:08.000', '3991667', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('HOL0001', 69, NULL, '2013-06-24', NULL, 'NEGRA', 440, 3, 'Hembra', 5, NULL, 1, NULL, '2022-06-20 11:20:16.000', '2022-06-20 11:20:16.000', '3991697', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0010', 70, NULL, '2013-06-13', NULL, 'CAFÉ', 370, 1, 'Hembra', 5, NULL, 1, NULL, '2022-06-20 11:23:43.000', '2022-06-20 11:23:43.000', '3991678', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0011', 71, NULL, '2013-07-01', NULL, 'NEGRA', 470, 1, 'Hembra', 5, NULL, 1, NULL, '2022-06-20 11:29:52.000', '2022-06-20 11:29:52.000', '3991680', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0012', 73, NULL, '2013-01-05', NULL, 'ROJA', 390, 1, 'Hembra', 5, NULL, 1, NULL, '2022-06-20 11:31:23.000', '2022-06-20 11:31:23.000', '3991687', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0013', 74, NULL, '2014-02-17', NULL, 'CAFÉ OSCURA', 395, 1, 'Hembra', 5, NULL, 1, NULL, '2022-06-20 11:33:08.000', '2022-06-20 11:33:08.000', '3991688', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0003', 75, NULL, '2016-04-14', NULL, 'AHUMADA', 320, 1, 'Hembra', 5, NULL, 1, NULL, '2022-06-20 11:10:44.000', '2022-06-20 11:10:44.000', '8237046', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0004', 76, NULL, '2016-04-28', NULL, 'COLORADA PINTA', 405, 1, 'Hembra', 5, NULL, 1, NULL, '2022-06-20 11:11:53.000', '2022-06-20 11:11:53.000', '8237045', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0005', 77, NULL, '2016-05-11', NULL, 'COLORADA', 406, 1, 'Hembra', 5, NULL, 1, NULL, '2022-06-20 11:13:06.000', '2022-06-20 11:13:06.000', '8237044', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0002', 78, NULL, '2016-05-19', NULL, 'ROJA', 370, 1, 'Hembra', 5, NULL, 1, NULL, '2022-06-20 11:09:16.000', '2022-06-20 11:09:16.000', '8237043', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0001', 79, NULL, '2016-08-08', NULL, 'NEGRA PINTA', 377, 1, 'Hembra', 5, NULL, 1, NULL, '2022-06-20 10:55:27.000', '2022-06-20 14:21:20.000', '9969939', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('GYR0002', 80, NULL, '2017-05-28', NULL, 'CAFÉ', 269, 8, 'Hembra', 5, NULL, 1, NULL, '2022-06-20 11:07:38.000', '2022-06-20 15:44:11.000', '19022241', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('GYR0001', 81, NULL, '2017-06-14', NULL, 'CENIZA PINTA', 370, 8, 'Hembra', 5, NULL, 1, NULL, '2022-06-20 11:06:03.000', '2022-06-20 11:06:03.000', '19022242', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MBG0001', 82, NULL, '2018-09-26', NULL, 'NEGRA', 334, 9, 'Hembra', 5, NULL, 1, NULL, '2022-06-20 10:56:54.000', '2022-06-20 10:56:54.000', '26775479', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MBG0002', 83, NULL, '2019-01-01', NULL, 'CAFÉ', 241, 9, 'Hembra', 5, NULL, 1, NULL, '2022-06-20 11:35:51.000', '2022-06-20 11:35:51.000', '26845820', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MBG0003', 84, NULL, '2019-01-07', NULL, 'NEGRA', 241, 9, 'Hembra', 5, NULL, 1, NULL, '2022-06-20 11:37:14.000', '2022-06-20 11:37:14.000', '26845821', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MBG0004', 85, NULL, '2019-01-09', NULL, 'COLORADA', 297, 9, 'Hembra', 5, NULL, 1, NULL, '2022-06-20 11:38:18.000', '2022-06-20 11:38:18.000', '26845822', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MBG0005', 86, NULL, '2019-01-11', NULL, 'AMARILLA', 264, 9, 'Hembra', 5, NULL, 1, NULL, '2022-06-20 11:39:42.000', '2022-06-20 11:39:42.000', '26845823', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MBH0001', 87, NULL, '2019-01-11', NULL, 'NEGRA CON BLANCO', 295, 10, 'Hembra', 3, NULL, 1, NULL, '2022-06-20 11:42:02.000', '2022-06-20 11:42:02.000', '26845824', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0014', 88, 'MES0006', '2020-04-25', 'IA-MAFIOSO Gyr h', 'CAFÉ OSCURA', 130, 1, 'Hembra', 3, NULL, 1, NULL, '2022-06-20 11:46:14.000', '2022-06-20 11:46:14.000', '31167253', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0041', 89, NULL, '2020-06-05', NULL, 'NEGRO', 0, 1, 'Hembra', 5, NULL, 2, NULL, '2022-06-20 14:00:44.000', '2022-06-20 14:02:06.000', '31167250', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0019', 90, 'MES0003', '2020-06-30', 'BRA0001', 'CAFÉ', 85, 1, 'Hembra', 3, NULL, 1, NULL, '2022-06-20 12:16:31.000', '2022-06-20 12:16:31.000', '31167248', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0020', 91, 'MES0008', '2021-03-29', 'MBG0009', 'PINTA', 0, 1, 'Hembra', 3, NULL, 1, NULL, '2022-06-20 12:21:05.000', '2022-06-20 12:21:05.000', '34899878', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0021', 92, 'MES0005', '2021-04-24', 'MBG0009', 'CAFÉ', 0, 1, 'Hembra', 3, NULL, 1, NULL, '2022-06-20 12:23:08.000', '2022-06-20 12:23:08.000', '34899877', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0022', 93, 'HOL0001', '2021-05-03', 'MBG0009', 'NEGRA', 0, 1, 'Hembra', 3, NULL, 1, NULL, '2022-06-20 12:32:00.000', '2022-06-20 12:32:00.000', '34899876', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0023', 94, 'MES0012', '2021-11-06', 'MBG0009', 'COLORADA CLARA', 0, 1, 'Hembra', 3, NULL, 1, NULL, '2022-06-20 12:34:39.000', '2022-06-20 12:34:39.000', '34899875', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0024', 95, 'MES0006', '2021-12-08', 'MBG0009', 'CAFÉ', 0, 1, 'Hembra', 1, NULL, 1, NULL, '2022-06-20 12:41:00.000', '2022-06-20 12:41:00.000', '34899874', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0025', 96, 'MES0009', '2021-12-31', 'MBG0009', 'CAFÉ-CENIZA', 0, 1, 'Hembra', 1, NULL, 1, NULL, '2022-06-20 12:44:59.000', '2022-06-20 12:44:59.000', '34899873', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0046', 157, NULL, '2016-05-26', NULL, 'negro', 0, 1, 'Macho', 4, NULL, 3, NULL, '2022-06-20 16:24:28.000', '2022-06-20 16:32:02.000', '8237042', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MBG0011', 158, NULL, '2016-05-04', NULL, 'negro', 0, 9, 'Macho', 4, NULL, 3, NULL, '2022-06-20 16:19:49.000', '2022-06-20 16:26:41.000', '8788039', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MBG0012', 159, NULL, '2017-04-15', NULL, 'negro', 0, 9, 'Macho', 4, NULL, 3, NULL, '2022-06-20 16:20:40.000', '2022-06-20 16:27:50.000', '19023417', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MBG0013', 160, NULL, '2017-05-05', NULL, 'negro', 0, 9, 'Macho', 4, NULL, 3, NULL, '2022-06-20 16:21:17.000', '2022-06-20 16:28:24.000', '19023418', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MBG0006', 161, NULL, '2018-09-21', NULL, 'TRIGRILLO', 320, 9, 'Macho', 4, NULL, 1, NULL, '2022-06-20 11:56:51.000', '2022-06-20 11:56:51.000', '26775478', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('BRA0001', 162, NULL, '2017-01-06', NULL, 'desconocido', 0, 7, 'Macho', 4, NULL, 3, NULL, '2022-06-20 12:14:13.000', '2022-06-20 16:33:40.000', '26845940', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MBG0009', 163, NULL, '2018-05-01', NULL, 'NEGRO', 490, 9, 'Macho', 4, NULL, 1, NULL, '2022-06-20 12:05:00.000', '2022-06-20 12:05:00.000', '26845941', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MBG0007', 164, NULL, '2019-03-03', NULL, 'NEGRO', 257, 9, 'Macho', 4, NULL, 1, NULL, '2022-06-20 11:57:53.000', '2022-06-20 11:57:53.000', '28806458', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MBG0008', 165, NULL, '2019-03-12', NULL, 'CAFÉ OSCURO', 242, 9, 'Macho', 4, NULL, 1, NULL, '2022-06-20 12:03:48.000', '2022-06-20 12:03:48.000', '28806459', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0015', 166, NULL, '2019-07-05', NULL, 'NEGRO', 280, 1, 'Macho', 4, NULL, 1, NULL, '2022-06-20 12:06:34.000', '2022-06-20 12:06:34.000', '30682275', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0016', 167, NULL, '2019-07-11', NULL, 'BLANCO', 241, 1, 'Macho', 2, NULL, 1, NULL, '2022-06-20 12:08:31.000', '2022-06-20 12:08:31.000', '30682274', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0017', 168, NULL, '2019-08-24', NULL, 'BLANCO', 190, 1, 'Macho', 2, NULL, 1, NULL, '2022-06-20 12:09:32.000', '2022-06-20 12:09:32.000', '30682273', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0042', 169, NULL, '2019-08-21', NULL, 'NEGRO', 0, 1, 'Macho', 4, NULL, 2, NULL, '2022-06-20 14:05:28.000', '2022-06-20 14:06:12.000', '30682272', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0018', 170, NULL, '2019-09-09', NULL, 'CAFÉ', 170, 1, 'Macho', 2, NULL, 1, NULL, '2022-06-20 12:10:53.000', '2022-06-20 12:10:53.000', '30682271', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0026', 171, 'MES0011', '2020-04-23', 'IA-MAFIOSO GYRH', 'CAFÉ AMARILLO', 168, 1, 'Macho', 2, NULL, 1, NULL, '2022-06-20 12:53:25.000', '2022-06-20 12:53:25.000', '31167255', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0027', 172, 'MES0010', '2020-04-24', 'IA-MAFIOSO GYRH', 'CAFÉ', 137, 1, 'Macho', 2, NULL, 1, NULL, '2022-06-20 12:57:31.000', '2022-06-20 12:57:31.000', '31167254', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MGH0001', 173, 'MES0013', '2020-04-28', 'IA-MAFIOSO GYRH', 'BLANCO', 120, 11, 'Macho', 2, NULL, 1, NULL, '2022-06-20 13:01:04.000', '2022-06-20 13:01:04.000', '31167252', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0028', 174, 'HOL0001', '2020-04-30', 'IA-MAFIOSO GYRH', 'CAFÉ', 115, 1, 'Macho', 2, NULL, 1, NULL, '2022-06-20 13:02:35.000', '2022-06-20 13:02:35.000', '31167251', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0029', 175, 'MES0012', '2020-06-24', 'BRA0001', 'BLANCO CON CAFÉ', 145, 1, 'Macho', 2, NULL, 1, NULL, '2022-06-20 13:09:13.000', '2022-06-20 13:09:13.000', '31167249', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0030', 176, 'GYR0002', '2020-07-08', 'BRA0001', 'CAFÉ', 85, 1, 'Macho', 2, NULL, 2, NULL, '2022-06-20 13:11:35.000', '2022-06-20 14:04:39.000', '34899886', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0031', 177, 'GYR0001', '2021-03-28', 'MBG0009', 'BLANCO PINTO', 0, 1, 'Macho', 2, NULL, 1, NULL, '2022-06-20 13:13:23.000', '2022-06-20 13:13:23.000', '34899885', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0032', 178, 'MES0001', '2021-03-29', 'MBG0009', 'NEGRO', 0, 1, 'Macho', 2, NULL, 1, NULL, '2022-06-20 13:15:12.000', '2022-06-20 13:15:12.000', '34899884', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0033', 179, 'MES0007', '2021-05-13', 'MBG0009', 'NEGRO', 0, 1, 'Macho', 2, NULL, 1, NULL, '2022-06-20 13:17:09.000', '2022-06-20 13:17:09.000', '34899883', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0034', 180, 'MBG0001', '2021-07-19', 'MBG0009', 'NEGRO', 0, 1, 'Macho', 2, NULL, 1, NULL, '2022-06-20 13:19:00.000', '2022-06-20 13:19:00.000', '34899882', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0035', 181, 'MES0013', '2021-09-13', 'INSEMINACIÓN', 'CAFÉ NEGRUZCO', 0, 1, 'Macho', 4, NULL, 1, NULL, '2022-06-20 13:20:43.000', '2022-06-20 14:16:31.000', '34899881', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0036', 182, 'MES0002', '2021-09-15', 'MBG0009', 'COLORADO', 0, 1, 'Macho', 2, NULL, 1, NULL, '2022-06-20 13:22:32.000', '2022-06-20 13:22:32.000', '34899880', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0037', 183, 'MBG0004', '2021-12-11', 'MBG0009', 'COLORADO', 0, 1, 'Macho', 1, NULL, 1, NULL, '2022-06-20 13:23:49.000', '2022-06-20 13:23:49.000', '34899879', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0038', 184, 'MES0003', '2022-02-20', 'MBG0009', 'COLORADO CON LUCERO', 35, 1, 'Macho', 1, NULL, 1, NULL, '2022-06-20 13:25:53.000', '2022-06-20 13:25:53.000', '0000000001', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0039', 185, 'MES0011', '2022-03-25', 'MBG0009', 'NEGRO', 36, 1, 'Macho', 1, NULL, 1, NULL, '2022-06-20 13:27:47.000', '2022-06-20 13:27:47.000', '0000000002', 1, false, NULL);
-INSERT INTO public.animal
-(animal_id, animal_arete, animal_madre, animal_nacimiento, animal_padre, animal_color, animal_peso, animal_raza, animal_sexo, animal_categoria, animal_imagen, animal_estado, deleted_at, created_at, updated_at, codigo_bien, animal_produccion, animal_abierto, fecha_secado)
-VALUES('MES0040', 186, 'MES0010', '2022-03-28', 'MBG0009', 'CAFÉ OSCURO', 25, 1, 'Macho', 1, NULL, 1, NULL, '2022-06-20 13:29:02.000', '2022-06-20 13:29:02.000', '0000000003', 1, false, NULL);
-
 INSERT INTO public.registro_muertes
-(animal_id, registro_muertes_fecha, deleted_at, created_at, updated_at, registro_muertes_causa)
-VALUES('MBG0010', '2017-04-13', NULL, '2022-06-20 13:32:27.000', '2022-06-20 13:32:27.000', 'PROCESO HEMORRAGICO INTESTINAL');
+(animal_id, registro_muertes_fecha, deleted_at, created_at, updated_at, registro_muertes_causa, estado_anterior)
+VALUES('MES0041', '2021-04-11', NULL, '2022-06-20 14:02:06.000', '2022-06-20 14:02:06.000', 'HEMOPARASITOS', 1);
 INSERT INTO public.registro_muertes
-(animal_id, registro_muertes_fecha, deleted_at, created_at, updated_at, registro_muertes_causa)
-VALUES('MES0041', '2021-04-11', NULL, '2022-06-20 14:02:06.000', '2022-06-20 14:02:06.000', 'HEMOPARASITOS');
+(animal_id, registro_muertes_fecha, deleted_at, created_at, updated_at, registro_muertes_causa, estado_anterior)
+VALUES('MES0030', '2021-07-05', NULL, '2022-06-20 14:04:38.000', '2022-06-20 14:04:38.000', 'MUERTE POR ATASCAMIENTO EN FANGO', 1);
 INSERT INTO public.registro_muertes
-(animal_id, registro_muertes_fecha, deleted_at, created_at, updated_at, registro_muertes_causa)
-VALUES('MES0030', '2021-07-05', NULL, '2022-06-20 14:04:38.000', '2022-06-20 14:04:38.000', 'MUERTE POR ATASCAMIENTO EN FANGO');
+(animal_id, registro_muertes_fecha, deleted_at, created_at, updated_at, registro_muertes_causa, estado_anterior)
+VALUES('MES0042', '2022-03-29', NULL, '2022-06-20 14:06:12.000', '2022-06-20 14:06:12.000', 'MORDEDURA DE SERPIENTE', 1);
 INSERT INTO public.registro_muertes
-(animal_id, registro_muertes_fecha, deleted_at, created_at, updated_at, registro_muertes_causa)
-VALUES('MES0042', '2022-03-29', NULL, '2022-06-20 14:06:12.000', '2022-06-20 14:06:12.000', 'MORDEDURA DE SERPIENTE');
+(animal_id, registro_muertes_fecha, deleted_at, created_at, updated_at, registro_muertes_causa, estado_anterior)
+VALUES('MBG0010', '2017-04-13', NULL, '2022-06-20 13:32:27.000', '2022-06-20 13:32:27.000', 'PROCESO HEMORRAGICO INTESTINAL', 1);
 
 INSERT INTO public.ventas
 (animal_id, ventas_valor, ventas_fecha, deleted_at, created_at, updated_at, cedula_cliente)
-VALUES('MBG0011', 200, '2018-09-10', NULL, '2022-06-20 16:26:41.000', '2022-06-20 16:26:41.000', '1111111111');
+VALUES('MES0043', 300, '2018-05-15', NULL, '2022-06-20 16:29:13.000', '2022-06-20 16:29:13.000', '1111111113');
 INSERT INTO public.ventas
 (animal_id, ventas_valor, ventas_fecha, deleted_at, created_at, updated_at, cedula_cliente)
-VALUES('MBG0012', 100, '2018-09-10', NULL, '2022-06-20 16:27:50.000', '2022-06-20 16:27:50.000', '1111111111');
+VALUES('MES0044', 250, '2018-05-15', NULL, '2022-06-20 16:29:56.000', '2022-06-20 16:29:56.000', '1111111113');
 INSERT INTO public.ventas
 (animal_id, ventas_valor, ventas_fecha, deleted_at, created_at, updated_at, cedula_cliente)
-VALUES('MBG0013', 100, '2018-09-10', NULL, '2022-06-20 16:28:24.000', '2022-06-20 16:28:24.000', '1111111111');
+VALUES('MES0045', 300, '2018-05-15', NULL, '2022-06-20 16:30:53.000', '2022-06-20 16:30:53.000', '1111111113');
 INSERT INTO public.ventas
 (animal_id, ventas_valor, ventas_fecha, deleted_at, created_at, updated_at, cedula_cliente)
-VALUES('MES0043', 300, '2018-05-15', NULL, '2022-06-20 16:29:13.000', '2022-06-20 16:29:13.000', '1111111111');
+VALUES('MES0046', 150, '2018-05-15', NULL, '2022-06-20 16:32:02.000', '2022-06-20 16:32:02.000', '1111111113');
 INSERT INTO public.ventas
 (animal_id, ventas_valor, ventas_fecha, deleted_at, created_at, updated_at, cedula_cliente)
-VALUES('MES0044', 250, '2018-05-15', NULL, '2022-06-20 16:29:56.000', '2022-06-20 16:29:56.000', '1111111111');
+VALUES('MES0047', 200, '2016-08-29', NULL, '2022-06-20 16:33:08.000', '2022-06-20 16:33:08.000', '1111111113');
 INSERT INTO public.ventas
 (animal_id, ventas_valor, ventas_fecha, deleted_at, created_at, updated_at, cedula_cliente)
-VALUES('MES0045', 300, '2018-05-15', NULL, '2022-06-20 16:30:53.000', '2022-06-20 16:30:53.000', '1111111111');
+VALUES('BRA0001', 1010, '2020-02-28', NULL, '2022-06-20 16:33:40.000', '2022-06-20 16:33:40.000', '1111111113');
 INSERT INTO public.ventas
 (animal_id, ventas_valor, ventas_fecha, deleted_at, created_at, updated_at, cedula_cliente)
-VALUES('MES0046', 150, '2018-05-15', NULL, '2022-06-20 16:32:02.000', '2022-06-20 16:32:02.000', '1111111111');
+VALUES('MBG0011', 200, '2018-09-10', NULL, '2022-06-20 16:26:41.000', '2022-06-20 16:26:41.000', '1111111113');
 INSERT INTO public.ventas
 (animal_id, ventas_valor, ventas_fecha, deleted_at, created_at, updated_at, cedula_cliente)
-VALUES('MES0047', 200, '2016-08-29', NULL, '2022-06-20 16:33:08.000', '2022-06-20 16:33:08.000', '1111111111');
+VALUES('MBG0012', 100, '2018-09-10', NULL, '2022-06-20 16:27:50.000', '2022-06-20 16:27:50.000', '1111111113');
 INSERT INTO public.ventas
 (animal_id, ventas_valor, ventas_fecha, deleted_at, created_at, updated_at, cedula_cliente)
-VALUES('BRA0001', 1010, '2020-02-28', NULL, '2022-06-20 16:33:40.000', '2022-06-20 16:33:40.000', '1111111111');
+VALUES('MBG0013', 100, '2018-09-10', NULL, '2022-06-20 16:28:24.000', '2022-06-20 16:28:24.000', '1111111113');
+
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0006', 'inseminación', '2019-07-19', 'Si', NULL, '2022-06-23 10:18:34.000', '2022-06-23 10:18:44.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0003', 'BRA0001', '2019-09-25', 'Si', NULL, '2022-06-23 10:21:47.000', '2022-06-23 10:22:07.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0008', 'MBG0009', '2020-06-23', 'Si', NULL, '2022-06-23 10:34:53.000', '2022-06-23 10:34:57.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0005', 'MBG0009', '2020-07-19', 'Si', NULL, '2022-06-23 10:35:57.000', '2022-06-23 10:36:01.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('HOL0001', 'MBG0009', '2020-07-28', 'Si', NULL, '2022-06-23 10:36:56.000', '2022-06-23 10:37:02.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0012', 'MBG0009', '2021-01-31', 'Si', NULL, '2022-06-23 10:37:53.000', '2022-06-23 10:38:01.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0006', 'MBG0009', '2021-03-04', 'Si', NULL, '2022-06-23 10:43:03.000', '2022-06-23 10:43:12.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0009', 'MBG0009', '2021-03-27', 'Si', NULL, '2022-06-23 10:44:22.000', '2022-06-23 10:44:37.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0011', 'inseminación', '2019-07-19', 'Si', NULL, '2022-06-23 10:45:29.000', '2022-06-23 10:45:35.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0010', 'inseminación', '2019-07-20', 'Si', NULL, '2022-06-23 10:46:40.000', '2022-06-23 10:46:46.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0013', 'inseminación', '2019-07-24', 'Si', NULL, '2022-06-23 10:48:44.000', '2022-06-23 10:48:50.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('HOL0001', 'inseminación', '2019-07-26', 'Si', NULL, '2022-06-23 10:51:26.000', '2022-06-23 10:51:33.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0012', 'BRA0001', '2019-09-19', 'Si', NULL, '2022-06-23 10:53:26.000', '2022-06-23 10:53:32.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('GYR0002', 'BRA0001', '2019-10-03', 'Si', NULL, '2022-06-23 10:54:21.000', '2022-06-23 10:54:27.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('GYR0001', 'MBG0009', '2020-06-22', 'Si', NULL, '2022-06-23 10:55:29.000', '2022-06-23 10:55:34.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0001', 'MBG0009', '2020-06-23', 'Si', NULL, '2022-06-23 10:59:44.000', '2022-06-23 11:00:00.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0007', 'MBG0009', '2020-08-07', 'Si', NULL, '2022-06-23 11:01:00.000', '2022-06-23 11:01:06.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0013', 'inseminación', '2020-12-08', 'Si', NULL, '2022-06-23 11:05:18.000', '2022-06-23 11:05:23.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0002', 'MBG0009', '2020-12-10', 'Si', NULL, '2022-06-23 11:05:58.000', '2022-06-23 11:06:03.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0003', 'MBG0009', '2021-05-17', 'Si', NULL, '2022-06-23 11:08:01.000', '2022-06-23 11:08:08.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0011', 'MBG0009', '2021-06-19', 'Si', NULL, '2022-06-23 11:10:09.000', '2022-06-23 11:10:15.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0010', 'MBG0009', '2021-06-22', 'Si', NULL, '2022-06-23 11:11:27.000', '2022-06-23 11:11:59.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MBG0001', 'MBG0009', '2020-10-13', 'Si', NULL, '2022-06-23 11:12:53.000', '2022-06-23 11:13:02.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MBG0004', 'MBG0009', '2021-03-07', 'Si', NULL, '2022-06-23 11:14:21.000', '2022-06-23 11:14:26.000');
+
+
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0006', '2019-07-19', 'inseminación', false, NULL, '2022-06-23 10:18:44.000', '2022-06-23 10:18:44.000', '2020-04-23 00:00:00.000', 1);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0003', '2019-09-25', 'BRA0001', false, NULL, '2022-06-23 10:22:07.000', '2022-06-23 10:22:07.000', '2020-06-30 00:00:00.000', 2);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0008', '2020-06-23', 'MBG0009', false, NULL, '2022-06-23 10:34:57.000', '2022-06-23 10:34:57.000', '2021-03-29 00:00:00.000', 3);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0005', '2020-07-19', 'MBG0009', false, NULL, '2022-06-23 10:36:01.000', '2022-06-23 10:36:01.000', '2021-04-24 00:00:00.000', 4);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('HOL0001', '2020-07-28', 'MBG0009', false, NULL, '2022-06-23 10:37:02.000', '2022-06-23 10:37:02.000', '2021-05-03 00:00:00.000', 5);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0012', '2021-01-31', 'MBG0009', false, NULL, '2022-06-23 10:38:01.000', '2022-06-23 10:38:01.000', '2021-11-06 00:00:00.000', 6);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0006', '2021-03-04', 'MBG0009', false, NULL, '2022-06-23 10:43:12.000', '2022-06-23 10:43:12.000', '2021-12-08 00:00:00.000', 7);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0009', '2021-03-27', 'MBG0009', false, NULL, '2022-06-23 10:44:37.000', '2022-06-23 10:44:37.000', '2021-12-31 00:00:00.000', 8);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0011', '2019-07-19', 'inseminación', false, NULL, '2022-06-23 10:45:35.000', '2022-06-23 10:45:35.000', '2020-04-23 00:00:00.000', 9);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0010', '2019-07-20', 'inseminación', false, NULL, '2022-06-23 10:46:46.000', '2022-06-23 10:46:46.000', '2020-04-24 00:00:00.000', 10);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0013', '2019-07-24', 'inseminación', false, NULL, '2022-06-23 10:48:50.000', '2022-06-23 10:48:50.000', '2020-04-28 00:00:00.000', 11);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('HOL0001', '2019-07-26', 'inseminación', false, NULL, '2022-06-23 10:51:33.000', '2022-06-23 10:51:33.000', '2020-04-30 00:00:00.000', 12);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0012', '2019-09-19', 'BRA0001', false, NULL, '2022-06-23 10:53:32.000', '2022-06-23 10:53:32.000', '2020-06-24 00:00:00.000', 13);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('GYR0002', '2019-10-03', 'BRA0001', false, NULL, '2022-06-23 10:54:27.000', '2022-06-23 10:54:27.000', '2020-07-08 00:00:00.000', 14);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('GYR0001', '2020-06-22', 'MBG0009', false, NULL, '2022-06-23 10:55:34.000', '2022-06-23 10:55:34.000', '2021-03-28 00:00:00.000', 15);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0001', '2020-06-23', 'MBG0009', false, NULL, '2022-06-23 11:00:00.000', '2022-06-23 11:00:00.000', '2021-03-29 00:00:00.000', 16);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0007', '2020-08-07', 'MBG0009', false, NULL, '2022-06-23 11:01:06.000', '2022-06-23 11:01:06.000', '2021-05-13 00:00:00.000', 17);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0013', '2020-12-08', 'inseminación', false, NULL, '2022-06-23 11:05:23.000', '2022-06-23 11:05:23.000', '2021-09-13 00:00:00.000', 18);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0002', '2020-12-10', 'MBG0009', false, NULL, '2022-06-23 11:06:03.000', '2022-06-23 11:06:03.000', '2021-09-15 00:00:00.000', 19);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0003', '2021-05-17', 'MBG0009', false, NULL, '2022-06-23 11:08:08.000', '2022-06-23 11:08:08.000', '2022-02-20 00:00:00.000', 20);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0011', '2021-06-19', 'MBG0009', false, NULL, '2022-06-23 11:10:15.000', '2022-06-23 11:10:15.000', '2022-03-25 00:00:00.000', 21);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0010', '2021-06-22', 'MBG0009', false, NULL, '2022-06-23 11:11:59.000', '2022-06-23 11:11:59.000', '2022-03-28 00:00:00.000', 22);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MBG0001', '2020-10-13', 'MBG0009', false, NULL, '2022-06-23 11:13:02.000', '2022-06-23 11:13:02.000', '2021-07-19 00:00:00.000', 23);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MBG0004', '2021-03-07', 'MBG0009', false, NULL, '2022-06-23 11:14:26.000', '2022-06-23 11:14:26.000', '2021-12-11 00:00:00.000', 24);
+
+
+
+
+
+INSERT INTO public.partos
+(partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
+VALUES('MES0006', 'MES0014', '2020-04-25', 'NO', 'Ninguno', NULL, NULL, NULL, 1);
+INSERT INTO public.partos
+(partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
+VALUES('MES0003', 'MES0019', '2020-06-30', 'NO', 'Ninguno', NULL, NULL, NULL, 2);
+INSERT INTO public.partos
+(partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
+VALUES('MES0005', 'MES0021', '2021-04-24', 'NO', 'Ninguno', NULL, NULL, NULL, 4);
+INSERT INTO public.partos
+(partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
+VALUES('MES0008', 'MES0020', '2021-03-29', 'NO', 'Ninguno', NULL, NULL, NULL, 3);
+INSERT INTO public.partos
+(partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
+VALUES('HOL0001', 'MES0022', '2021-05-03', 'NO', 'Ninguno', NULL, NULL, NULL, 5);
+INSERT INTO public.partos
+(partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
+VALUES('MES0012', 'MES0023', '2021-11-06', 'NO', 'Ninguno', NULL, NULL, NULL, 6);
+INSERT INTO public.partos
+(partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
+VALUES('MES0006', 'MES0024', '2021-12-08', 'NO', 'Ninguno', NULL, NULL, NULL, 7);
+INSERT INTO public.partos
+(partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
+VALUES('MES0009', 'MES0025', '2021-12-31', 'NO', 'Ninguno', NULL, NULL, NULL, 8);
+INSERT INTO public.partos
+(partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
+VALUES('MES0011', 'MES0026', '2020-04-23', 'NO', 'Ninguno', NULL, NULL, NULL, 9);
+INSERT INTO public.partos
+(partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
+VALUES('MES0010', 'MES0027', '2020-04-24', 'NO', 'Ninguno', NULL, NULL, NULL, 10);
+INSERT INTO public.partos
+(partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
+VALUES('MES0013', 'MGH0001', '2020-04-28', 'NO', 'Ninguno', NULL, NULL, NULL, 11);
+INSERT INTO public.partos
+(partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
+VALUES('HOL0001', 'MES0028', '2020-04-30', 'NO', 'Ninguno', NULL, NULL, NULL, 12);
+INSERT INTO public.partos
+(partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
+VALUES('MES0012', 'MES0029', '2020-06-24', 'NO', 'Ninguno', NULL, NULL, NULL, 13);
+INSERT INTO public.partos
+(partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
+VALUES('GYR0002', 'MES0030', '2020-07-08', 'NO', 'Ninguno', NULL, NULL, NULL, 14);
+INSERT INTO public.partos
+(partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
+VALUES('GYR0001', 'MES0031', '2021-03-29', 'NO', 'Ninguno', NULL, NULL, NULL, 15);
+INSERT INTO public.partos
+(partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
+VALUES('MES0001', 'MES0032', '2020-04-23', 'NO', 'Ninguno', NULL, NULL, NULL, 16);
+INSERT INTO public.partos
+(partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
+VALUES('MES0007', 'MES0033', '2021-05-13', 'NO', 'Ninguno', NULL, NULL, NULL, 17);
+INSERT INTO public.partos
+(partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
+VALUES('MES0013', 'MES0035', '2021-09-13', 'NO', 'Ninguno', NULL, NULL, NULL, 18);
+INSERT INTO public.partos
+(partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
+VALUES('MES0002', 'MES0036', '2021-09-15', 'NO', 'Ninguno', NULL, NULL, NULL, 19);
+INSERT INTO public.partos
+(partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
+VALUES('MES0003', 'MES0038', '2022-02-20', 'NO', 'Ninguno', NULL, NULL, NULL, 20);
+INSERT INTO public.partos
+(partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
+VALUES('MES0011', 'MES0039', '2022-03-25', 'NO', 'Ninguno', NULL, NULL, NULL, 21);
+INSERT INTO public.partos
+(partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
+VALUES('MES0010', 'MES0040', '2022-03-28', 'NO', 'Ninguno', NULL, NULL, NULL, 22);
+INSERT INTO public.partos
+(partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
+VALUES('MBG0001', 'MES0034', '2021-05-19', 'NO', 'Ninguno', NULL, NULL, NULL, 23);
+INSERT INTO public.partos
+(partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
+VALUES('MBG0004', 'MES0037', '2021-12-11', 'NO', 'Ninguno', NULL, NULL, NULL, 24);
+
 

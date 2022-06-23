@@ -19,5 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::get('{id}/vacunas', 'VacunasController@SelectVacunas');
 Route::get('{id}/nutricion', 'NutricionController@Calculo');
-Route::get('{id}/ordeño', 'OrdeñoController@FechaOrdeño');
+Route::get('{id}/ordeno', 'OrdeñoController@FechaOrdeño');
 Route::get('{id}/actividades', 'ActividadesController@SelectActividades');

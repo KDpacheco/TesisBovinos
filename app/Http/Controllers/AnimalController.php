@@ -35,6 +35,7 @@ class AnimalController extends Controller
                     ->join('estados', 'animal.animal_estado', '=', 'estados.estados_id')
                     ->where('animal_estado', '!=', 2)
                     ->where('animal_estado', '!=', 3)
+                    ->where('animal_id','!=',"inseminación")
                     ->whereBetween('animal_nacimiento', array($request->from_date, $request->to_date))
                     ->get();
             } else {
@@ -44,6 +45,7 @@ class AnimalController extends Controller
                     ->join('estados', 'animal.animal_estado', '=', 'estados.estados_id')
                     ->where('animal_estado', '!=', 2)
                     ->where('animal_estado', '!=', 3)
+                    ->where('animal_id','!=',"inseminación")
                     ->get();
             }
             return datatables()
@@ -64,6 +66,7 @@ class AnimalController extends Controller
                     <button class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top"
                         title="Informe Individual del animal"><i class="mdi mdi-file-pdf"></i>
                     </button></a>
+                    <a href="' . route('animal.edit', $user->animal_id) . '">
                     <button class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top"
                         title="editar"><i class="ti-pencil"></i>
                     </button></a>
@@ -176,11 +179,23 @@ class AnimalController extends Controller
                 $animales->codigo_bien = $request->get('código');
             }
         }
+        if ($animales->animal_arete == $request->get('arete')) {
+            $animales->animal_arete= $request->get('arete');
+        } else {
+            $prueba = Animal::where('animal_arete', '=', $request->get('arete'))->exists();
+            if ($prueba) {
+                $errors = new MessageBag();
+                $errors->add('arete', 'numero de arete ya esta en uso');
+                $razas = DB::table('raza')->get();
+                return back()->withErrors($errors);
+            } else {
+                $animales->animal_arete = $request->get('arete');
+            }
+        }
         $animales->animal_madre = $request->get('animal_madre');
         $animales->animal_padre = $request->get('animal_padre');
         $animales->animal_color = $request->get('color');
         $animales->animal_peso = $request->get('peso');
-        $animales->animal_arete=$request->get('arete');
         if ($request->get('raza') == "other") {
             $razas = new Raza;
             $razas->raza_nombre = $rrquest->get('nueva_raza');

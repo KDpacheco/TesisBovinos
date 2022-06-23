@@ -42,7 +42,7 @@ SRB - Ordeño
             </ul>
         </div>
         @endif
-        {!! Form::open(array('url'=>'ordeño','method'=>'POST','autocomplete'=>'off')) !!}
+        {!! Form::model($ordeño,['method'=>'PATCH','route'=>['ordeno.update',$ordeño->registro_ordeño_id]]) !!}
         {{ Form::token() }}
         <div class="row">
             <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
@@ -52,7 +52,7 @@ SRB - Ordeño
                         title="Seleccione Código del animal">
                         <option value="" disabled="" selected="">Seleccione Código: </option>
                         @foreach ($animales as $r)
-                        @if (old('código')==$r->animal_id )
+                        @if (old('código',$ordeño->animal_id)==$r->animal_id )
                         <option selected value="{{ $r->animal_id }}">{{ $r->animal_id}}</option>
                         @else
                         <option value="{{ $r->animal_id }}">
@@ -67,7 +67,7 @@ SRB - Ordeño
             <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
                 <div class="form-group">
                     <label>Fecha de Ordeño</label>
-                    <input id="ordeño" type="date" name="fecha" value="{{ old('fecha') }}" class="form-control" data-toggle="tooltip" data-placement="top"
+                    <input id="ordeño" type="date" name="fecha" value="{{ old('fecha',$ordeño->registro_ordeño_fecha) }}" class="form-control" data-toggle="tooltip" data-placement="top"
                         title="Fecha de ordeño">
                 </div>
             </div>
@@ -75,7 +75,7 @@ SRB - Ordeño
             <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
                 <div class="form-group">
                     <label>Cantidad de veces Ordeñada</label>
-                    <input type="number" name="cantidad"  class="form-control" value="{{ old('cantidad') }}" placeholder="veces ordeñada"
+                    <input type="number" name="cantidad"  class="form-control" value="{{ old('cantidad',$ordeño->registro_ordeño_cantidad) }}" placeholder="veces ordeñada"
                         data-toggle="tooltip" data-placement="top" title="Veces ordeñada en el día">
                 </div>
             </div>
@@ -83,7 +83,7 @@ SRB - Ordeño
             <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
                 <div class="form-group">
                     <label>Litros obtenidos</label>
-                    <input type="number" name="litros" step=".01" value="{{ old('litros') }}" class="form-control" placeholder="litros"
+                    <input type="number" name="litros" step=".01" value="{{ old('litros',$ordeño->registro_ordeño_litros) }}" class="form-control" placeholder="litros"
                         data-toggle="tooltip" data-placement="top" title="Litros Obtenidos">
                 </div>
             </div>

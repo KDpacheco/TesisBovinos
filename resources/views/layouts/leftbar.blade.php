@@ -59,10 +59,20 @@
                                 <h5 class="menu-title">Menu </h5>
                             </li>
                             <li>
-                                <a href="{{url('/animal')}}"><img
-                                        src="{{ asset('assets/images/svg-icon/frontend.svg') }}" class="img-fluid"
-                                        alt="frontend"><span> Animales</span>
+                                <a href="javaScript:void();">
+                                    <img src="{{ asset('assets/images/svg-icon/frontend.svg') }}" class="img-fluid"
+                                        alt="frontend"><span>Ganado</span>
                                 </a>
+                            <ul class="vertical-submenu">
+                            <li>
+                                <a href="{{url('/animal')}}">Animales
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{url('/razas')}}">Razas
+                                </a>
+                            </li>
+                            </ul>
                             </li>
                             <li>
                                 <a href="javaScript:void();">
@@ -83,7 +93,7 @@
                                         alt="frontend"><span>Producción</span>
                                 </a>
                                 <ul class="vertical-submenu">
-                                    <li><a href="{{url('/ordeño')}}">Registro de Ordeño</a></li>
+                                    <li><a href="{{url('/ordeno')}}">Registro de Ordeño</a></li>
 
                                 </ul>
 
@@ -129,9 +139,9 @@
                             <li><a href="{{url('/ventas')}}"><img
                                         src="{{ asset('assets/images/svg-icon/calender.svg') }}" class="img-fluid"
                                         alt="appointments">Ventas</a></li>
-                            <li><a href="{{url('/compradores')}}"><img
+                            <li><a href="{{url('/clientes')}}"><img
                                         src="{{ asset('assets/images/svg-icon/doctor.svg') }}" class="img-fluid"
-                                        alt="doctors">Compradores</a></li>
+                                        alt="doctors">Clientes</a></li>
                         </ul>
                     </div>
                     <div class="tab-pane fade" id="v-pills-uikits" role="tabpanel" aria-labelledby="v-pills-uikits-tab">

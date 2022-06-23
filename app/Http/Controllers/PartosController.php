@@ -40,7 +40,11 @@ class PartosController extends Controller
             return '<a href="' . route('partos.individual', $pdf->partos_id) . '">
             <button class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top"
                 title="Informe del parto"><i class="mdi mdi-file-pdf"></i>
-            </button></a>';
+            </button></a>
+            <a href="' . route('partos.edit', $pdf->partos_id) . '">
+                <button class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top"
+                        title="editar"><i class="ti-pencil"></i>
+                    </button></a>';
         }
         )
         ->rawColumns(['pdf'])
@@ -58,12 +62,10 @@ class PartosController extends Controller
     }
     public function edit($id)
     {
-        $data = Partos::join('animal', 'animal.animal_id', '=', 'partos.hijo_id')
-            ->join('embarazos', 'embarazos.embarazos_id', '=', 'partos.embarazo_id')
-            ->select('animal.*', 'partos.*', 'embarazos.embarazos_id', 'embarazos.fecha_aproximada')
+        $data = Partos::join('embarazos', 'embarazos.embarazos_id', '=', 'partos.embarazo_id')
+            ->select('partos.*', 'embarazos.embarazos_id', 'embarazos.fecha_aproximada')
             ->where('partos.partos_id', '=', $id)->first();
-        $razas = DB::table('raza')->get();
-        return view("partos.edit", ["parto" => $data, "razas" => $razas]);
+        return view("partos.edit", ["parto" => $data]);
     }
     public function store(AnimalFormRequest $request, RazaFormRequest $request2, PartosFormRequest $request3)
     {
@@ -73,6 +75,8 @@ class PartosController extends Controller
         $animales->animal_padre = $request->get('animal_padre');
         $animales->animal_color = $request->get('color');
         $animales->animal_peso = $request->get('peso');
+        $animales->codigo_bien=$request->get('código');
+        $animales->animal_arete=$request->get('arete');
         if ($request->get('raza') == "other") {
             $razas = new Raza;
             $razas->raza_nombre = $request2->get('nueva_raza');
@@ -124,42 +128,18 @@ class PartosController extends Controller
         return redirect('partos');
     }
 
-    public function update(AnimalFormRequest $request, RazaFormRequest $request2, PartosFormRequest $request3, $id1, $id2)
+    public function update(PartosFormRequest $request3, $id1)
     {
-        $animales = Animal::findOrFail($id2);
-        $animales->animal_id = $request->get('código');
-        $animales->animal_madre = $request->get('animal_madre');
-        $animales->animal_padre = $request->get('animal_padre');
-        $animales->animal_color = $request->get('color');
-        $animales->animal_peso = $request->get('peso');
-        if ($request->get('raza') == "other") {
-            $razas = new Raza;
-            $razas->raza_nombre = $request2->get('nueva_raza');
-            $razas->save();
-            $raza2 = DB::table('raza')->get()->last();
-            $animales->animal_raza = $raza2->raza_id;
-        } else {
-            $animales->animal_raza = $request->get('raza');
-        }
-        $animales->animal_sexo = $request->get('sexo');
-        $animales->animal_categoria = 1;
-        $animales->animal_nacimiento = $request->get('nacimiento');
-        $animales->animal_imagen = $request->get('animal_imagen');
-        $animales->animal_estado = 1;
-        $animales->update();
 
         $partos = Partos::findOrFail($id1);
-        $partos->partos_madre = $request3->get('animal_madre');
-        $partos->hijo_id = $request3->get('código');
+        $animales=Animal::findOrFail($partos->hijo_id);
+        $animales->animal_nacimiento=$request3->get('nacimiento');
+        $animales->update();
         $partos->partos_fecha = $request3->get('nacimiento');
         $partos->partos_complicaciones = $request3->get('complicaciones');
-        $partos->partos_descripción = $request3->get('descrip');
+        $partos->partos_descripción = $request3->get('descripción');
         $partos->embarazo_id = $request3->get('embarazo_id');
         $partos->update();
-
-        $embarazo = Embarazo::findOrFail($request->embarazo_id);
-        $embarazo->embarazo_activo = false;
-        $embarazo->update();
         return redirect('partos');
     }
 }

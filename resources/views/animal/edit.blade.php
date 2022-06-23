@@ -58,6 +58,14 @@ SRB - Animales
             </div>
             <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
                 <div class="form-group">
+                    <label>Numero de Arete</label>
+                    <input type="number" name="arete" value="{{ old('arete',$animal->animal_arete)}}" class="form-control"
+                        placeholder="Arete Animal" data-toggle="tooltip" data-placement="top"
+                        title="Escribe el arete del animal">
+                </div>
+            </div>
+            <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                <div class="form-group">
                     <label>Código o numeración de la Madre</label>
                     <input type="text" name="animal_madre" value="{{ old('animal_madre',$animal->animal_madre) }}" class="form-control"
                         placeholder="Código Animal" data-toggle="tooltip" data-placement="top"

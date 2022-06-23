@@ -49,9 +49,17 @@ SRB - Partos
                 <div class="form-group">
                     <label>Código o numeración del animal</label>
                     <input type="text" name="código" value="{{ old('código') }}" class="form-control" placeholder="Código Animal"
-                        data-toggle="tooltip" data-placement="top" title="Escribe el código o numeración del animal">
+                        data-toggle="tooltip" data-placement="top" title="Escribe el código de bien del animal">
     
                     
+                </div>
+            </div>
+            <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                <div class="form-group">
+                    <label>Numero de Arete</label>
+                    <input type="number" name="arete" value="{{ old('arete') }}" class="form-control"
+                        placeholder="Arete Animal" data-toggle="tooltip" data-placement="top"
+                        title="Escribe el arete del animal">
                 </div>
             </div>
             <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">

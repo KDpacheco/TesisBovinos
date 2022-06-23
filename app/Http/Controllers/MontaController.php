@@ -139,6 +139,7 @@ class MontaController extends Controller
         }
         $monta->monta_padre = $request->get('código_padre');
         $monta->monta_fecha = $request->get('fecha');
+        $monta->monta_madre = $request->get('código_madre');
         $monta->update();
         $madre = Animal::findOrFail($request->get('código_madre'));
         $madre->animal_estado = 5;

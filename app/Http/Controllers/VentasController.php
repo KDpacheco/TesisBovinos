@@ -49,7 +49,11 @@ class VentasController extends Controller
                     return '<a href="' . route('muerte.individual', $pdf->ventas_id) . '">
                 <button class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top"
                     title="Informe de venta"><i class="mdi mdi-file-pdf"></i>
-                </button></a>';
+                </button></a>
+                <a href="' . route('ventas.edit', $pdf->ventas_id) . '">
+                <button class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top"
+                        title="editar"><i class="ti-pencil"></i>
+                    </button></a>';
                 })
                 ->rawColumns(['btn', 'pdf'])
                 ->make(true);
@@ -64,7 +68,7 @@ class VentasController extends Controller
      */
     public function create()
     {
-        $animales = Animal::where('animal_estado', '<', 2)->orWhere('animal_estado','>',3)->get();
+        $animales = Animal::where('animal_estado', '<', 2)->where('animal_id','!=',"inseminación")->orWhere('animal_estado','>',3)->get();
         $clientes=Cliente::get();
 
         return view('ventas.create', ["animales" => $animales,"clientes"=>$clientes]);
@@ -91,9 +95,11 @@ class VentasController extends Controller
       else{
         $ventas->cedula_cliente = $request->get('cliente');
       }
+      $animal = Animal::findOrFail($request->get('animal'));
         $ventas->animal_id = $request->get('animal');
         $ventas->ventas_fecha = $request->get('fecha');
         $ventas->ventas_valor = $request->get('valor');
+        $ventas->estado_anterior= $animal->animal_estado;
         $ventas->save();
         $animal = Animal::findOrFail($request->get('animal'));
         $animal->animal_estado = 3;
@@ -120,7 +126,9 @@ class VentasController extends Controller
      */
     public function edit($id)
     {
-        //
+        $animales = Animal::where('animal_estado', '<', 2)->Where('animal_id','!=',"inseminación")->orWhere('animal_estado','>',3)->get();
+        $clientes=Cliente::get();
+        return view('ventas.edit', ["animales" => $animales,"venta"=>Ventas::findOrFail($id),"clientes"=>$clientes]);
     }
 
     /**
@@ -132,7 +140,36 @@ class VentasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $cliente= new Cliente;
+        $ventas = Ventas::findOrFail($id);
+
+        if($request->get('cliente')=="nuevo")
+        {
+            $cliente->cedula=$request->get('cedula');
+            $cliente->nombre=$request->get('nombre');
+            $cliente->teléfono=$request->get('telefono');
+            $cliente->save();
+            $ventas->cedula_cliente = $request->get('cedula');
+        }
+      else{
+        $ventas->cedula_cliente = $request->get('cliente');
+      }
+      $animal = Animal::findOrFail($request->get('animal'));
+      if($ventas->animal_id!=$animal->animal_id)
+        {
+            $animal2=Animal::findOrFail($ventas->animal_id);
+            $animal2->animal_estado=$ventas->estado_anterior;
+            $animal2->update();
+        }
+        $ventas->animal_id = $request->get('animal');
+        $ventas->ventas_fecha = $request->get('fecha');
+        $ventas->ventas_valor = $request->get('valor');
+        $ventas->estado_anterior= $animal->animal_estado;
+        $ventas->save();
+        $animal = Animal::findOrFail($request->get('animal'));
+        $animal->animal_estado = 3;
+        $animal->update();
+        return redirect('ventas');
     }
 
     /**

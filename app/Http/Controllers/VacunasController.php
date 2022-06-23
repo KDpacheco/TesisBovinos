@@ -62,7 +62,7 @@ class VacunasController extends Controller
 
     public function create()
     {
-        $animales=Animal::where('animal_estado','<',2)->orWhere('animal_estado','>',3)->get();
+        $animales=Animal::where('animal_estado','<',2)->where('animal_id','!=',"inseminación")->orWhere('animal_estado','>',3)->get();
         return view('vacunas.create',["animales"=>$animales]);
     }
 
@@ -125,7 +125,7 @@ class VacunasController extends Controller
      */
     public function edit($id)
     {
-        $animales=Animal::where('animal_estado','<',2)->orWhere('animal_estado','>',3)->get();
+        $animales=Animal::where('animal_estado','<',2)->where('animal_id','!=',"inseminación")->orWhere('animal_estado','>',3)->get();
         return view('vacunas.edit',["animales"=>$animales,"vacuna"=>Vacunas::findOrFail($id)]);
     }
 

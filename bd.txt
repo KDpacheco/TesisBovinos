@@ -1068,76 +1068,228 @@ INSERT INTO public.ventas
 (animal_id, ventas_valor, ventas_fecha, deleted_at, created_at, updated_at, cedula_cliente)
 VALUES('MBG0013', 100, '2018-09-10', NULL, '2022-06-20 16:28:24.000', '2022-06-20 16:28:24.000', '1111111113');
 
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0006', 'inseminación', '2019-07-19', 'Si', NULL, '2022-06-23 10:18:34.000', '2022-06-23 10:18:44.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0003', 'BRA0001', '2019-09-25', 'Si', NULL, '2022-06-23 10:21:47.000', '2022-06-23 10:22:07.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0008', 'MBG0009', '2020-06-23', 'Si', NULL, '2022-06-23 10:34:53.000', '2022-06-23 10:34:57.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0005', 'MBG0009', '2020-07-19', 'Si', NULL, '2022-06-23 10:35:57.000', '2022-06-23 10:36:01.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('HOL0001', 'MBG0009', '2020-07-28', 'Si', NULL, '2022-06-23 10:36:56.000', '2022-06-23 10:37:02.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0012', 'MBG0009', '2021-01-31', 'Si', NULL, '2022-06-23 10:37:53.000', '2022-06-23 10:38:01.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0006', 'MBG0009', '2021-03-04', 'Si', NULL, '2022-06-23 10:43:03.000', '2022-06-23 10:43:12.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0009', 'MBG0009', '2021-03-27', 'Si', NULL, '2022-06-23 10:44:22.000', '2022-06-23 10:44:37.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0011', 'inseminación', '2019-07-19', 'Si', NULL, '2022-06-23 10:45:29.000', '2022-06-23 10:45:35.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0010', 'inseminación', '2019-07-20', 'Si', NULL, '2022-06-23 10:46:40.000', '2022-06-23 10:46:46.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0013', 'inseminación', '2019-07-24', 'Si', NULL, '2022-06-23 10:48:44.000', '2022-06-23 10:48:50.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('HOL0001', 'inseminación', '2019-07-26', 'Si', NULL, '2022-06-23 10:51:26.000', '2022-06-23 10:51:33.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0012', 'BRA0001', '2019-09-19', 'Si', NULL, '2022-06-23 10:53:26.000', '2022-06-23 10:53:32.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('GYR0002', 'BRA0001', '2019-10-03', 'Si', NULL, '2022-06-23 10:54:21.000', '2022-06-23 10:54:27.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('GYR0001', 'MBG0009', '2020-06-22', 'Si', NULL, '2022-06-23 10:55:29.000', '2022-06-23 10:55:34.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0001', 'MBG0009', '2020-06-23', 'Si', NULL, '2022-06-23 10:59:44.000', '2022-06-23 11:00:00.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0007', 'MBG0009', '2020-08-07', 'Si', NULL, '2022-06-23 11:01:00.000', '2022-06-23 11:01:06.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0013', 'inseminación', '2020-12-08', 'Si', NULL, '2022-06-23 11:05:18.000', '2022-06-23 11:05:23.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0002', 'MBG0009', '2020-12-10', 'Si', NULL, '2022-06-23 11:05:58.000', '2022-06-23 11:06:03.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0003', 'MBG0009', '2021-05-17', 'Si', NULL, '2022-06-23 11:08:01.000', '2022-06-23 11:08:08.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0011', 'MBG0009', '2021-06-19', 'Si', NULL, '2022-06-23 11:10:09.000', '2022-06-23 11:10:15.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MES0010', 'MBG0009', '2021-06-22', 'Si', NULL, '2022-06-23 11:11:27.000', '2022-06-23 11:11:59.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MBG0001', 'MBG0009', '2020-10-13', 'Si', NULL, '2022-06-23 11:12:53.000', '2022-06-23 11:13:02.000');
+INSERT INTO public.monta
+(monta_madre, monta_padre, monta_fecha, monta_exitosa, deleted_at, created_at, updated_at)
+VALUES('MBG0004', 'MBG0009', '2021-03-07', 'Si', NULL, '2022-06-23 11:14:21.000', '2022-06-23 11:14:26.000');
+
+
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0006', '2019-07-19', 'inseminación', false, NULL, '2022-06-23 10:18:44.000', '2022-06-23 10:18:44.000', '2020-04-23 00:00:00.000', 1);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0003', '2019-09-25', 'BRA0001', false, NULL, '2022-06-23 10:22:07.000', '2022-06-23 10:22:07.000', '2020-06-30 00:00:00.000', 2);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0008', '2020-06-23', 'MBG0009', false, NULL, '2022-06-23 10:34:57.000', '2022-06-23 10:34:57.000', '2021-03-29 00:00:00.000', 3);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0005', '2020-07-19', 'MBG0009', false, NULL, '2022-06-23 10:36:01.000', '2022-06-23 10:36:01.000', '2021-04-24 00:00:00.000', 4);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('HOL0001', '2020-07-28', 'MBG0009', false, NULL, '2022-06-23 10:37:02.000', '2022-06-23 10:37:02.000', '2021-05-03 00:00:00.000', 5);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0012', '2021-01-31', 'MBG0009', false, NULL, '2022-06-23 10:38:01.000', '2022-06-23 10:38:01.000', '2021-11-06 00:00:00.000', 6);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0006', '2021-03-04', 'MBG0009', false, NULL, '2022-06-23 10:43:12.000', '2022-06-23 10:43:12.000', '2021-12-08 00:00:00.000', 7);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0009', '2021-03-27', 'MBG0009', false, NULL, '2022-06-23 10:44:37.000', '2022-06-23 10:44:37.000', '2021-12-31 00:00:00.000', 8);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0011', '2019-07-19', 'inseminación', false, NULL, '2022-06-23 10:45:35.000', '2022-06-23 10:45:35.000', '2020-04-23 00:00:00.000', 9);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0010', '2019-07-20', 'inseminación', false, NULL, '2022-06-23 10:46:46.000', '2022-06-23 10:46:46.000', '2020-04-24 00:00:00.000', 10);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0013', '2019-07-24', 'inseminación', false, NULL, '2022-06-23 10:48:50.000', '2022-06-23 10:48:50.000', '2020-04-28 00:00:00.000', 11);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('HOL0001', '2019-07-26', 'inseminación', false, NULL, '2022-06-23 10:51:33.000', '2022-06-23 10:51:33.000', '2020-04-30 00:00:00.000', 12);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0012', '2019-09-19', 'BRA0001', false, NULL, '2022-06-23 10:53:32.000', '2022-06-23 10:53:32.000', '2020-06-24 00:00:00.000', 13);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('GYR0002', '2019-10-03', 'BRA0001', false, NULL, '2022-06-23 10:54:27.000', '2022-06-23 10:54:27.000', '2020-07-08 00:00:00.000', 14);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('GYR0001', '2020-06-22', 'MBG0009', false, NULL, '2022-06-23 10:55:34.000', '2022-06-23 10:55:34.000', '2021-03-28 00:00:00.000', 15);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0001', '2020-06-23', 'MBG0009', false, NULL, '2022-06-23 11:00:00.000', '2022-06-23 11:00:00.000', '2021-03-29 00:00:00.000', 16);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0007', '2020-08-07', 'MBG0009', false, NULL, '2022-06-23 11:01:06.000', '2022-06-23 11:01:06.000', '2021-05-13 00:00:00.000', 17);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0013', '2020-12-08', 'inseminación', false, NULL, '2022-06-23 11:05:23.000', '2022-06-23 11:05:23.000', '2021-09-13 00:00:00.000', 18);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0002', '2020-12-10', 'MBG0009', false, NULL, '2022-06-23 11:06:03.000', '2022-06-23 11:06:03.000', '2021-09-15 00:00:00.000', 19);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0003', '2021-05-17', 'MBG0009', false, NULL, '2022-06-23 11:08:08.000', '2022-06-23 11:08:08.000', '2022-02-20 00:00:00.000', 20);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0011', '2021-06-19', 'MBG0009', false, NULL, '2022-06-23 11:10:15.000', '2022-06-23 11:10:15.000', '2022-03-25 00:00:00.000', 21);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MES0010', '2021-06-22', 'MBG0009', false, NULL, '2022-06-23 11:11:59.000', '2022-06-23 11:11:59.000', '2022-03-28 00:00:00.000', 22);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MBG0001', '2020-10-13', 'MBG0009', false, NULL, '2022-06-23 11:13:02.000', '2022-06-23 11:13:02.000', '2021-07-19 00:00:00.000', 23);
+INSERT INTO public.embarazos
+(animal_madre, embarazos_fecha, animal_padre, embarazo_activo, deleted_at, created_at, updated_at, fecha_aproximada, monta_id)
+VALUES('MBG0004', '2021-03-07', 'MBG0009', false, NULL, '2022-06-23 11:14:26.000', '2022-06-23 11:14:26.000', '2021-12-11 00:00:00.000', 24);
+
+
+
+
+
 INSERT INTO public.partos
 (partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
-VALUES('MES0006', 'MES0014', '2020-04-25', 'NO', 'Ninguno', NULL, NULL, NULL, 0);
+VALUES('MES0006', 'MES0014', '2020-04-25', 'NO', 'Ninguno', NULL, NULL, NULL, 1);
 INSERT INTO public.partos
 (partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
-VALUES('MES0003', 'MES0019', '2020-06-30', 'NO', 'Ninguno', NULL, NULL, NULL, 0);
+VALUES('MES0003', 'MES0019', '2020-06-30', 'NO', 'Ninguno', NULL, NULL, NULL, 2);
 INSERT INTO public.partos
 (partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
-VALUES('MES0005', 'MES0021', '2021-04-24', 'NO', 'Ninguno', NULL, NULL, NULL, 0);
+VALUES('MES0005', 'MES0021', '2021-04-24', 'NO', 'Ninguno', NULL, NULL, NULL, 4);
 INSERT INTO public.partos
 (partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
-VALUES('MES0008', 'MES0020', '2021-03-29', 'NO', 'Ninguno', NULL, NULL, NULL, 0);
+VALUES('MES0008', 'MES0020', '2021-03-29', 'NO', 'Ninguno', NULL, NULL, NULL, 3);
 INSERT INTO public.partos
 (partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
-VALUES('HOL0001', 'MES0022', '2021-05-03', 'NO', 'Ninguno', NULL, NULL, NULL, 0);
+VALUES('HOL0001', 'MES0022', '2021-05-03', 'NO', 'Ninguno', NULL, NULL, NULL, 5);
 INSERT INTO public.partos
 (partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
-VALUES('MES0012', 'MES0023', '2021-11-06', 'NO', 'Ninguno', NULL, NULL, NULL, 0);
+VALUES('MES0012', 'MES0023', '2021-11-06', 'NO', 'Ninguno', NULL, NULL, NULL, 6);
 INSERT INTO public.partos
 (partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
-VALUES('MES0006', 'MES0024', '2021-12-08', 'NO', 'Ninguno', NULL, NULL, NULL, 0);
+VALUES('MES0006', 'MES0024', '2021-12-08', 'NO', 'Ninguno', NULL, NULL, NULL, 7);
 INSERT INTO public.partos
 (partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
-VALUES('MES0009', 'MES0025', '2021-12-31', 'NO', 'Ninguno', NULL, NULL, NULL, 0);
+VALUES('MES0009', 'MES0025', '2021-12-31', 'NO', 'Ninguno', NULL, NULL, NULL, 8);
 INSERT INTO public.partos
 (partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
-VALUES('MES0011', 'MES0026', '2020-04-23', 'NO', 'Ninguno', NULL, NULL, NULL, 0);
+VALUES('MES0011', 'MES0026', '2020-04-23', 'NO', 'Ninguno', NULL, NULL, NULL, 9);
 INSERT INTO public.partos
 (partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
-VALUES('MES0010', 'MES0027', '2020-04-24', 'NO', 'Ninguno', NULL, NULL, NULL, 0);
+VALUES('MES0010', 'MES0027', '2020-04-24', 'NO', 'Ninguno', NULL, NULL, NULL, 10);
 INSERT INTO public.partos
 (partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
-VALUES('MES0013', 'MGH0001', '2020-04-28', 'NO', 'Ninguno', NULL, NULL, NULL, 0);
+VALUES('MES0013', 'MGH0001', '2020-04-28', 'NO', 'Ninguno', NULL, NULL, NULL, 11);
 INSERT INTO public.partos
 (partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
-VALUES('HOL0001', 'MES0028', '2020-04-30', 'NO', 'Ninguno', NULL, NULL, NULL, 0);
+VALUES('HOL0001', 'MES0028', '2020-04-30', 'NO', 'Ninguno', NULL, NULL, NULL, 12);
 INSERT INTO public.partos
 (partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
-VALUES('MES0012', 'MES0029', '2020-06-24', 'NO', 'Ninguno', NULL, NULL, NULL, 0);
+VALUES('MES0012', 'MES0029', '2020-06-24', 'NO', 'Ninguno', NULL, NULL, NULL, 13);
 INSERT INTO public.partos
 (partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
-VALUES('GYR0002', 'MES0030', '2020-07-08', 'NO', 'Ninguno', NULL, NULL, NULL, 0);
+VALUES('GYR0002', 'MES0030', '2020-07-08', 'NO', 'Ninguno', NULL, NULL, NULL, 14);
 INSERT INTO public.partos
 (partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
-VALUES('GYR0001', 'MES0031', '2021-03-29', 'NO', 'Ninguno', NULL, NULL, NULL, 0);
+VALUES('GYR0001', 'MES0031', '2021-03-29', 'NO', 'Ninguno', NULL, NULL, NULL, 15);
 INSERT INTO public.partos
 (partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
-VALUES('MES0001', 'MES0032', '2020-04-23', 'NO', 'Ninguno', NULL, NULL, NULL, 0);
+VALUES('MES0001', 'MES0032', '2020-04-23', 'NO', 'Ninguno', NULL, NULL, NULL, 16);
 INSERT INTO public.partos
 (partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
-VALUES('MES0007', 'MES0033', '2021-05-13', 'NO', 'Ninguno', NULL, NULL, NULL, 0);
+VALUES('MES0007', 'MES0033', '2021-05-13', 'NO', 'Ninguno', NULL, NULL, NULL, 17);
 INSERT INTO public.partos
 (partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
-VALUES('MES0013', 'MES0035', '2021-09-13', 'NO', 'Ninguno', NULL, NULL, NULL, 0);
+VALUES('MES0013', 'MES0035', '2021-09-13', 'NO', 'Ninguno', NULL, NULL, NULL, 18);
 INSERT INTO public.partos
 (partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
-VALUES('MES0002', 'MES0036', '2021-09-15', 'NO', 'Ninguno', NULL, NULL, NULL, 0);
+VALUES('MES0002', 'MES0036', '2021-09-15', 'NO', 'Ninguno', NULL, NULL, NULL, 19);
 INSERT INTO public.partos
 (partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
-VALUES('MES0003', 'MES0038', '2022-02-20', 'NO', 'Ninguno', NULL, NULL, NULL, 0);
+VALUES('MES0003', 'MES0038', '2022-02-20', 'NO', 'Ninguno', NULL, NULL, NULL, 20);
 INSERT INTO public.partos
 (partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
-VALUES('MES0011', 'MES0039', '2022-03-25', 'NO', 'Ninguno', NULL, NULL, NULL, 0);
+VALUES('MES0011', 'MES0039', '2022-03-25', 'NO', 'Ninguno', NULL, NULL, NULL, 21);
 INSERT INTO public.partos
 (partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
-VALUES('MES0010', 'MES0040', '2022-03-28', 'NO', 'Ninguno', NULL, NULL, NULL, 0);
+VALUES('MES0010', 'MES0040', '2022-03-28', 'NO', 'Ninguno', NULL, NULL, NULL, 22);
 INSERT INTO public.partos
 (partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
-VALUES('MBG0001', 'MES0034', '2021-05-19', 'NO', 'Ninguno', NULL, NULL, NULL, 0);
+VALUES('MBG0001', 'MES0034', '2021-05-19', 'NO', 'Ninguno', NULL, NULL, NULL, 23);
 INSERT INTO public.partos
 (partos_madre, hijo_id, partos_fecha, partos_complicaciones, partos_descripción, deleted_at, created_at, updated_at, embarazo_id)
-VALUES('MBG0004', 'MES0037', '2021-12-11', 'NO', 'Ninguno', NULL, NULL, NULL, 0);
+VALUES('MBG0004', 'MES0037', '2021-12-11', 'NO', 'Ninguno', NULL, NULL, NULL, 24);
+
 

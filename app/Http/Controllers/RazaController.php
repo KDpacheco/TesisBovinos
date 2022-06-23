@@ -76,7 +76,7 @@ class RazaController extends Controller
     public function datos()
     {
 
-        $raza = Raza::get();
+        $raza = Raza::where('raza_id','!=',0)->get();
 
         return datatables()->of($raza)
             ->addColumn('pdf', function ($pdf) {

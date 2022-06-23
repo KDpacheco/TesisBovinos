@@ -48,7 +48,7 @@ SRB - Montas
             <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
                 <div class="form-group">
                     <label>Código de la Madre</label>
-                    <select name="código_madre" class="form-control selectpicker" data-toggle="tooltip" data-placement="top"
+                    <select name="código_madre" class="form-control selectpicker" data-live-search="true" data-toggle="tooltip" data-placement="top"
                         title="Seleccione Código de la madre">
                         <option value="" disabled="" selected="">Seleccione Código: </option>
                         @foreach ($animales as $r)
@@ -62,6 +62,7 @@ SRB - Montas
                         @endif
                         @endif
                         @endforeach
+                   
                     </select>
                 </div>
             </div>
@@ -69,10 +70,9 @@ SRB - Montas
 
                 <div class="form-group">
                     <label>Código del Padre</label>
-                    <select name="código_padre" class="form-control selectpicker" data-toggle="tooltip" data-placement="top"
+                    <select name="código_padre" class="form-control selectpicker" data-live-search="true" data-toggle="tooltip" data-placement="top"
                         title="Seleccione Código del padre">
                         <option value="" disabled="" selected="">Seleccione Código: </option>
-                       
                         @foreach ($animales as $r)
                         @if (old('código_padre',$monta->monta_padre)==$r->animal_id )
                         <option selected value="{{ $r->animal_id }}">{{ $r->animal_id}}</option>
@@ -84,6 +84,7 @@ SRB - Montas
                         @endif
                         @endif
                         @endforeach
+                        
                     </select>
                 </div>
             </div>
@@ -109,3 +110,5 @@ SRB - Montas
     </div>
 </div>
 @endsection
+
+

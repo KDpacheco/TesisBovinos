@@ -54,7 +54,7 @@ class PesoController extends Controller
      */
     public function create()
     {
-        $animales=Animal::where('animal_estado','<',2)->orWhere('animal_estado','>',3)->get();
+        $animales=Animal::where('animal_estado','<',2)->where('animal_id','!=',"inseminación")->orWhere('animal_estado','>',3)->get();
         return view('peso.create',["animales"=>$animales]);
     }
 
@@ -99,7 +99,7 @@ class PesoController extends Controller
      */
     public function edit($id)
     {
-        $animales=Animal::where('animal_estado','<',2)->orWhere('animal_estado','>',3)->get();
+        $animales=Animal::where('animal_estado','<',2)->where('animal_id','!=',"inseminación")->orWhere('animal_estado','>',3)->get();
         return view('peso.edit',["animales"=>$animales,"peso"=>Peso::findOrFail($id)]);
     }
 

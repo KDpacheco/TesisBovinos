@@ -71,7 +71,7 @@ class MuerteController extends Controller
      */
     public function create()
     {
-        $animales = Animal::where('animal_estado', '<', 2)->orWhere('animal_estado','>',3)->get();
+        $animales = Animal::where('animal_estado', '<', 2)->where('animal_id','!=',"inseminación")->orWhere('animal_estado','>',3)->get();
         return view('muertes.create', ["animales" => $animales]);
     }
 
@@ -115,7 +115,7 @@ class MuerteController extends Controller
      */
     public function edit($id)
     {
-        $animales = Animal::where('animal_estado', '<', 2)->orWhere('animal_estado','>',3)->get();
+        $animales = Animal::where('animal_estado', '<', 2)->Where('animal_id','!=',"inseminación")->orWhere('animal_estado','>',3)->get();
         return view('muertes.edit', ["animales" => $animales,"muerte"=>Muertes::findOrFail($id)]);
     }
 

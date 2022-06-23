@@ -51,6 +51,7 @@ SRB - Muertes
                     <select name="animal" class="form-control selectpicker" data-live-search="true" data-toggle="tooltip" data-placement="top"
                         title="Seleccione Código del animal">
                         <option value="" disabled="" selected="">Seleccione Código: </option>
+                        <option selected value="{{ $muerte->animal_id }}" >{{ $muerte->animal_id }}</option>
                         @foreach ($animales as $r)
                         @if (old('animal',$muerte->animal_id)==$r->animal_id )
                         <option selected value="{{ $r->animal_id }}">{{ $r->animal_id}}</option>
@@ -60,6 +61,7 @@ SRB - Muertes
                         </option>
                         @endif   
                         @endforeach
+                       
                     </select>
                 </div>
             </div>

@@ -152,7 +152,7 @@ class ReportesController extends Controller
     {
         $ordeño = Ordeño::where('registro_ordeño_id', '=', $id)->first();
         $fecha = Carbon::now()->toDateString();
-        $pdf = PDF::loadView('ordeño.individual', ["monta" => $ordeño]);
+        $pdf = PDF::loadView('ordeno.individual', ["monta" => $ordeño]);
         return $pdf->stream('reporte-ordeño-codigo-' . $id . '--' . $fecha . '.pdf');
     }
     public function pesoindividual($id)

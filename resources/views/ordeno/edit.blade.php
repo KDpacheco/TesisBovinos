@@ -1,5 +1,5 @@
 @section('title')
-SRB - Montas
+SRB - Ordeño
 @endsection
 @extends('layouts.main')
 @section('style')
@@ -29,7 +29,7 @@ SRB - Montas
 <div class="col-lg-12">
     <div class="card m-b-30">
         <div class="card-header">
-            <h5 class="card-title">Montas o iseminaciones</h5>
+            <h5 class="card-title">Ordeño</h5>
         </div>
         @if (count($errors)>0)
         <div class="alert alert-danger">
@@ -42,60 +42,53 @@ SRB - Montas
             </ul>
         </div>
         @endif
-        {!! Form::model($monta,['method'=>'PATCH','route'=>['monta.update',$monta->monta_id]]) !!}
+        {!! Form::model($ordeño,['method'=>'PATCH','route'=>['ordeno.update',$ordeño->registro_ordeño_id]]) !!}
         {{ Form::token() }}
         <div class="row">
             <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
                 <div class="form-group">
-                    <label>Código de la Madre</label>
-                    <select name="código_madre" class="form-control selectpicker" data-toggle="tooltip" data-placement="top"
-                        title="Seleccione Código de la madre">
+                    <label>Código del Animal</label>
+                    <select id="select-animal4" name="código" class="form-control selectpicker" data-live-search="true" data-toggle="tooltip" data-placement="top"
+                        title="Seleccione Código del animal">
                         <option value="" disabled="" selected="">Seleccione Código: </option>
                         @foreach ($animales as $r)
-                        @if (old('código_madre',$monta->monta_madre)==$r->animal_id )
+                        @if (old('código',$ordeño->animal_id)==$r->animal_id )
                         <option selected value="{{ $r->animal_id }}">{{ $r->animal_id}}</option>
                         @else
-                        @if ($r->animal_sexo=='Hembra')
                         <option value="{{ $r->animal_id }}">
                             {{ $r->animal_id}}
                         </option>
-                        @endif
                         @endif
                         @endforeach
                     </select>
                 </div>
             </div>
+    
             <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
-
                 <div class="form-group">
-                    <label>Código del Padre</label>
-                    <select name="código_padre" class="form-control selectpicker" data-toggle="tooltip" data-placement="top"
-                        title="Seleccione Código del padre">
-                        <option value="" disabled="" selected="">Seleccione Código: </option>
-                       
-                        @foreach ($animales as $r)
-                        @if (old('código_padre',$monta->monta_padre)==$r->animal_id )
-                        <option selected value="{{ $r->animal_id }}">{{ $r->animal_id}}</option>
-                        @else
-                        @if ($r->animal_sexo=='Macho')
-                        <option value="{{ $r->animal_id }}">
-                            {{ $r->animal_id}}
-                        </option>
-                        @endif
-                        @endif
-                        @endforeach
-                    </select>
+                    <label>Fecha de Ordeño</label>
+                    <input id="ordeño" type="date" name="fecha" value="{{ old('fecha',$ordeño->registro_ordeño_fecha) }}" class="form-control" data-toggle="tooltip" data-placement="top"
+                        title="Fecha de ordeño">
                 </div>
             </div>
+    
             <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
                 <div class="form-group">
-                    <label>Fecha de Monta</label>
-                    <input type="date" name="fecha" value="{{ old('fecha',$monta->monta_fecha) }}" class="form-control" data-toggle="tooltip" data-placement="top"
-                        title="Seleccione fecha de embarazo">
-
+                    <label>Cantidad de veces Ordeñada</label>
+                    <input type="number" name="cantidad"  class="form-control" value="{{ old('cantidad',$ordeño->registro_ordeño_cantidad) }}" placeholder="veces ordeñada"
+                        data-toggle="tooltip" data-placement="top" title="Veces ordeñada en el día">
+                </div>
+            </div>
+    
+            <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
+                <div class="form-group">
+                    <label>Litros obtenidos</label>
+                    <input type="number" name="litros" step=".01" value="{{ old('litros',$ordeño->registro_ordeño_litros) }}" class="form-control" placeholder="litros"
+                        data-toggle="tooltip" data-placement="top" title="Litros Obtenidos">
                 </div>
             </div>
         </div>
+        <input style="display: none" name="ordeño_parto" id="Ordeño_parto" >
         <div>
             <p class="text-center">
                 <button type="reset" class="btn btn-info" style="margin-right: 20px;"><i class="zmdi zmdi-roller"></i>

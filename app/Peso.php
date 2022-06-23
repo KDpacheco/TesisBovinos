@@ -13,6 +13,7 @@ class Peso extends Model
         
         'animal_id',
         'registro_peso_fecha',
-        'registro_peso_valor'
+        'registro_peso_valor',
+        'peso_anterior'
     ];
 }

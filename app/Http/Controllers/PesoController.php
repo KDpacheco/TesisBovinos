@@ -33,8 +33,12 @@ class PesoController extends Controller
         ->addColumn('pdf', function ($pdf) {
             return '<a href="' . route('peso.individual', $pdf->registro_peso_id) . '">
             <button class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top"
-                title="Informe del parto"><i class="mdi mdi-file-pdf"></i>
-            </button></a>';
+                title="Informe del peso"><i class="mdi mdi-file-pdf"></i>
+            </button></a>
+            <a href="' . route('peso.edit', $pdf->registro_peso_id) . '">
+                <button class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top"
+                        title="editar"><i class="ti-pencil"></i>
+                    </button></a>';
         }
         )
         ->rawColumns(['pdf'])
@@ -64,7 +68,9 @@ class PesoController extends Controller
     {
         $peso= new Peso;
         $animal=Animal::findOrFail($request->get('animal'));
+        
         $peso->animal_id=$request->get('animal');
+        $peso->peso_anterior=$animal->animal_peso;
         $peso->registro_peso_fecha=$request->get('fecha');
         $peso->registro_peso_valor=$request->get('peso');
         $peso->save();
@@ -93,7 +99,8 @@ class PesoController extends Controller
      */
     public function edit($id)
     {
-        
+        $animales=Animal::where('animal_estado','<',2)->orWhere('animal_estado','>',3)->get();
+        return view('peso.edit',["animales"=>$animales,"peso"=>Peso::findOrFail($id)]);
     }
 
     /**
@@ -103,9 +110,24 @@ class PesoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PesoFormRequest $request, $id)
     {
-        //
+        $peso= Peso::findOrFail($id);
+        $animal=Animal::findOrFail($request->get('animal'));
+        if($animal->animal_id!=$peso->animal_id)
+        {
+            $animal2=Animal::findOrFail($peso->animal_id);
+            $animal2->animal_peso=$peso->peso_anterior;
+            $animal2->update();
+        }
+        $peso->animal_id=$request->get('animal');
+        $peso->peso_anterior=$animal->animal_peso;
+        $peso->registro_peso_fecha=$request->get('fecha');
+        $peso->registro_peso_valor=$request->get('peso');
+        $peso->update();
+        $animal->animal_peso=$request->get('peso');
+        $animal->update();
+        return redirect('peso');
     }
 
     /**

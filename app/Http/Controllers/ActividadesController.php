@@ -48,7 +48,11 @@ class ActividadesController extends Controller
             return '<a href="' . route('actividades.individual', $pdf->registro_actividades_id) . '">
             <button class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top"
                 title="Informe de la activdad"><i class="mdi mdi-file-pdf"></i>
-            </button></a>';
+            </button></a>
+            <a href="' . route('actividades.edit', $pdf->registro_actividades_id) . '">
+                <button class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top"
+                        title="editar"><i class="ti-pencil"></i>
+                    </button></a>';
         }
         )
         ->rawColumns(['pdf','proxima'])
@@ -66,7 +70,7 @@ class ActividadesController extends Controller
      */
     public function create()
     {
-        $animales=Animal::where('animal_estado','<',2)->orWhere('animal_estado','>',3)->get();
+        $animales=Animal::where('animal_estado','<',2)->where('animal_id','!=',"inseminación")->orWhere('animal_estado','>',3)->get();
         return view('actividades.create',["animales"=>$animales]);
     }
 
@@ -130,7 +134,8 @@ class ActividadesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $animales=Animal::where('animal_estado','<',2)->Where('animal_id','!=',"inseminación")->orWhere('animal_estado','>',3)->get();
+        return view('actividades.edit',["animales"=>$animales,'actividad'=>Actividades::findOrFail($id)]);
     }
 
     /**
@@ -140,9 +145,15 @@ class ActividadesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ActividadesFormRequest $request, $id)
     {
-        //
+        $actividades = Actividades::findOrFail($id);
+        $actividades->animal_id = $request->get('animal');
+        $actividades->actividades_id=$request->get('actividad');
+        $actividades->registro_actividades_fecha=$request->get('fecha');
+        $actividades->registro_actividades_proxima=$this->CalcFecha($request->get('fecha'),$request->get('actividad'));
+        $actividades->update();
+        return redirect('actividades'); 
     }
 
     /**

@@ -50,7 +50,7 @@ class MontaController extends Controller
                 <button class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top"
                     title="Informe Individual del animal"><i class="mdi mdi-file-pdf"></i>
                 </button></a>
-                <a href="' . route('monta.edit', $pdf->monta_id) . '"
+                <a href="' . route('monta.edit', $pdf->monta_id) . '">
                 <button class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top"
                         title="editar"><i class="ti-pencil"></i>
                     </button></a>
@@ -105,34 +105,38 @@ class MontaController extends Controller
         $monta->monta_padre = $request->get('código_padre');
         $monta->monta_fecha = $request->get('fecha');
         $monta->save();
-        if($request->get('código_padre')!="inseminación")
-        {
+        if ($request->get('código_padre') != "inseminación") {
             $padre = Animal::findOrFail($request->get('código_padre'));
-        if ($padre->animal_categoria == 2) {
-            $padre->animal_categoria = 4;
-            $padre->update();
+            if ($padre->animal_categoria == 2) {
+                $padre->animal_categoria = 4;
+                $padre->update();
+            }
         }
-        }
-        
+
         $madre = Animal::findOrFail($request->get('código_madre'));
         $madre->animal_estado = 5;
         $madre->update();
         return redirect('monta');
     }
 
-    public function update(MontaFormRequest $request,$id)
+    public function update(MontaFormRequest $request, $id)
     {
         $monta = Monta::findOrFail($id);
-        if($monta->monta_madre==$request->get('código_madre'))
-        {
+        if ($monta->monta_madre == $request->get('código_madre')) {
             $monta->monta_madre = $request->get('código_madre');
-        }
-        else{
-            $madreA= Animal::findOrFail($monta->monta_madre);
-            $madreA->animal_estado=1;
+        } else {
+            $madreA = Animal::findOrFail($monta->monta_madre);
+            $madreA->animal_estado = 1;
             $madreA->update();
         }
-        
+
+        if ($request->get('código_padre') != "inseminación") {
+            $padre = Animal::findOrFail($request->get('código_padre'));
+            if ($padre->animal_categoria == 2) {
+                $padre->animal_categoria = 4;
+                $padre->update();
+            }
+        }
         $monta->monta_padre = $request->get('código_padre');
         $monta->monta_fecha = $request->get('fecha');
         $monta->update();

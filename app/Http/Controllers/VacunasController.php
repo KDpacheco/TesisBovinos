@@ -47,7 +47,11 @@ class VacunasController extends Controller
             return '<a href="' . route('vacunas.individual', $pdf->registro_vacunas_id) . '">
             <button class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top"
                 title="Informe del parto"><i class="mdi mdi-file-pdf"></i>
-            </button></a>';
+            </button></a>
+            <a href="' . route('vacunas.edit', $pdf->registro_vacunas_id) . '">
+                <button class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top"
+                        title="editar"><i class="ti-pencil"></i>
+                    </button></a>';
         }
         )
         ->rawColumns(['pdf','proxima'])
@@ -70,7 +74,7 @@ class VacunasController extends Controller
      */
     public function store(VacunasFormRequest $request)
     {
-        $vacunas = new vacunas;
+        $vacunas = new Vacunas;
         $vacunas->animal_id = $request->get('animal');
         $vacunas->vacuna_id=$request->get('vacuna');
         $vacunas->registro_vacunas_fecha=$request->get('fecha');
@@ -121,7 +125,8 @@ class VacunasController extends Controller
      */
     public function edit($id)
     {
-        //
+        $animales=Animal::where('animal_estado','<',2)->orWhere('animal_estado','>',3)->get();
+        return view('vacunas.edit',["animales"=>$animales,"vacuna"=>Vacunas::findOrFail($id)]);
     }
 
     /**
@@ -133,7 +138,13 @@ class VacunasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $vacunas = Vacunas::findOrFail($id);
+        $vacunas->animal_id = $request->get('animal');
+        $vacunas->vacuna_id=$request->get('vacuna');
+        $vacunas->registro_vacunas_fecha=$request->get('fecha');
+        $vacunas->registro_vacunas_proxima=$this->CalcFecha($request->get('fecha'),$request->get('vacuna'));
+        $vacunas->update();
+        return redirect('vacunas');
     }
 
     /**

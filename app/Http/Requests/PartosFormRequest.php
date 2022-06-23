@@ -24,6 +24,7 @@ class PartosFormRequest extends FormRequest
     public function rules()
     {
         return [
+            'nacimiento'=>'required',
             'complicaciones'=> 'required',
             'descripción'=>'required_if:complicaciones,SI',
         ];

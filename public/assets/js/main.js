@@ -51,7 +51,7 @@ $(document).ready(function() {
             $("#tratamiento").show();
         } else {
             $("#Fecha2").hide();
-            $("$tratamiento").hide();
+            $("#tratamiento").hide();
         }
     });
 
@@ -194,7 +194,7 @@ function onSelectAnimal4() {
     var input2 = document.getElementById("Ordeño_parto")
     if (!animal_id)
         input.min = this.value;
-    $.get('/api/' + animal_id + '/ordeño', function(data) {
+    $.get('/api/' + animal_id + '/ordeno', function(data) {
         input.min = data.partos_fecha;
         var max = new Date(data.partos_fecha);
         max.setDate(max.getDate() + 300);

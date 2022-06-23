@@ -33,17 +33,18 @@ Route::get('monta/individual/{id}', 'ReportesController@montaindividual')->name(
 Route::get('embarazo/individual/{id}', 'ReportesController@gestacionindividual')->name('embarazo.individual');
 Route::get('partos/individual/{id}', 'ReportesController@partoindividual')->name('partos.individual');
 Route::get('abortos/individual/{id}', 'ReportesController@abortoindividual')->name('abortos.individual');
-Route::get('ordeño/individual/{id}', 'ReportesController@ordeñoindividual')->name('ordeño.individual');
+Route::get('ordeno/individual/{id}', 'ReportesController@ordeñoindividual')->name('ordeno.individual');
 Route::get('peso/individual/{id}', 'ReportesController@pesoindividual')->name('peso.individual');
 Route::get('enfermedades/individual/{id}', 'ReportesController@enfermedadesindividual')->name('enfermedades.individual');
 Route::get('vacunas/individual/{id}', 'ReportesController@vacunasindividual')->name('vacunas.individual');
 Route::get('actividades/individual/{id}', 'ReportesController@actividadesindividual')->name('actividades.individual');
+Route::get('razas/datos','RazaController@datos')->name('razas.datos');
 
 /*rutas Controllers*/
 
 Route::resource('monta', 'MontaController');
 Route::resource('animal', 'AnimalController');
-Route::resource('ordeño', 'OrdeñoController');
+Route::resource('ordeno', 'OrdeñoController');
 Route::resource('peso', 'PesoController');  
 Route::resource('nutricion', 'NutricionController');
 Route::resource('enfermedades', 'EnfermedadesController');
@@ -51,6 +52,8 @@ Route::resource('vacunas', 'VacunasController');
 Route::resource('actividades', 'ActividadesController');
 Route::resource('muertes', 'MuerteController');
 Route::resource('ventas', 'VentasController');
+Route::resource('clientes', 'ClienteController');
+Route::resource('razas', 'RazaController');
 
 /*rutas Wilson */
 
@@ -65,10 +68,6 @@ Route::get('/dashboard-hospital', function () {
     return view('dashboard-hospital');
 });
 
-
-Route::get('/compradores', function () {
-    return view('compradores');
-});
 
 Route::get('/reportes', function () {
     return view('reportes');

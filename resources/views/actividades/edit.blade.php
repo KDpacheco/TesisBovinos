@@ -1,5 +1,5 @@
 @section('title')
-SRB - Montas
+SRB - Actividades
 @endsection
 @extends('layouts.main')
 @section('style')
@@ -29,7 +29,7 @@ SRB - Montas
 <div class="col-lg-12">
     <div class="card m-b-30">
         <div class="card-header">
-            <h5 class="card-title">Montas o iseminaciones</h5>
+            <h5 class="card-title">Actividades</h5>
         </div>
         @if (count($errors)>0)
         <div class="alert alert-danger">
@@ -42,59 +42,46 @@ SRB - Montas
             </ul>
         </div>
         @endif
-        {!! Form::model($monta,['method'=>'PATCH','route'=>['monta.update',$monta->monta_id]]) !!}
+        {!! Form::model($actividad,['method'=>'PATCH','route'=>['actividades.update',$actividad->registro_actividades_id]]) !!}
         {{ Form::token() }}
         <div class="row">
             <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
                 <div class="form-group">
-                    <label>Código de la Madre</label>
-                    <select name="código_madre" class="form-control selectpicker" data-toggle="tooltip" data-placement="top"
-                        title="Seleccione Código de la madre">
+                    <label>Código del animal</label>
+                    <select id="select-animal2" name="animal" class="form-control selectpicker" data-live-search="true" data-toggle="tooltip" data-placement="top"
+                        title="Seleccione Código del animal">
                         <option value="" disabled="" selected="">Seleccione Código: </option>
                         @foreach ($animales as $r)
-                        @if (old('código_madre',$monta->monta_madre)==$r->animal_id )
-                        <option selected value="{{ $r->animal_id }}">{{ $r->animal_id}}</option>
+                        @if(old('animal',$actividad->animal_id)==$r->animal_id)
+                        <option value="{{ $r->animal_id }}" selected> {{ $r->animal_id }}</option>
                         @else
-                        @if ($r->animal_sexo=='Hembra')
                         <option value="{{ $r->animal_id }}">
                             {{ $r->animal_id}}
                         </option>
-                        @endif
                         @endif
                         @endforeach
                     </select>
                 </div>
             </div>
+    
             <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
-
                 <div class="form-group">
-                    <label>Código del Padre</label>
-                    <select name="código_padre" class="form-control selectpicker" data-toggle="tooltip" data-placement="top"
-                        title="Seleccione Código del padre">
-                        <option value="" disabled="" selected="">Seleccione Código: </option>
-                       
-                        @foreach ($animales as $r)
-                        @if (old('código_padre',$monta->monta_padre)==$r->animal_id )
-                        <option selected value="{{ $r->animal_id }}">{{ $r->animal_id}}</option>
-                        @else
-                        @if ($r->animal_sexo=='Macho')
-                        <option value="{{ $r->animal_id }}">
-                            {{ $r->animal_id}}
-                        </option>
-                        @endif
-                        @endif
-                        @endforeach
+                    <label>Seleccione Actividad</label>
+                    <select id="select-actividad" name="actividad" class="form-control" data-toggle="tooltip" data-placement="top"
+                        title="Seleccione Código del animal">
+                        <option value="" disabled="" selected="">Seleccione Actividad: </option>
                     </select>
                 </div>
             </div>
+    
             <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
                 <div class="form-group">
-                    <label>Fecha de Monta</label>
-                    <input type="date" name="fecha" value="{{ old('fecha',$monta->monta_fecha) }}" class="form-control" data-toggle="tooltip" data-placement="top"
-                        title="Seleccione fecha de embarazo">
-
+                    <label>Fecha de Realización</label>
+                    <input type="date" name="fecha" class="form-control" value="{{ old('fecha',$actividad->registro_actividades_fecha) }}" data-toggle="tooltip" data-placement="top"
+                        title="Seleccione fecha de realización">
                 </div>
             </div>
+        </div>
         </div>
         <div>
             <p class="text-center">

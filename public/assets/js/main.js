@@ -123,7 +123,7 @@ function onSelectAnimal() {
 
     }
 
-    $.get('/api/' + animal_id + '/vacunas', function(data) {
+    $.get('/' + animal_id + '/vacunas', function(data) {
         var html_select = '<option value="" disabled="" selected="">Seleccione Vacuna: </option>';
         for (var i = 0; i < data.length; ++i)
             if (vacuna == data[i].vacuna_id) {
@@ -143,7 +143,7 @@ function onSelectAnimal11() {
         $('#select-vacuna').html('<option value="" disabled="" selected="">Seleccione Vacuna: </option>');
 
     }
-    $.get('/api/' + animal_id + '/vacunas', function(data) {
+    $.get('/' + animal_id + '/vacunas', function(data) {
         var html_select = '<option value="" disabled="" selected="">Seleccione Vacuna: </option>';
         for (var i = 0; i < data.length; ++i)
             html_select += '<option value="' + data[i].vacuna_id + '"> ' + data[i].vacuna_nombre + '</option>';
@@ -159,7 +159,7 @@ function onSelectAnimal2() {
     if (!animal_id)
         $('#select-actividad').html('<option value="" disabled="" selected="">Seleccione Actividad: </option>');
 
-    $.get('/api/' + animal_id + '/actividades', function(data) {
+    $.get('/' + animal_id + '/actividades', function(data) {
         var html_select = '<option value="" disabled="" selected="">Seleccione Actividad: </option>';
         for (var i = 0; i < data.length; ++i)
             if (actividad == data[i].actividades_id) {
@@ -178,7 +178,7 @@ function onSelectAnimal22() {
     if (!animal_id)
         $('#select-actividad').html('<option value="" disabled="" selected="">Seleccione Actividad: </option>');
 
-    $.get('/api/' + animal_id + '/actividades', function(data) {
+    $.get('/' + animal_id + '/actividades', function(data) {
         var html_select = '<option value="" disabled="" selected="">Seleccione Actividad: </option>';
         for (var i = 0; i < data.length; ++i)
             html_select += '<option value="' + data[i].actividades_id + '"> ' + data[i].actividades_nombre + '</option>';
@@ -194,7 +194,7 @@ function onSelectAnimal4() {
     var input2 = document.getElementById("Ordeño_parto")
     if (!animal_id)
         input.min = this.value;
-    $.get('/api/' + animal_id + '/ordeno', function(data) {
+    $.get('/' + animal_id + '/ordeno', function(data) {
         input.min = data.partos_fecha;
         var max = new Date(data.partos_fecha);
         max.setDate(max.getDate() + 300);
@@ -215,7 +215,7 @@ function onSelectAnimal3() {
     $('#dieta').val("");
 
 
-    $.get('/api/' + animal_id + '/nutricion', function(data) {
+    $.get('/' + animal_id + '/nutricion', function(data) {
         $('#peso').val(data);
         var materia_seca = (data * 3.5) / 100;
 

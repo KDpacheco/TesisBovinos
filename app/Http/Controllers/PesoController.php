@@ -12,12 +12,11 @@ use DB;
 use DateTime;
 
 class PesoController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+{ 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index(Request $request)
     {
         if(request()->ajax()){

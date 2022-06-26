@@ -371,19 +371,6 @@ CREATE TABLE public.estados (
 );
 
 
--- public.migrations definition
-
--- Drop table
-
--- DROP TABLE public.migrations;
-
-CREATE TABLE public.migrations (
-	id serial4 NOT NULL,
-	migration varchar(255) NOT NULL,
-	batch int4 NOT NULL,
-	CONSTRAINT migrations_pkey PRIMARY KEY (id)
-);
-
 
 -- public.produccion definition
 
@@ -693,6 +680,94 @@ CREATE TABLE public.embarazos (
 	CONSTRAINT embarazos_fk_2 FOREIGN KEY (monta_id) REFERENCES public.monta(monta_id) ON UPDATE CASCADE,
 	CONSTRAINT embarazos_fk_3 FOREIGN KEY (animal_padre) REFERENCES public.animal(animal_id) ON UPDATE CASCADE
 );
+
+-- public.failed_jobs definition
+
+-- Drop table
+
+-- DROP TABLE public.failed_jobs;
+
+CREATE TABLE public.failed_jobs (
+	id bigserial NOT NULL,
+	uuid varchar(255) NOT NULL,
+	"connection" text NOT NULL,
+	queue text NOT NULL,
+	payload text NOT NULL,
+	"exception" text NOT NULL,
+	failed_at timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT failed_jobs_pkey PRIMARY KEY (id),
+	CONSTRAINT failed_jobs_uuid_unique UNIQUE (uuid)
+);
+
+-- public.migrations definition
+
+-- Drop table
+
+-- DROP TABLE public.migrations;
+
+CREATE TABLE public.migrations (
+	id serial4 NOT NULL,
+	migration varchar(255) NOT NULL,
+	batch int4 NOT NULL,
+	CONSTRAINT migrations_pkey PRIMARY KEY (id)
+);
+-- public.password_resets definition
+
+-- Drop table
+
+-- DROP TABLE public.password_resets;
+
+CREATE TABLE public.password_resets (
+	email varchar(255) NOT NULL,
+	"token" varchar(255) NOT NULL,
+	created_at timestamp(0) NULL
+);
+CREATE INDEX password_resets_email_index ON public.password_resets USING btree (email);
+
+-- public.personal_access_tokens definition
+
+-- Drop table
+
+-- DROP TABLE public.personal_access_tokens;
+
+CREATE TABLE public.personal_access_tokens (
+	id bigserial NOT NULL,
+	tokenable_type varchar(255) NOT NULL,
+	tokenable_id int8 NOT NULL,
+	"name" varchar(255) NOT NULL,
+	"token" varchar(64) NOT NULL,
+	abilities text NULL,
+	last_used_at timestamp(0) NULL,
+	created_at timestamp(0) NULL,
+	updated_at timestamp(0) NULL,
+	CONSTRAINT personal_access_tokens_pkey PRIMARY KEY (id),
+	CONSTRAINT personal_access_tokens_token_unique UNIQUE (token)
+);
+CREATE INDEX personal_access_tokens_tokenable_type_tokenable_id_index ON public.personal_access_tokens USING btree (tokenable_type, tokenable_id);
+
+-- public.users definition
+
+-- Drop table
+
+-- DROP TABLE public.users;
+
+CREATE TABLE public.users (
+	id bigserial NOT NULL,
+	"name" varchar(255) NOT NULL,
+	email varchar(255) NOT NULL,
+	email_verified_at timestamp(0) NULL,
+	"password" varchar(255) NOT NULL,
+	remember_token varchar(100) NULL,
+	created_at timestamp(0) NULL,
+	updated_at timestamp(0) NULL,
+	CONSTRAINT users_email_unique UNIQUE (email),
+	CONSTRAINT users_pkey PRIMARY KEY (id)
+);
+
+INSERT INTO public.users
+("name", email, email_verified_at, "password", remember_token, created_at, updated_at)
+VALUES('admin', 'admin@admin.com', NULL, '$2y$10$YaK24KlCl9Uee7XB9b2/6uDzdFe4MBItRhBTpuFvdJ5eHmupKF8Va', NULL, '2022-06-26 13:29:31.000', '2022-06-26 13:29:31.000');
+
 
 INSERT INTO public.actividades
 (actividades_nombre, actividades_nivel)

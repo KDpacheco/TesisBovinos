@@ -40,7 +40,7 @@
                             <li>
                                 <h5 class="menu-title">Sistema Registro de Bovinos</h5>
                             </li>
-                            <li><a href="{{url('/')}}"><img src="{{asset('assets/images/svg-icon/dashboard.svg') }}"
+                            <li><a href="{{url('/home')}}"><img src="{{asset('assets/images/svg-icon/dashboard.svg') }}"
                                         class="img-fluid" alt="dashboard">Inicio</a></li>
                             <li><a href="{{url('/analisis')}}"><img
                                         src="{{ asset('assets/images/svg-icon/reports.svg') }}" class="img-fluid"

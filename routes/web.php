@@ -14,7 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('index');
+    if (Auth::guest()) {   //but here it will work
+        return redirect('/login');
+    } else {
+        return view('index');
+    }
 });
 
 /*rutas ciclica reproducción*/
@@ -54,6 +58,7 @@ Route::resource('muertes', 'MuerteController');
 Route::resource('ventas', 'VentasController');
 Route::resource('clientes', 'ClienteController');
 Route::resource('razas', 'RazaController');
+Route::resource('usuarios', 'UserController');
 
 /*rutas Wilson */
 
@@ -83,3 +88,10 @@ Route::get('/analisis', function () {
 Route::resource('embarazo', 'EmbarazoController',['except' => ['create']]);
 Route::resource('partos', 'PartosController', ['except' => ['create']]);
 Route::resource('abortos', 'AbortosController', ['except' => ['create']]);
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('{id}/vacunas', 'VacunasController@SelectVacunas');
+Route::get('{id}/nutricion', 'NutricionController@Calculo');
+Route::get('{id}/ordeno', 'OrdeñoController@FechaOrdeño');
+Route::get('{id}/actividades', 'ActividadesController@SelectActividades');

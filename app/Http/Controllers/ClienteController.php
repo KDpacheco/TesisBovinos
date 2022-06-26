@@ -10,6 +10,10 @@ use App\Http\Requests\ClienteFormRequest2;
 
 class ClienteController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function Index()
     {
         $cliente=Cliente::get();

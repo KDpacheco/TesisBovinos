@@ -63,16 +63,16 @@
                                     <img src="{{ asset('assets/images/svg-icon/frontend.svg') }}" class="img-fluid"
                                         alt="frontend"><span>Ganado</span>
                                 </a>
-                            <ul class="vertical-submenu">
-                            <li>
-                                <a href="{{url('/animal')}}">Animales
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{url('/razas')}}">Razas
-                                </a>
-                            </li>
-                            </ul>
+                                <ul class="vertical-submenu">
+                                    <li>
+                                        <a href="{{url('/animal')}}">Animales
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{url('/razas')}}">Razas
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                             <li>
                                 <a href="javaScript:void();">
@@ -133,7 +133,7 @@
                         aria-labelledby="v-pills-hospital-tab">
                         <ul class="vertical-menu">
                             <li>
-                                <h5 class="menu-title">VENTAS</h5>
+                                <h5 class="menu-title">Gestiones</h5>
                             </li>
 
                             <li><a href="{{url('/ventas')}}"><img
@@ -142,6 +142,9 @@
                             <li><a href="{{url('/clientes')}}"><img
                                         src="{{ asset('assets/images/svg-icon/doctor.svg') }}" class="img-fluid"
                                         alt="doctors">Clientes</a></li>
+                            <li><a href="{{url('/usuarios')}}"><img
+                                        src="{{ asset('assets/images/svg-icon/doctor.svg') }}" class="img-fluid"
+                                        alt="doctors">Usuarios</a></li>
                         </ul>
                     </div>
                     <div class="tab-pane fade" id="v-pills-uikits" role="tabpanel" aria-labelledby="v-pills-uikits-tab">
